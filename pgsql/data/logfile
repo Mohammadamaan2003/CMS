@@ -1,0 +1,20 @@
+2026-11-19 01:13:28.201 IST [3956] LOG:  starting PostgreSQL 18.7 on x86_64-windows, compiled by msvc-19.44.35229, 64-bit
+2026-11-19 01:13:28.255 IST [3956] LOG:  listening on IPv6 address "::1", port 5432
+2026-11-19 01:13:28.257 IST [3956] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-11-19 01:13:29.416 IST [2252] LOG:  database system was shut down at 2026-11-19 01:12:24 IST
+2026-11-19 01:13:29.523 IST [3956] LOG:  database system is ready to accept connections
+2026-11-19 01:16:04.419 IST [9644] LOG:  starting PostgreSQL 18.7 on x86_64-windows, compiled by msvc-19.44.35229, 64-bit
+2026-11-19 01:16:04.444 IST [9644] LOG:  listening on IPv6 address "::1", port 5432
+2026-11-19 01:16:04.444 IST [9644] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2026-11-19 01:16:04.843 IST [10404] LOG:  database system was interrupted; last known up at 2026-11-19 01:13:29 IST
+2026-11-19 01:16:10.972 IST [10404] LOG:  could not open file "./logfile": sharing violation
+2026-11-19 01:16:10.972 IST [10404] DETAIL:  Continuing to retry for 30 seconds.
+2026-11-19 01:16:10.972 IST [10404] HINT:  You might have antivirus, backup, or similar software interfering with the database system.
+2026-11-19 01:16:37.392 IST [10404] LOG:  syncing data directory (fsync), elapsed time: 32.54 s, current path: ./pg_commit_ts
+2026-11-19 01:16:37.436 IST [10404] LOG:  database system was not properly shut down; automatic recovery in progress
+2026-11-19 01:16:37.448 IST [10404] LOG:  invalid record length at 0/1805980: expected at least 24, got 0
+2026-11-19 01:16:37.448 IST [10404] LOG:  redo is not required
+2026-11-19 01:16:37.477 IST [10768] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-11-19 01:16:37.529 IST [10768] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.007 s, sync=0.005 s, total=0.074 s; sync files=2, longest=0.003 s, average=0.003 s; distance=0 kB, estimate=0 kB; lsn=0/1805980, redo lsn=0/1805980
+2026-11-19 01:16:37.570 IST [9644] LOG:  database system is ready to accept connections
+2026-11-19 01:16:41.414 IST [12364] FATAL:  role "moham" does not exist

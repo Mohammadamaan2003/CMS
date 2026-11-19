@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pgEdge Starfleet Deployment &#8212; pgAdmin 4 9.19 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/style.css?v=d36593c3" />
+    
+    <script src="_static/documentation_options.js?v=af08f892"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Master Password" href="master_password.html" />
+    <link rel="prev" title="Google Cloud SQL Deployment" href="cloud_google_cloud_sql.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="master_password.html" title="Master Password"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cloud_google_cloud_sql.html" title="Google Cloud SQL Deployment"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 9.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="connecting.html" >Connecting To A Server</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="cloud_deployment.html" accesskey="U">PostgreSQL Cloud Deployment</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pgEdge Starfleet Deployment</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="pgedge-starfleet-deployment">
+<span id="cloud-pgedge-starfleet"></span><h1><span class="target" id="index-0"></span>pgEdge Starfleet Deployment<a class="headerlink" href="#pgedge-starfleet-deployment" title="Link to this heading">¶</a></h1>
+<p>To deploy a PostgreSQL database on pgEdge Starfleet, follow the steps below.
+pgAdmin creates a <em>Managed</em> database, which Starfleet hosts for you.</p>
+<img alt="Cloud Deployment Provider" class="align-center" src="_images/cloud_provider_for_postgresql.png" />
+<p>Once you launch the tool, select the pgEdge Starfleet option and click on the
+<em>Next</em> button to proceed.</p>
+<img alt="pgEdge Starfleet credentials" class="align-center" src="_images/cloud_starfleet_credentials.png" />
+<p>In the Credentials step, enter the <em>Auth ID</em> and <em>Auth secret</em> of a Starfleet
+API client. pgAdmin checks them with Starfleet when you click <em>Next</em>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Create the API client in the pgEdge Starfleet console, under
+<em>Settings &gt; API Clients</em>. The Auth secret is shown only when the client is
+created, so keep a copy of it. See the
+<a class="reference external" href="https://docs.pgedge.com/pgedge-starfleet/">pgEdge Starfleet documentation</a>
+for details.</p>
+</div>
+<img alt="pgEdge Starfleet instance specification" class="align-center" src="_images/cloud_starfleet_instance.png" />
+<p>Use the fields from the Instance Specification step to specify the database
+details.</p>
+<ul class="simple">
+<li><p>Use the <em>Database name</em> field to name the database. The name may contain
+lowercase letters and digits only, must start with a letter, and can be up
+to 50 characters long.</p></li>
+<li><p>Use the <em>Display name</em> field to optionally set a friendlier name, up to 25
+characters long.</p></li>
+<li><p>Select the location to deploy the database to from the <em>Region</em> field.</p></li>
+<li><p>Use the <em>Size</em> field to select the size of the database.</p></li>
+<li><p>Use the <em>PostgreSQL version</em> field to select the PostgreSQL version.</p></li>
+<li><p>Use the <em>Allowed IP addresses</em> field to list the IPv4 addresses or CIDR
+ranges that may connect to the database, separated by commas. The field is
+prefilled with your public IP address. At least one and at most 50 entries
+are required; IPv6 addresses are not accepted. Without a matching entry the
+database will not accept connections from pgAdmin.</p></li>
+<li><p>Use the <em>Connect as</em> field to choose whether pgAdmin connects as <em>admin</em>
+(the database administrator, which is not a superuser) or <em>app</em> (an
+application user).</p></li>
+</ul>
+<img alt="pgEdge Starfleet database details" class="align-center" src="_images/cloud_starfleet_database.png" />
+<p>In the Database Details step, use the <em>pgAdmin server group</em> field to select
+the server group the new server will be registered in.</p>
+<img alt="pgEdge Starfleet review" class="align-center" src="_images/cloud_starfleet_review.png" />
+<p>Finally, review the summary in the Review step and click <em>Finish</em> to start the
+deployment. The progress of the deployment is shown in the same way as for the
+other cloud providers, and the new server is added to the <em>Object Explorer</em>
+when the database is available. pgAdmin connects with <em>sslmode</em> set to
+<em>require</em> and <em>gssencmode</em> set to <em>disable</em>.</p>
+<p>If the deployment fails after the database has been created, for example
+because pgEdge Starfleet reports it as failed or it does not become available
+within 30 minutes, pgAdmin removes the server from the <em>Object Explorer</em> but
+does not delete the database. Check the pgEdge Starfleet console, and delete
+the database there if it is not needed.</p>
+<img alt="pgEdge Starfleet database password" class="align-center" src="_images/cloud_starfleet_password.png" />
+<p>pgEdge Starfleet generates the database password. When the deployment
+finishes, pgAdmin shows it once in the <em>pgEdge Starfleet database password</em>
+dialog, together with the host and user name.</p>
+<ul class="simple">
+<li><p>Use the <em>Copy</em> button to copy the password to the clipboard.</p></li>
+<li><p>Use the <em>Save password</em> button to save the password with the server. This
+button is only shown if saving passwords is permitted by the
+<a class="reference internal" href="config_py.html#config-py"><span class="std std-ref">ALLOW_SAVE_PASSWORD</span></a> setting.</p></li>
+</ul>
+<p>The password is not shown again in pgAdmin after the dialog is closed. If you
+lose it, reset it from the pgEdge Starfleet console.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>pgAdmin contacts the Starfleet API at the address given by the
+<em>STARFLEET_API_URL</em> configuration setting, which defaults to
+<em>https://api.pgedge.com</em>. The address must use HTTPS.</p>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="external_database.html">External database for pgAdmin user settings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="connecting.html">Connecting To A Server</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="server_group_dialog.html">Server Group Dialog</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_dialog.html">Server Dialog</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="cloud_deployment.html">PostgreSQL Cloud Deployment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="master_password.html">Master Password</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connect_to_server.html">Connect to Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="connect_error.html">Connection Error</a></li>
+<li class="toctree-l2"><a class="reference internal" href="import_export_servers.html">Import/Export Servers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="managing_cluster_objects.html">Managing Cluster Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_database_objects.html">Managing Database Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_tables.html">Creating or Modifying a Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_basics.html">Management Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_and_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_tools.html">Developer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processes.html">Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pgagent.html">pgAgent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pgtimetable_chains.html">pgTimeTable Chains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributions.html">pgAdmin Project Contributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+</ul>
+
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+<div id="sidebarbutton" title="Collapse sidebar">
+<span>«</span>
+</div>
+
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="master_password.html" title="Master Password"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cloud_google_cloud_sql.html" title="Google Cloud SQL Deployment"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 9.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="connecting.html" >Connecting To A Server</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="cloud_deployment.html" >PostgreSQL Cloud Deployment</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">pgEdge Starfleet Deployment</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        <div class="related" role="navigation" aria-label="related navigation">
+          <ul>
+              <li class="left" style="margin-left: 10px">&#169; Copyright (C) 2013 - 2026, The pgAdmin Development Team.</li>
+            <li class="right" style="margin-right: 10px"><a href="genindex.html" title="General Index">index</a></li>
+            <li class="right" ><a href="master_password.html" title="Master Password">next</a> |</li>
+            <li class="right" ><a href="cloud_google_cloud_sql.html" title="Google Cloud SQL Deployment">previous</a> |</li>
+          </ul>
+        </div>
+    </div>
+  </body>
+</html>

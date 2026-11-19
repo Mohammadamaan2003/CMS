@@ -14,11 +14,11 @@ build/
 .vscode/
 .idea/
 
-pgsql/
 cloudflared.exe
 node_modules/
 client/node_modules/
-pgsql/
+
 cloudflared.exe
 node_modules/
 client/node_modules/
+pgsql/pgAdmin 4/runtime/

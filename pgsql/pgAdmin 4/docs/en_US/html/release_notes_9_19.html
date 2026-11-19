@@ -1,0 +1,467 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Version 9.19 &#8212; pgAdmin 4 9.19 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/style.css?v=d36593c3" />
+    
+    <script src="_static/documentation_options.js?v=af08f892"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    
+    <script src="_static/sidebar.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Version 9.18" href="release_notes_9_18.html" />
+    <link rel="prev" title="Release Notes" href="release_notes.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="release_notes_9_18.html" title="Version 9.18"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="release_notes.html" title="Release Notes"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 9.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="release_notes.html" accesskey="U">Release Notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Version 9.19</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="version-9-19">
+<h1>Version 9.19<a class="headerlink" href="#version-9-19" title="Link to this heading">¶</a></h1>
+<p>Release date: 2026-10-29</p>
+<p>This release contains a number of bug fixes and new features since the release of pgAdmin 4 v9.18.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In server mode, free-text Password Exec Commands are no longer
+run, and <code class="docutils literal notranslate"><span class="pre">ENABLE_SERVER_PASS_EXEC_CMD</span></code> is deprecated and ignored.
+Administrators now define the permitted commands by name in
+<code class="docutils literal notranslate"><span class="pre">SERVER_PASSEXEC_COMMANDS</span></code>, and users choose one of those names in the
+server properties. Configure <code class="docutils literal notranslate"><span class="pre">SERVER_PASSEXEC_COMMANDS</span></code> <strong>before</strong> the
+first start after upgrading: on that start, each existing command that
+exactly matches a configured entry is converted to its name, and every
+other command is cleared, which cannot be undone. If the setting is empty,
+the conversion is postponed and a warning is logged at each start. See
+<code class="docutils literal notranslate"><span class="pre">config.py</span></code> and the server dialog documentation for details.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Users who do not own a shared server never inherit the owner’s
+password file; it is treated like the owner’s password, SSH key and SSL
+client files. Each user can set their own password file on their copy of
+the server, and a file that everyone should use can be placed in a
+<code class="docutils literal notranslate"><span class="pre">SHARED_STORAGE</span></code> directory and referenced as <code class="docutils literal notranslate"><span class="pre">Name:/.pgpass</span></code>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In desktop mode, when an SSH tunnel is configured with an identity
+file or a password, pgAdmin no longer also offers keys from the SSH agent;
+the agent is still used when neither is configured. In server mode, SSH
+tunnels never use the SSH agent, or the keys and configuration in the
+<code class="docutils literal notranslate"><span class="pre">~/.ssh</span></code> directory of the account pgAdmin runs as, so a tunnel that
+relied on them must be given an identity file or password on the server.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On Python 3.10 and later, pgAdmin now requires Flask-Security-Too
+5.8.3 or later, which fixes an open redirect (GHSA-ccgp-pv8r-95wm). This
+matters to anyone installing pgAdmin from the Python wheel into an
+existing environment. Python 3.9 installations remain on the
+Flask-Security-Too 5.6 series.</p>
+</div>
+<section id="supported-database-servers">
+<h2>Supported Database Servers<a class="headerlink" href="#supported-database-servers" title="Link to this heading">¶</a></h2>
+<p><strong>PostgreSQL</strong>: 14, 15, 16, 17 and 18</p>
+<p><strong>EDB Advanced Server</strong>: 14, 15, 16, 17 and 18</p>
+</section>
+<section id="bundled-postgresql-utilities">
+<h2>Bundled PostgreSQL Utilities<a class="headerlink" href="#bundled-postgresql-utilities" title="Link to this heading">¶</a></h2>
+<p><strong>psql</strong>, <strong>pg_dump</strong>, <strong>pg_dumpall</strong>, <strong>pg_restore</strong>: 18.6</p>
+</section>
+<section id="new-features">
+<h2>New features<a class="headerlink" href="#new-features" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><div class="line-block">
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/2018">Issue #2018</a> -  Add a Statistics node for creating and managing extended statistics.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/2363">Issue #2363</a> -  Allow data to be edited through simple auto-updatable views in View/Edit Data.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/3205">Issue #3205</a> -  Allow Query Tool results to be saved as JSON or XML, as well as CSV.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/3834">Issue #3834</a> -  Add a keyboard shortcut to duplicate the current line or selection in the SQL editor.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/4128">Issue #4128</a> -  Allow the encoding of Query Tool result files to be chosen.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/4129">Issue #4129</a> -  Add a ‘copy with headers’ option for Query Tool results.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/5691">Issue #5691</a> -  Close dialogs with the Escape key.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/6695">Issue #6695</a> -  Allow a byte order mark to be added to Query Tool result files.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/7167">Issue #7167</a> -  Allow dialogs such as Sort/Filter to be saved and closed with the Enter key.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/8647">Issue #8647</a> -  Allow shift + click to extend the cell range selection in the Query Tool results grid.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9057">Issue #9057</a> -  Support UNLOGGED partitioned tables correctly, which PostgreSQL 18 no longer allows to be created or altered.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9064">Issue #9064</a> -  Add the PostgreSQL 18 pg_dump options to the Backup and Backup Server dialogs.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9066">Issue #9066</a> -  Add the PostgreSQL 18 pg_restore options to the Restore dialog.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9212">Issue #9212</a> -  Show fill factor, TOAST tuple target and parallel workers in the table Properties panel.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9264">Issue #9264</a> -  Move the ‘Returns a set?’ option to the Definition tab in the Function dialog.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9704">Issue #9704</a> -  Allow an OAuth2 claim to restrict which shared servers a user can see, configured through <code class="docutils literal notranslate"><span class="pre">OAUTH2_SERVER_GROUP_CLAIM</span></code> and <code class="docutils literal notranslate"><span class="pre">OAUTH2_SERVER_GROUP_CLAIM_MAPPING</span></code>.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9975">Issue #9975</a> -  Allow the login page to be skipped when OAuth2 is the only authentication source, using <code class="docutils literal notranslate"><span class="pre">OAUTH2_AUTO_LOGIN</span></code> and <code class="docutils literal notranslate"><span class="pre">OAUTH2_LOGOUT_URL</span></code>.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10148">Issue #10148</a> -  Add support for managing pg_timetable chains and tasks.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10249">Issue #10249</a> -  Replace free-text Password Exec Commands in server mode with an administrator-defined allowlist, <code class="docutils literal notranslate"><span class="pre">SERVER_PASSEXEC_COMMANDS</span></code>. Commands run without a shell, with a reduced environment, and receive the pgAdmin user’s identity in <code class="docutils literal notranslate"><span class="pre">PGADMIN_PASSEXEC_*</span></code> variables; users of a shared server inherit the owner’s command by default.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10473">Issue #10473</a> -  Add a macOS 26 layered app icon with dark, clear and tinted variants.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10499">Issue #10499</a> -  Add pgEdge Starfleet to the Deploy Cloud Instance wizard, for creating Starfleet Managed databases.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10503">Issue #10503</a> -  Add numpad zoom shortcuts to the Desktop View menu.</div>
+</div>
+</div></blockquote>
+</section>
+<section id="housekeeping">
+<h2>Housekeeping<a class="headerlink" href="#housekeeping" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><div class="line-block">
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/5369">Issue #5369</a> -  Clarify the configuration files documentation.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9230">Issue #9230</a> -  Rename the server ‘Change Password’ option to ‘Change Server Password’, and the user menu option to ‘Change pgAdmin Password’, so the two can no longer be confused.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9331">Issue #9331</a> -  Remove unused Google API documents, Babel locale data and packaging tools from the packages.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9524">Issue #9524</a> -  Document running the container with rootless Podman, and the <code class="docutils literal notranslate"><span class="pre">PUID</span></code> and <code class="docutils literal notranslate"><span class="pre">PGID</span></code> environment variables.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10363">Issue #10363</a> -  Enforce <code class="docutils literal notranslate"><span class="pre">--immutable</span></code> on every yarn install, in CI and the release builds, to harden the supply chain.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10546">Issue #10546</a> -  Fix the flaky <code class="docutils literal notranslate"><span class="pre">test_windows_pty_failures</span></code> test counting psql output from other tests.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10552">Issue #10552</a> -  Add a test for Reset discarding pending SQL editor values in dialogs.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10553">Issue #10553</a> -  Make the server tests restore the shared test fixture after themselves.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10601">Issue #10601</a> -  Remove the dead tree <code class="docutils literal notranslate"><span class="pre">loadfail</span></code> handler from <code class="docutils literal notranslate"><span class="pre">browser.js</span></code>.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10602">Issue #10602</a> -  Fix the Jest <code class="docutils literal notranslate"><span class="pre">addNewDatagridRow</span></code> helper so schema UI specs actually add a row.</div>
+</div>
+</div></blockquote>
+</section>
+<section id="bug-fixes">
+<h2>Bug fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><div class="line-block">
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/5940">Issue #5940</a> -  Fix View/Edit Data failing on SQL_ASCII databases when a name contains a backslash followed by ‘u’ or ‘U’.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/6090">Issue #6090</a> -  Refresh a stale server connection manager when a server id is reused, so one user’s session can no longer pick up settings from another server.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/6231">Issue #6231</a> -  Generate a single GRANT statement for roles with identical privileges.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/6481">Issue #6481</a> -  Fix index and constraint columns not being shown when their names require quoting.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/6652">Issue #6652</a> -  Fix Schema Diff treating functions that differ only in OUT arguments or return type as unrelated objects.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/6671">Issue #6671</a> -  Allow the emailed MFA code to be re-entered after an invalid code is entered.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/7232">Issue #7232</a> -  Fix the tab switching shortcuts not working whilst focus is inside the PSQL, Query, ERD or Schema Diff tools.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/7612">Issue #7612</a> -  Fix the server context menu showing database options after the tree state is restored.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/7619">Issue #7619</a> -  Fix Query Tool autocomplete running as the wrong user, or failing, after changing the connection to a different user.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/8015">Issue #8015</a> -  Re-sort renamed server groups and other nodes in the Object Explorer instead of waiting for a reload.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/8144">Issue #8144</a> -  Connect the server when changing the Query Tool connection after it was disconnected.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/8529">Issue #8529</a> -  Rewrite the container entrypoint using bash features, and pass values to the embedded Python safely, so an email address containing an apostrophe works and a validation error stops the container rather than passing silently.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/8664">Issue #8664</a> -  Fix debugger messages from successive steps running together on one line.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/8991">Issue #8991</a> -  Fix BEGIN, COMMIT and ROLLBACK silently failing in the Query Tool under server cursor mode.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9130">Issue #9130</a> -  Select the adjacent tab when the active tab is closed, rather than the left-most.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9450">Issue #9450</a> -  Allow roles holding ADMIN OPTION to manage Group Role membership.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9603">Issue #9603</a> -  Restore the per-tab toolbar options when Query Tool tabs are restored on relaunch.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9624">Issue #9624</a> -  Fix a database’s label staying at ‘[Disconnecting…]’ when disconnecting it fails.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9630">Issue #9630</a> -  Fix the parameter value dropdown keeping stale options when the parameter name is changed.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9672">Issue #9672</a> -  Fix View/Edit Data not handling generated columns properly.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9784">Issue #9784</a> -  Fix modal dialogs losing keyboard focus to a tool iframe loading in the background.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9798">Issue #9798</a> -  Fix the collation and ctype query error for databases with a non-default LC_COLLATE.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9814">Issue #9814</a> -  Disable the SSH agent when an SSH tunnel identity file or password is provided.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9818">Issue #9818</a> -  Keep the AI Assistant’s intermediate responses instead of replacing them with placeholder messages.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9836">Issue #9836</a> -  Fix the CREATE TABLE script ignoring the UNLOGGED attribute of a partition.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9838">Issue #9838</a> -  Fix formatting a view’s SQL being treated as a column change that drops and re-creates the view.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9865">Issue #9865</a> -  Fix modal dialogs being hidden from assistive technology by <code class="docutils literal notranslate"><span class="pre">aria-hidden</span></code> on the application root.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9890">Issue #9890</a> -  Fix ERD tables becoming immovable after a Shift-drag selection.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9921">Issue #9921</a> -  Fix Azure and Google authentication in the cloud deployment wizard.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/9984">Issue #9984</a> -  Report an unreachable external configuration database, or a malformed <code class="docutils literal notranslate"><span class="pre">CONFIG_DATABASE_URI</span></code>, as a failed check rather than an unhandled exception.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10031">Issue #10031</a> -  Fix Query Tool tabs running their query automatically after a session restore.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10103">Issue #10103</a> -  Exclude non-editable alias and expression columns when saving edited rows in the Query Tool.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10136">Issue #10136</a> -  Restore tags for standard users on shared servers, and never inherit the owner’s password file.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10143">Issue #10143</a> -  Fix switching back to a dialog tab containing a data grid being slow, by skipping virtualisation for small grids.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10226">Issue #10226</a> -  Restore remembering the last visited directory in the desktop file dialogs.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10251">Issue #10251</a> -  Fix invalid SQL from the Maintenance dialog for REINDEX … CONCURRENTLY.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10254">Issue #10254</a> -  Fix the Object Explorer shortcut not moving keyboard focus into the tree.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10273">Issue #10273</a> -  Fix the dashboard transactions per second graph being wrong for refresh rates other than one second.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10292">Issue #10292</a> -  Fix Schema Diff scripts that convert a column to or from SERIAL.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10301">Issue #10301</a> -  Drop the scaffolding default partition after Schema Diff rebuilds a partitioned table.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10310">Issue #10310</a> -  Fix the Statistics node failing to list its children in Object Explorer.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10334">Issue #10334</a> -  Add Caddy reverse proxy configuration examples to the documentation.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10347">Issue #10347</a> -  Fix the selected UI language not persisting beyond the request that set it in server mode.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10348">Issue #10348</a> -  Fix OpenAI streaming tool calls being split into two entries in the AI Assistant.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10349">Issue #10349</a> -  Fix the OAuth2 userinfo request crashing when <code class="docutils literal notranslate"><span class="pre">OAUTH2_USERINFO_ENDPOINT</span></code> is set to None.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10350">Issue #10350</a> -  Fix the MAINTAIN privilege being silently dropped for views and materialised views on PostgreSQL 17 and later.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10357">Issue #10357</a> -  Fix the cursor jumping to the start of SQL fields in dialogs when keys are pressed together.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10364">Issue #10364</a> -  Explain Docker Compose quoting for <code class="docutils literal notranslate"><span class="pre">PGADMIN_CONFIG_*</span></code> values in the container documentation.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10386">Issue #10386</a> -  Stop the Query Tool spinner, and its idle CPU use, whilst a password prompt is open.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10401">Issue #10401</a> -  Show default privileges in the Database properties panel.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10409">Issue #10409</a> -  Include the authenticated user in the access log on logout.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10414">Issue #10414</a> -  Fix the Linux packages shipping a stray copy of Python as <code class="docutils literal notranslate"><span class="pre">venv/bin/python</span></code>, which stopped the DEB package installing on Ubuntu 26.04.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10415">Issue #10415</a> -  Prefer the user’s email address as the Gravatar identifier.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10418">Issue #10418</a> -  Remove the dead <code class="docutils literal notranslate"><span class="pre">usr</span></code> parameter from Query Tool connection URLs.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10419">Issue #10419</a> -  Fix Kerberos login failures returning a JSON 500 response, and first-time automatically created Kerberos logins being rejected.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10422">Issue #10422</a> -  Fix Schema Diff repeating unchanged column comments and identity options.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10424">Issue #10424</a> -  Fix Reset Layout dropping Query Tool tabs from the saved application state.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10428">Issue #10428</a> -  Fix connections crashing on Windows with an access violation, and the utilities failing to find <code class="docutils literal notranslate"><span class="pre">gssapi64.dll</span></code>, by staging the Kerberos runtime next to libpq.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10446">Issue #10446</a> -  Fix Schema Diff reporting identical tables as different when a foreign key’s referenced table has a dropped column.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10449">Issue #10449</a> -  Honour the password file in the Change Server Password dialog, rather than requiring the current password.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10462">Issue #10462</a> -  Fix duplicated content when opening large non-UTF-8 files in the Query Tool.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10463">Issue #10463</a> -  Pass the target database, and every supported connection parameter, to the utilities, so a database set in a service file no longer overrides the one selected.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10470">Issue #10470</a> -  Remove inherited columns from the Columns tab when their parent table is removed after reopening a table.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10482">Issue #10482</a> -  Allow saving files through symbolic links in desktop mode, and stop forcing 0600 permissions on them there.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10485">Issue #10485</a> -  Fix ‘Cannot have two HTML5 backends at the same time’ errors in dialogs containing a data grid.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10511">Issue #10511</a> -  Fix the Dashboard Logs tab failing on multi-byte characters split across read chunks.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10527">Issue #10527</a> -  Write the cloud deployment wizard’s AWS, Azure and Google credentials through to the session store.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10531">Issue #10531</a> -  Fix the Query Tool saving files that were loaded as latin-1 back as UTF-8.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10534">Issue #10534</a> -  Fix the hardcoded table OID in the column properties query, which broke inherited column details.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10547">Issue #10547</a> -  Fix valid escapes below U+0100 being rewritten in SQL_ASCII data and names.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10548">Issue #10548</a> -  Fix negative identity column options being dropped from the generated SQL.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10549">Issue #10549</a> -  Fix Schema Diff not removing a column comment that exists only in the target.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10550">Issue #10550</a> -  Fix changing an identity column’s START value also restarting its sequence.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10551">Issue #10551</a> -  Fix the cursor jumping to the start of SQL fields in dialogs after a quick edit and undo.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10554">Issue #10554</a> -  Fix column properties reporting an arbitrary parent for columns merged from several parents.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10573">Issue #10573</a> -  Fix Query Tool state save/restore failing on installations with a legacy <code class="docutils literal notranslate"><span class="pre">SECRET_KEY</span></code>.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10584">Issue #10584</a> -  Preserve explicit 24-hour mode in date-time picker popups.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10597">Issue #10597</a> -  Fix Schema Diff treating a function whose input argument was renamed as two unrelated functions.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10598">Issue #10598</a> -  Keep the Query Tool execute options when its transaction is re-created.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10600">Issue #10600</a> -  Revert the Query Tool execute option checkboxes when changing an option fails.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10603">Issue #10603</a> -  Fix the Query Tool not re-running the query after reconnecting at a password prompt.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10604">Issue #10604</a> -  Report a failed autocomplete reconnect in the Query Tool instead of ignoring it.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10607">Issue #10607</a> -  Fix Query Tool autocomplete objects being shared between sessions that use the same transaction id.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10612">Issue #10612</a> -  Free Query Tool autocomplete objects when an idle session’s connections are released.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10613">Issue #10613</a> -  Reconnect a lost Query Tool connection as the user and role it was changed to.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10614">Issue #10614</a> -  Keep external pages out of the desktop runtime’s privileged windows and confine non-prompted downloads to the downloads directory.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10618">Issue #10618</a> -  Keep Query Tool execution disabled until a restored tab’s execute options reach the server.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10645">Issue #10645</a> -  Fix connection redirection in the materialized view refresh, where the target database’s name was passed straight to psql’s <code class="docutils literal notranslate"><span class="pre">--dbname</span></code>: because libpq expands a value containing an equals sign into a full connection string, a database named like <code class="docutils literal notranslate"><span class="pre">host=...</span> <span class="pre">port=...</span></code>, which any role with only CREATEDB can create, redirected psql to a server of the creator’s choosing and leaked the connecting user’s saved password (CVE-2026-116252). The name is now passed through the same connection-information helper as the Backup, Restore, Maintenance and Import/Export tools, so libpq treats it strictly as a database name. Reported by Bae Seung-won (&#64;baeseungwon1010).</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10646">Issue #10646</a> -  Fix a user’s other sessions surviving a password change, which left a session an attacker already held valid after the password was changed or reset (CVE-2026-116251). A self-service change now rotates the user’s <code class="docutils literal notranslate"><span class="pre">fs_uniquifier</span></code>, logging out every other session while the changing session stays signed in with its database connections, and saved passwords, including those of shared servers, are re-encrypted under the new key, with any that cannot be decrypted cleared, and all of them cleared if re-encryption fails. An administrator reset (including <code class="docutils literal notranslate"><span class="pre">setup.py</span> <span class="pre">update-user</span></code>) also rotates <code class="docutils literal notranslate"><span class="pre">fs_uniquifier</span></code>, ending all of that user’s sessions, but does not re-encrypt their saved passwords. Reported by Zohaib.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10647">Issue #10647</a> -  Fix time-of-check to time-of-use symlink races in Import/Export Servers and the File Manager’s upload, save and file-open paths, where a path validated against the user’s storage directory was then opened by name, so a symbolic link swapped in at the file or any parent directory in between let an export overwrite, or an import read, a file outside the storage directory (CVE-2026-116250). In server mode on POSIX the file is now opened by walking down from the storage directory one component at a time with <code class="docutils literal notranslate"><span class="pre">O_NOFOLLOW</span></code>; new files are created with mode 0600 and only regular files are read, opened non-blocking so a FIFO cannot hang the request. Symbolic links inside a storage directory are now refused, even when they point elsewhere inside it. Windows and desktop mode are unchanged, so the race remains there. Reported by MUTED CYBERSECURITY S.L.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10648">Issue #10648</a> -  Fix the same symlink races in the files handed to Backup, Restore and Import/Export Data, where the validated path was passed to pg_dump, pg_dumpall, pg_restore or psql, which opened it by name later, extending the fix for the vulnerability tracked in Issue #10647. In server mode on POSIX pgAdmin now opens the file itself with the descriptor-relative <code class="docutils literal notranslate"><span class="pre">O_NOFOLLOW</span></code> walk, accepts only a regular file and hands the utility <code class="docutils literal notranslate"><span class="pre">/dev/fd/N</span></code>, and new backup and export files are created with mode 0600. This applies on Linux only, and not to directory-format Backup and Restore, where the utility opens the files inside the directory by name; on macOS and the BSDs the file is checked safely but the utility still reopens it by name.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10649">Issue #10649</a> -  Refuse hard links and FIFOs in the symlink-race fixes of Issue #10647 and Issue #10648, since <code class="docutils literal notranslate"><span class="pre">O_NOFOLLOW</span></code> stops only symbolic links: in server mode on POSIX, a file with more than one link is refused, for reading as well as before it is truncated for writing, and a FIFO can no longer hang an upload, save or export; Windows is not covered. The Import/Export Servers, save, Backup, Restore and Import/Export Data handlers also return the reason for a failure instead of text containing the absolute storage path.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10650">Issue #10650</a> -  Fix connection file paths escaping the user’s storage directory, where a password file, SSL certificate, key or CRL, or SSH tunnel identity file such as <code class="docutils literal notranslate"><span class="pre">../&lt;another</span> <span class="pre">user&gt;/.pgpass</span></code> was joined to the storage directory after stripping only leading slashes, so a user could connect with another user’s credentials or key, and where <code class="docutils literal notranslate"><span class="pre">sslkeylogfile</span></code> was copied into the connection string unchanged, letting libpq create or append a file as the pgAdmin service account (CVE-2026-116249). In server mode the resolved path, with symbolic links followed, must now stay inside the user’s storage directory or the named shared storage directory, and <code class="docutils literal notranslate"><span class="pre">sslkeylogfile</span></code> is confined the same way. Connection parameter keys are also validated against the libpq keyword list, since a crafted key could smuggle its own <code class="docutils literal notranslate"><span class="pre">keyword=value</span></code> pairs past these checks. Servers whose file paths reach outside the storage directory, through <code class="docutils literal notranslate"><span class="pre">..</span></code> or a symbolic link, stop connecting until the files are moved into it or into a <code class="docutils literal notranslate"><span class="pre">SHARED_STORAGE</span></code> directory.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10651">Issue #10651</a> -  Fix any user able to register a server being able to share it with every other user in server mode, because the create and update endpoints stored whatever <code class="docutils literal notranslate"><span class="pre">shared</span></code> value they were sent, and the servers.json import removed a non-administrator’s shared entries only after validation, so an early error left them in place (CVE-2026-116248). Such requests are now refused with a 403, and the import prunes and skips a non-administrator’s shared entries before validating. The restriction is not retroactive: servers shared by non-administrators before the upgrade stay shared until the owner un-shares them or an administrator clears the <code class="docutils literal notranslate"><span class="pre">shared</span></code> column in the configuration database, and pgAdmin only logs a warning about each of them at startup, so administrators should review those servers and un-share any that should not be shared. <code class="docutils literal notranslate"><span class="pre">Shared</span></code> in a servers.json import must now be the JSON value <code class="docutils literal notranslate"><span class="pre">true</span></code>, and a file that fails validation is refused as a whole.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10652">Issue #10652</a> -  Stop libpq using the pgAdmin service account’s own client files in server mode: when a server had no password file, client certificate or client key configured, libpq fell back to the service account’s <code class="docutils literal notranslate"><span class="pre">~/.pgpass</span></code>, <code class="docutils literal notranslate"><span class="pre">~/.postgresql/postgresql.crt</span></code> and <code class="docutils literal notranslate"><span class="pre">~/.postgresql/postgresql.key</span></code> (or <code class="docutils literal notranslate"><span class="pre">PGPASSFILE</span></code>, <code class="docutils literal notranslate"><span class="pre">PGSSLCERT</span></code> and <code class="docutils literal notranslate"><span class="pre">PGSSLKEY</span></code>), letting any user connect with the service account’s saved passwords or client certificate (CVE-2026-116247). In server mode each of these parameters is now always given a value, the user’s own file or a path that can never be opened, in the connection string and for the utilities. Server mode deployments relying on the service account’s files, or on <code class="docutils literal notranslate"><span class="pre">passfile</span></code>, <code class="docutils literal notranslate"><span class="pre">sslcert</span></code> or <code class="docutils literal notranslate"><span class="pre">sslkey</span></code> in a connection service entry, must configure them on each server instead, and a server with a client certificate must also have a client key.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10653">Issue #10653</a> -  Fix server passwords being left in pgAdmin’s own process environment, where the password handed to psql and to the utilities was written into <code class="docutils literal notranslate"><span class="pre">os.environ</span></code> and never removed, so another user’s later psql session or utility inherited it and libpq used it for any connection made without a password of its own (CVE-2026-116246). The password now goes only into the environment of the process that needs it.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10654">Issue #10654</a> -  Restrict connection services in server mode, where any user could set a server’s service, or a <code class="docutils literal notranslate"><span class="pre">service</span></code> connection parameter, to an entry in the service account’s connection service file and connect with that entry’s credentials, and where a <code class="docutils literal notranslate"><span class="pre">PGPASSWORD</span></code> or <code class="docutils literal notranslate"><span class="pre">PGSERVICE</span></code> variable set for that account was used for every connection (CVE-2026-116245). A service may now only be used if the administrator lists it in the new <code class="docutils literal notranslate"><span class="pre">SERVER_MODE_ALLOWED_SERVICES</span></code> setting, which is empty by default; the <code class="docutils literal notranslate"><span class="pre">servicefile</span></code> parameter is refused, and <code class="docutils literal notranslate"><span class="pre">PGPASSWORD</span></code> and <code class="docutils literal notranslate"><span class="pre">PGSERVICE</span></code> are removed from pgAdmin’s environment at startup. <code class="docutils literal notranslate"><span class="pre">setup.py</span> <span class="pre">load-servers</span></code> also refuses an unlisted service. In server mode, servers that use a service stop connecting until the administrator lists it in <code class="docutils literal notranslate"><span class="pre">SERVER_MODE_ALLOWED_SERVICES</span></code> in <code class="docutils literal notranslate"><span class="pre">config_local.py</span></code>, ideally before upgrading. Listing a service shares its credentials with every pgAdmin user, so list only services intended for everyone.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10655">Issue #10655</a> -  Stop libpq using the pgAdmin service account’s Kerberos credentials in server mode, where removing <code class="docutils literal notranslate"><span class="pre">KRB5CCNAME</span></code> let the Kerberos library fall back to the service account’s default credential cache or client keytab (or its logon, through SSPI on Windows), so any user could answer a server’s GSSAPI request as the service account’s principal (CVE-2026-116244). In server mode <code class="docutils literal notranslate"><span class="pre">KRB5CCNAME</span></code> and <code class="docutils literal notranslate"><span class="pre">KRB5_CLIENT_KTNAME</span></code> now point at a file that cannot exist, except that a user who logged in with Kerberos gets their own delegated <code class="docutils literal notranslate"><span class="pre">KRB5CCNAME</span></code> when connecting to a server with Kerberos authentication enabled. Every other connection also gets <code class="docutils literal notranslate"><span class="pre">gssencmode=disable</span></code> and, with libpq 16 or later, <code class="docutils literal notranslate"><span class="pre">require_auth=!gss,!sspi</span></code>; without <code class="docutils literal notranslate"><span class="pre">require_auth</span></code>, SSPI and gssproxy are not stopped, so upgrade the libpq used by pgAdmin and its utilities to 16 or later. A server whose <code class="docutils literal notranslate"><span class="pre">require_auth</span></code> allows only GSSAPI or SSPI is refused unless the user logged in with Kerberos. A service listed in <code class="docutils literal notranslate"><span class="pre">SERVER_MODE_ALLOWED_SERVICES</span></code> takes precedence for psql and the utilities, so it must not set <code class="docutils literal notranslate"><span class="pre">require_auth</span></code>, <code class="docutils literal notranslate"><span class="pre">gssencmode</span></code> or <code class="docutils literal notranslate"><span class="pre">gsslib</span></code>.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10656">Issue #10656</a> -  Fix the utility binary-path guard accepting a path under <code class="docutils literal notranslate"><span class="pre">SHARED_STORAGE</span></code>, which ordinary users can write to, so a user could point a server type’s binary path at a file placed there and have pgAdmin execute it (CVE-2026-116243). Every <code class="docutils literal notranslate"><span class="pre">SHARED_STORAGE</span></code> entry is now rejected alongside <code class="docutils literal notranslate"><span class="pre">STORAGE_DIR</span></code>, after expanding <code class="docutils literal notranslate"><span class="pre">$DIR</span></code> and <code class="docutils literal notranslate"><span class="pre">..</span></code> and resolving symbolic links, so an existing binary path under a shared storage directory stops working. An empty <code class="docutils literal notranslate"><span class="pre">STORAGE_DIR</span></code> is not covered. Reported by Harsh Singh.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10662">Issue #10662</a> -  Stop SSH tunnels using the pgAdmin service account’s own SSH identity, where sshtunnel always loaded the unencrypted private keys in the service account’s <code class="docutils literal notranslate"><span class="pre">~/.ssh</span></code>, read its <code class="docutils literal notranslate"><span class="pre">~/.ssh/config</span></code> and could use its ssh-agent, so any user could configure a tunnel that authenticated with the service account’s key (CVE-2026-116242). In server mode the tunnel no longer reads those keys or that configuration, or uses the agent, and an identity file that cannot be found in the user’s storage is reported. Tunnels relying on the service account’s key, config or agent must have an identity file in the user’s storage or a password configured on the server.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10663">Issue #10663</a> -  Fix OS command injection in the Import/Export Data tool, where a query-based export could pass a crafted query past the <code class="docutils literal notranslate"><span class="pre">\copy</span> <span class="pre">(...)</span></code> parenthesis-balance guard through a backslash inside a double-quoted identifier, which psql treats as an escape when <code class="docutils literal notranslate"><span class="pre">standard_conforming_strings</span></code> is off, exposing a live <code class="docutils literal notranslate"><span class="pre">TO</span> <span class="pre">PROGRAM</span></code> clause that runs an arbitrary command on the pgAdmin host, an incomplete fix for CVE-2026-17566 (CVE-2026-116241). A backslash inside a double-quoted identifier is now rejected, and so is a backslash or null byte in the schema, table or column names of an export or import, which reached the same <code class="docutils literal notranslate"><span class="pre">\copy</span></code> command through <code class="docutils literal notranslate"><span class="pre">qtIdent()</span></code>. Reported by Yonghwa Lee (Xint by Theori).</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10674">Issue #10674</a> -  Fix the File Manager and the storage-path tools acting on a different path from the one that was checked (CVE-2026-116240): opening, saving and listing files, download, delete, rename, create-folder and upload could name files outside the user’s storage directory, or in another user’s directory whose name begins with the same characters. Every File Manager and storage-path caller now acts on the absolute path that was checked, and in server mode on POSIX files are opened relative to the storage directory without following symbolic links, so symbolic links to directories and hard-linked files inside it can no longer be opened, downloaded or renamed through. The storage directory itself can no longer be deleted.</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10675">Issue #10675</a> -  Fix LDAP and Kerberos authentication logging a user in to a different account that shared their username: Kerberos and LDAP looked the account up by username alone, or accepted the account Flask-Security’s internal validation had matched by the email typed, so a Kerberos or LDAP user could be logged in as an Internal account, including the initial administrator, or as another user (CVE-2026-116239). Accounts are now looked up by the authenticated username and the source that authenticated them, and only internal authentication logs in an account from its own form. Webserver users whose username matches an Internal account, and LDAP users with capitals in their username, now log in correctly, and <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> can update a user without a role and add one without <code class="docutils literal notranslate"><span class="pre">--role</span></code>. Users who relied on being logged in to an Internal account of the same name now need an account of their own source. Reported by Yves Soete of Blacksight LLC (&#64;yssoe).</div>
+<div class="line"><a class="reference external" href="https://github.com/pgadmin-org/pgadmin4/issues/10676">Issue #10676</a> -  Fix bypasses of the failed-login limit and of pgAdmin’s own login, password change and password reset checks, where a username in another case or a wrong internal password with LDAP or Webserver authentication also configured was never counted, and where Flask-Security’s own <code class="docutils literal notranslate"><span class="pre">/login</span></code>, <code class="docutils literal notranslate"><span class="pre">/verify</span></code>, <code class="docutils literal notranslate"><span class="pre">/change</span></code>, <code class="docutils literal notranslate"><span class="pre">/reset</span></code> and <code class="docutils literal notranslate"><span class="pre">/reset/&lt;token&gt;</span></code> views accepted submissions that skipped the failed-login count and lock, the change password permission, the re-encryption of saved passwords, and the internal-account check on resets (CVE-2026-116238). Every failed internal login is now counted (when <code class="docutils literal notranslate"><span class="pre">MAX_LOGIN_ATTEMPTS</span></code> is set) and only internal authentication is locked, so a locked Internal account no longer blocks other sources. A login form that posts a password is no longer passed to Kerberos, OAuth2 or Webserver authentication, submissions to Flask-Security’s views are refused with 405, and password resets act only on the internal account.</div>
+</div>
+</div></blockquote>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Version 9.19</a><ul>
+<li><a class="reference internal" href="#supported-database-servers">Supported Database Servers</a></li>
+<li><a class="reference internal" href="#bundled-postgresql-utilities">Bundled PostgreSQL Utilities</a></li>
+<li><a class="reference internal" href="#new-features">New features</a></li>
+<li><a class="reference internal" href="#housekeeping">Housekeeping</a></li>
+<li><a class="reference internal" href="#bug-fixes">Bug fixes</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+<h3><a href="index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="external_database.html">External database for pgAdmin user settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="connecting.html">Connecting To A Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_cluster_objects.html">Managing Cluster Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="managing_database_objects.html">Managing Database Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying_tables.html">Creating or Modifying a Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="management_basics.html">Management Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backup_and_restore.html">Backup and Restore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_tools.html">Developer Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processes.html">Processes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pgagent.html">pgAgent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pgtimetable_chains.html">pgTimeTable Chains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributions.html">pgAdmin Project Contributions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="release_notes.html">Release Notes</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Version 9.19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_18.html">Version 9.18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_17.html">Version 9.17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_16.html">Version 9.16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_15.html">Version 9.15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_14.html">Version 9.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_13.html">Version 9.13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_12.html">Version 9.12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_11.html">Version 9.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_10.html">Version 9.10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_9.html">Version 9.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_8.html">Version 9.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_7.html">Version 9.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_6.html">Version 9.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_5.html">Version 9.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_4.html">Version 9.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_3.html">Version 9.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_2.html">Version 9.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_1.html">Version 9.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_9_0.html">Version 9.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_14.html">Version 8.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_13.html">Version 8.13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_12.html">Version 8.12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_11.html">Version 8.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_10.html">Version 8.10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_9.html">Version 8.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_8.html">Version 8.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_7.html">Version 8.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_6.html">Version 8.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_5.html">Version 8.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_4.html">Version 8.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_3.html">Version 8.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_2.html">Version 8.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_1.html">Version 8.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_8_0.html">Version 8.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_7_8.html">Version 7.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_7_7.html">Version 7.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_7_6.html">Version 7.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_7_5.html">Version 7.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_7_4.html">Version 7.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_7_3.html">Version 7.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_7_2.html">Version 7.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_7_1.html">Version 7.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_7_0.html">Version 7.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_21.html">Version 6.21</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_20.html">Version 6.20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_19.html">Version 6.19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_18.html">Version 6.18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_17.html">Version 6.17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_16.html">Version 6.16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_15.html">Version 6.15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_14.html">Version 6.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_13.html">Version 6.13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_12.html">Version 6.12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_11.html">Version 6.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_10.html">Version 6.10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_9.html">Version 6.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_8.html">Version 6.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_7.html">Version 6.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_6.html">Version 6.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_5.html">Version 6.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_4.html">Version 6.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_3.html">Version 6.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_2.html">Version 6.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_1.html">Version 6.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_6_0.html">Version 6.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_5_7.html">Version 5.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_5_6.html">Version 5.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_5_5.html">Version 5.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_5_4.html">Version 5.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_5_3.html">Version 5.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_5_2.html">Version 5.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_5_1.html">Version 5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_5_0.html">Version 5.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_30.html">Version 4.30</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_29.html">Version 4.29</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_28.html">Version 4.28</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_27.html">Version 4.27</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_26.html">Version 4.26</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_25.html">Version 4.25</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_24.html">Version 4.24</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_23.html">Version 4.23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_22.html">Version 4.22</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_21.html">Version 4.21</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_20.html">Version 4.20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_19.html">Version 4.19</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_18.html">Version 4.18</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_17.html">Version 4.17</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_16.html">Version 4.16</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_15.html">Version 4.15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_14.html">Version 4.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_13.html">Version 4.13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_12.html">Version 4.12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_11.html">Version 4.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_10.html">Version 4.10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_9.html">Version 4.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_8.html">Version 4.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_7.html">Version 4.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_6.html">Version 4.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_5.html">Version 4.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_4.html">Version 4.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_3.html">Version 4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_2.html">Version 4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_1.html">Version 4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_4_0.html">Version 4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_6.html">Version 3.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_5.html">Version 3.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_4.html">Version 3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_3.html">Version 3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_2.html">Version 3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_1.html">Version 3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_3_0.html">Version 3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_2_1.html">Version 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_2_0.html">Version 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_6.html">Version 1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_5.html">Version 1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_4.html">Version 1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_3.html">Version 1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_2.html">Version 1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_1.html">Version 1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_notes_1_0.html">Version 1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="licence.html">Licence</a></li>
+</ul>
+
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+<div id="sidebarbutton" title="Collapse sidebar">
+<span>«</span>
+</div>
+
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="release_notes_9_18.html" title="Version 9.18"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="release_notes.html" title="Release Notes"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">pgAdmin 4 9.19 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="release_notes.html" >Release Notes</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Version 9.19</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        <div class="related" role="navigation" aria-label="related navigation">
+          <ul>
+              <li class="left" style="margin-left: 10px">&#169; Copyright (C) 2013 - 2026, The pgAdmin Development Team.</li>
+            <li class="right" style="margin-right: 10px"><a href="genindex.html" title="General Index">index</a></li>
+            <li class="right" ><a href="release_notes_9_18.html" title="Version 9.18">next</a> |</li>
+            <li class="right" ><a href="release_notes.html" title="Release Notes">previous</a> |</li>
+          </ul>
+        </div>
+    </div>
+  </body>
+</html>
