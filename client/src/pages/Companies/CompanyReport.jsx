@@ -23,10 +23,7 @@ import ApexColumnHeaderMenu from '../../components/ApexColumnHeaderMenu';
 import ActiveAggregationsBar from '../../components/ActiveAggregationsBar';
 import ApexInteractiveReport from '../../components/ApexInteractiveReport';
 import HomeKpiBanner from '../../components/HomeKpiBanner';
-<<<<<<< HEAD
 import ExcelFilterDropdown from '../../components/ExcelFilterDropdown';
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 import { computeAggregationValue } from '../../utils/aggregationUtils';
 import { api } from '../../api/client';
 import { formatAppDate } from '../../utils/dateUtils';
@@ -35,11 +32,7 @@ export const COMPANY_ALL_COLUMNS = [
   {
     key: 'id',
     label: 'ID',
-<<<<<<< HEAD
     render: (c) => <span style={{ color: 'var(--text-muted, #475569)', fontSize: '0.8rem', fontWeight: 600 }}>{c.id}</span>,
-=======
-    render: (c) => <span style={{ color: '#475569', fontSize: '0.8rem', fontWeight: 600 }}>{c.id}</span>,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     getValue: (c) => c.id,
   },
   {
@@ -577,7 +570,6 @@ export default function CompanyReport({
   const initialFilterState = {
     id_from: '',
     id_to: '',
-<<<<<<< HEAD
     comp_name: [],
     technology: [],
     company_type: [],
@@ -594,33 +586,11 @@ export default function CompanyReport({
     registration_date: '',
     registration_status: [],
     supplier_number: [],
-=======
-    comp_name: '',
-    technology: '',
-    company_type: '',
-    company_categories: '',
-    country: '',
-    city: '',
-    website: '',
-    lead_count: '',
-    employee_size: '',
-    contact_count: '',
-    source: '',
-    industry: '',
-    remark: '',
-    registration_date: '',
-    registration_status: '',
-    supplier_number: '',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     created_from: '',
     created_to: '',
     modified_from: '',
     modified_to: '',
-<<<<<<< HEAD
     created_by: [],
-=======
-    created_by: '',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     companyphone: '',
   };
 
@@ -937,11 +907,8 @@ export default function CompanyReport({
 
   const handleClearFilters = () => {
     setFilters(initialFilterState);
-<<<<<<< HEAD
     setActiveSearch('');
     setSearchInput('');
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     setAppliedFilters({});
     setPage(1);
   };
@@ -1017,7 +984,6 @@ export default function CompanyReport({
         };
         const res = await api.getCompanyIds(queryParams);
         if (res.success && Array.isArray(res.ids) && res.ids.length > 0) {
-<<<<<<< HEAD
           setSelectedIds(new Set(res.ids.map(String)));
           if (onShowToast) onShowToast('info', `Selected all ${res.ids.length} records throughout report.`);
         } else {
@@ -1033,35 +999,17 @@ export default function CompanyReport({
       } catch (err) {
         console.warn('Failed to select all report records:', err.message);
         setSelectedIds(new Set(companies.map((c) => String(c.id))));
-=======
-          setSelectedIds(new Set(res.ids));
-          if (onShowToast) onShowToast('info', `Selected all ${res.ids.length} records throughout report.`);
-        } else {
-          setSelectedIds(new Set(companies.map((c) => c.id)));
-        }
-      } catch (err) {
-        console.warn('Failed to select all report records:', err.message);
-        setSelectedIds(new Set(companies.map((c) => c.id)));
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
       }
     }
   };
 
   const handleToggleSelectOne = (id) => {
-<<<<<<< HEAD
     const strId = String(id);
     const next = new Set(selectedIds);
     if (next.has(strId)) {
       next.delete(strId);
     } else {
       next.add(strId);
-=======
-    const next = new Set(selectedIds);
-    if (next.has(id)) {
-      next.delete(id);
-    } else {
-      next.add(id);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     }
     setSelectedIds(next);
   };
@@ -2186,15 +2134,10 @@ export default function CompanyReport({
             type="button"
             className={`btn-apex-top ${showFilters ? 'btn-active-filter' : ''}`}
             onClick={() => setShowFilters(!showFilters)}
-<<<<<<< HEAD
             title="Toggle search and filter panel"
           >
             <IconFilter size={14} />
             {showFilters ? 'Hide Filter' : 'Show Filter'}
-=======
-          >
-            Show Filters
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
           </button>
 
           <button
@@ -2418,141 +2361,63 @@ export default function CompanyReport({
 
             <div className="company-filter-field">
               <label className="company-filter-label">Company Name</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Company Name"
                 options={filterOptions.companyNames}
                 value={filters.comp_name}
                 onChange={(vals) => setFilters({ ...filters, comp_name: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.comp_name}
-                onChange={(e) => setFilters({ ...filters, comp_name: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.companyNames.map((n) => (
-                  <option key={n} value={n}>{n}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             <div className="company-filter-field">
               <label className="company-filter-label">Technology</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Technology"
                 options={filterOptions.technologies}
                 value={filters.technology}
                 onChange={(vals) => setFilters({ ...filters, technology: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.technology}
-                onChange={(e) => setFilters({ ...filters, technology: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.technologies.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             <div className="company-filter-field">
               <label className="company-filter-label">Company Type</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Company Type"
                 options={filterOptions.companyTypes}
                 value={filters.company_type}
                 onChange={(vals) => setFilters({ ...filters, company_type: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.company_type}
-                onChange={(e) => setFilters({ ...filters, company_type: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.companyTypes.map((ct) => (
-                  <option key={ct} value={ct}>{ct}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             <div className="company-filter-field">
               <label className="company-filter-label">Categories</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Categories"
                 options={filterOptions.categories}
                 value={filters.company_categories}
                 onChange={(vals) => setFilters({ ...filters, company_categories: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.company_categories}
-                onChange={(e) => setFilters({ ...filters, company_categories: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.categories.map((cat) => (
-                  <option key={cat} value={cat}>{cat}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             {/* ROW 2 */}
             <div className="company-filter-field">
               <label className="company-filter-label">Country</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Country"
                 options={filterOptions.countries}
                 value={filters.country}
                 onChange={(vals) => setFilters({ ...filters, country: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.country}
-                onChange={(e) => setFilters({ ...filters, country: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.countries.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             <div className="company-filter-field">
               <label className="company-filter-label">City</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="City"
                 options={filterOptions.cities}
                 value={filters.city}
                 onChange={(vals) => setFilters({ ...filters, city: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.city}
-                onChange={(e) => setFilters({ ...filters, city: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.cities.map((city) => (
-                  <option key={city} value={city}>{city}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             <div className="company-filter-field">
@@ -2568,48 +2433,22 @@ export default function CompanyReport({
 
             <div className="company-filter-field">
               <label className="company-filter-label">Lead Count</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Lead Count"
                 options={filterOptions.leadCounts}
                 value={filters.lead_count}
                 onChange={(vals) => setFilters({ ...filters, lead_count: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.lead_count}
-                onChange={(e) => setFilters({ ...filters, lead_count: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.leadCounts.map((lc) => (
-                  <option key={lc} value={lc}>{lc}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             <div className="company-filter-field">
               <label className="company-filter-label">Employee Size</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Employee Size"
                 options={filterOptions.employeeSizes}
                 value={filters.employee_size}
                 onChange={(vals) => setFilters({ ...filters, employee_size: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.employee_size}
-                onChange={(e) => setFilters({ ...filters, employee_size: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.employeeSizes.map((es) => (
-                  <option key={es} value={es}>{es}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             <div className="company-filter-field">
@@ -2626,71 +2465,32 @@ export default function CompanyReport({
             {/* ROW 3 */}
             <div className="company-filter-field">
               <label className="company-filter-label">Source</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Source"
                 options={filterOptions.sources}
                 value={filters.source}
                 onChange={(vals) => setFilters({ ...filters, source: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.source}
-                onChange={(e) => setFilters({ ...filters, source: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.sources.map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             <div className="company-filter-field">
               <label className="company-filter-label">Industry</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Industry"
                 options={filterOptions.industries}
                 value={filters.industry}
                 onChange={(vals) => setFilters({ ...filters, industry: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.industry}
-                onChange={(e) => setFilters({ ...filters, industry: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.industries.map((ind) => (
-                  <option key={ind} value={ind}>{ind}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             <div className="company-filter-field">
               <label className="company-filter-label">Remark</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Remark"
                 options={filterOptions.remarks}
                 value={filters.remark}
                 onChange={(vals) => setFilters({ ...filters, remark: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.remark}
-                onChange={(e) => setFilters({ ...filters, remark: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.remarks.map((rem) => (
-                  <option key={rem} value={rem}>{rem}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             <div className="company-filter-field">
@@ -2707,48 +2507,22 @@ export default function CompanyReport({
 
             <div className="company-filter-field">
               <label className="company-filter-label">Registration Status</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Registration Status"
                 options={filterOptions.registrationStatuses}
                 value={filters.registration_status}
                 onChange={(vals) => setFilters({ ...filters, registration_status: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.registration_status}
-                onChange={(e) => setFilters({ ...filters, registration_status: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.registrationStatuses.map((st) => (
-                  <option key={st} value={st}>{st}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             <div className="company-filter-field">
               <label className="company-filter-label">Supplier Number</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Supplier Number"
                 options={filterOptions.supplierNumbers}
                 value={filters.supplier_number}
                 onChange={(vals) => setFilters({ ...filters, supplier_number: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.supplier_number}
-                onChange={(e) => setFilters({ ...filters, supplier_number: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.supplierNumbers.map((sn) => (
-                  <option key={sn} value={sn}>{sn}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             {/* ROW 4 */}
@@ -2810,25 +2584,12 @@ export default function CompanyReport({
 
             <div className="company-filter-field">
               <label className="company-filter-label">Created By</label>
-<<<<<<< HEAD
               <ExcelFilterDropdown
                 label="Created By"
                 options={filterOptions.createdBys}
                 value={filters.created_by}
                 onChange={(vals) => setFilters({ ...filters, created_by: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.created_by}
-                onChange={(e) => setFilters({ ...filters, created_by: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.createdBys.map((cb) => (
-                  <option key={cb} value={cb}>{cb}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             <div className="company-filter-field">
@@ -3246,11 +3007,7 @@ export default function CompanyReport({
             </thead>
             <tbody>
               {companies.map((company) => {
-<<<<<<< HEAD
                 const isSelected = selectedIds.has(String(company.id)) || selectedIds.has(company.id);
-=======
-                const isSelected = selectedIds.has(company.id);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 
                 return (
                   <tr key={company.id} className={isSelected ? 'selected' : ''}>

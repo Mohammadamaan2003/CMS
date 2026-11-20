@@ -1,5 +1,6 @@
 import React from 'react';
 import { IconBuilding, IconUsers, IconLightbulb } from './Icons';
+import CountUpNumber from './CountUpNumber';
 
 export default function HomeKpiBanner({
   stats,
@@ -12,6 +13,11 @@ export default function HomeKpiBanner({
   const totalCompanies = stats?.totalCompanies ?? 0;
   const totalContacts = stats?.totalContacts ?? 0;
   const totalLeads = stats?.totalLeads ?? 0;
+
+  const isDark =
+    typeof document !== 'undefined'
+      ? (document.documentElement.getAttribute('data-theme') !== 'light')
+      : true;
 
   return (
     <div className="apex-kpi-grid" role="region" aria-label="Key Performance Indicators">
@@ -32,7 +38,7 @@ export default function HomeKpiBanner({
             <span className="apex-kpi-badge badge-blue">Registered</span>
           </div>
           <div className="apex-kpi-value">
-            {isLoading ? '...' : totalCompanies.toLocaleString()}
+            {isLoading ? '...' : (isDark ? <CountUpNumber endValue={totalCompanies} duration={300} /> : totalCompanies.toLocaleString())}
           </div>
           <div className="apex-kpi-subtext">
             <span>Corporate accounts in application</span>
@@ -60,7 +66,7 @@ export default function HomeKpiBanner({
             <span className="apex-kpi-badge badge-green">Connected</span>
           </div>
           <div className="apex-kpi-value">
-            {isLoading ? '...' : totalContacts.toLocaleString()}
+            {isLoading ? '...' : (isDark ? <CountUpNumber endValue={totalContacts} duration={300} /> : totalContacts.toLocaleString())}
           </div>
           <div className="apex-kpi-subtext">
             <span>Individual contacts &bull; Click to view &rarr;</span>
@@ -88,7 +94,7 @@ export default function HomeKpiBanner({
             <span className="apex-kpi-badge badge-amber">Active</span>
           </div>
           <div className="apex-kpi-value">
-            {isLoading ? '...' : totalLeads.toLocaleString()}
+            {isLoading ? '...' : (isDark ? <CountUpNumber endValue={totalLeads} duration={300} /> : totalLeads.toLocaleString())}
           </div>
           <div className="apex-kpi-subtext">
             <span>Sales opportunities &bull; Click to view &rarr;</span>

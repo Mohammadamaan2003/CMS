@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '../../api/client';
 import ApexInteractiveReport from '../../components/ApexInteractiveReport';
 import ExcelFilterDropdown from '../../components/ExcelFilterDropdown';
+import CountUpNumber from '../../components/CountUpNumber';
 import {
   IconBuilding,
   IconUsers,
@@ -77,13 +78,8 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
   const [filterForm, setFilterForm] = useState(initialFilterForm);
   const [appliedFilters, setAppliedFilters] = useState({});
 
-<<<<<<< HEAD
   // 3. UI Toggle for Filter Panel (collapsible, hidden on page load)
   const [showFilters, setShowFilters] = useState(false);
-=======
-  // 3. UI Toggle for Filter Panel (collapsible)
-  const [showFilters, setShowFilters] = useState(true);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 
   // 4. KPI Counts State (queried directly from PostgreSQL database)
   const [kpis, setKpis] = useState({
@@ -206,7 +202,6 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
     setSelectedRowKeys([]);
   };
 
-<<<<<<< HEAD
   // Report-wide Select All across all pages
   const handleSelectAll = async () => {
     try {
@@ -273,16 +268,6 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
           return selectedRowKeys.map(String).includes(k);
         });
       }
-=======
-  // Handle Download Selected / Export CSV
-  const handleDownloadSelected = () => {
-    let rowsToExport = reportData;
-    if (selectedRowKeys.length > 0) {
-      rowsToExport = reportData.filter((r, idx) => {
-        const k = getDashboardRowKey(r, idx, activeTab);
-        return selectedRowKeys.map(String).includes(k);
-      });
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     }
 
     if (rowsToExport.length === 0) {
@@ -318,11 +303,7 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
   const getDashboardRowKey = (row, idx, tab) => {
     if (!row) return String(idx);
     if (tab === 'company_contact_details') {
-<<<<<<< HEAD
       return String(row.contact_id ? `${row.company_id || '0'}_${row.contact_id}` : (row.id || row.company_id || idx));
-=======
-      return String(row.contact_id ? `${row.company_id || ''}_${row.contact_id}` : (row.id || row.company_id || idx));
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     }
     if (tab === 'company_details' || tab === 'registered_data') {
       return String(row.company_id || row.id || idx);
@@ -330,7 +311,6 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
     if (tab === 'contact_details') {
       return String(row.contact_id || row.id || idx);
     }
-<<<<<<< HEAD
     const pivotVal = row.linkedin_connected_account ??
       row.preferred_linkedin_connected ??
       row.country ??
@@ -342,19 +322,6 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
       return String(pivotVal);
     }
     return String(idx);
-=======
-    return String(
-      row.id ||
-      row.company_id ||
-      row.contact_id ||
-      row.linkedin_connected_account ||
-      row.preferred_linkedin_connected ||
-      row.country ||
-      row.source ||
-      row.technology ||
-      idx
-    );
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   };
 
   // Column definitions for each of the 11 Tabs matching APEX Page 74 & full database schema
@@ -623,48 +590,24 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
     <div className="company-dashboard-page" style={{ padding: '0 0.5rem 1.5rem 0.5rem' }}>
       {/* 1. TOP 21-FILTER COLLAPSIBLE PANEL */}
       {showFilters && (
-        <div
-          className="apex-filter-panel"
-          style={{
-            borderRadius: '6px', padding: '1rem 1.25rem',
-            marginBottom: '1rem',
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)',
-          }}
-        >
+        <div className="shared-filter-card" style={{ marginBottom: '1rem' }}>
           <form onSubmit={handleFilterSearch}>
-            {/* Row 1: Company ID, Company Name, Company Country, Company Type, Industry, Employee Size */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '0.75rem',
-                marginBottom: '0.75rem',
-              }}
-            >
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+            <div className="shared-filter-grid">
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Company ID
                 </label>
                 <input
                   type="text"
-                  className="apex-form-input"
-                  style={{ width: '100%', height: '34px', fontSize: '12px' }}
+                  className="shared-filter-input"
                   value={filterForm.company_id}
                   onChange={(e) => handleInputChange('company_id', e.target.value)}
-                  placeholder=""
+                  placeholder="Company ID"
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Company Name
                 </label>
                 <ExcelFilterDropdown
@@ -675,12 +618,8 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Company Country
                 </label>
                 <ExcelFilterDropdown
@@ -691,12 +630,8 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Company Type
                 </label>
                 <ExcelFilterDropdown
@@ -707,12 +642,8 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Industry
                 </label>
                 <ExcelFilterDropdown
@@ -723,12 +654,8 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Employee Size
                 </label>
                 <ExcelFilterDropdown
@@ -738,23 +665,9 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                   onChange={(vals) => handleInputChange('employee_size', vals)}
                 />
               </div>
-            </div>
 
-            {/* Row 2: Technology, Company Source, Website, Contact ID, Contact Name, Contact Count */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '0.75rem',
-                marginBottom: '0.75rem',
-              }}
-            >
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Technology
                 </label>
                 <ExcelFilterDropdown
@@ -765,12 +678,8 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Company Source
                 </label>
                 <ExcelFilterDropdown
@@ -781,12 +690,8 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Website
                 </label>
                 <ExcelFilterDropdown
@@ -797,30 +702,21 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Contact ID
                 </label>
                 <input
                   type="text"
-                  className="apex-form-input"
-                  style={{ width: '100%', height: '34px', fontSize: '12px' }}
+                  className="shared-filter-input"
                   value={filterForm.contact_id}
                   onChange={(e) => handleInputChange('contact_id', e.target.value)}
-                  placeholder=""
+                  placeholder="Contact ID"
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Contact Name
                 </label>
                 <ExcelFilterDropdown
@@ -831,12 +727,8 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Contact Count
                 </label>
                 <ExcelFilterDropdown
@@ -846,23 +738,9 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                   onChange={(vals) => handleInputChange('contact_count', vals)}
                 />
               </div>
-            </div>
 
-            {/* Row 3: Position Type, Linkedin Connected Account, Linkedin URL, Sales Person, Company Categories, Contact Source */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '0.75rem',
-                marginBottom: '0.75rem',
-              }}
-            >
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Position Type
                 </label>
                 <ExcelFilterDropdown
@@ -873,12 +751,8 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Linkedin Connected Account
                 </label>
                 <ExcelFilterDropdown
@@ -889,30 +763,21 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Linkedin URL
                 </label>
                 <input
                   type="text"
-                  className="apex-form-input"
-                  style={{ width: '100%', height: '34px', fontSize: '12px' }}
+                  className="shared-filter-input"
                   value={filterForm.linkedin_url}
                   onChange={(e) => handleInputChange('linkedin_url', e.target.value)}
-                  placeholder=""
+                  placeholder="LinkedIn URL"
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Sales Person
                 </label>
                 <ExcelFilterDropdown
@@ -923,12 +788,8 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Company Categories
                 </label>
                 <ExcelFilterDropdown
@@ -939,12 +800,8 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Contact Source
                 </label>
                 <ExcelFilterDropdown
@@ -954,23 +811,9 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                   onChange={(vals) => handleInputChange('contact_source', vals)}
                 />
               </div>
-            </div>
 
-            {/* Row 4: Preferred Linkedin Connected, Contact Created From Date, Contact Created To Date, [Search, Clear Filters] */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '0.75rem',
-                alignItems: 'flex-end',
-              }}
-            >
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Preferred Linkedin Connected
                 </label>
                 <ExcelFilterDropdown
@@ -981,80 +824,45 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Contact Created From Date
                 </label>
                 <input
                   type="date"
-                  className="apex-form-input"
-                  style={{ width: '100%', height: '34px', fontSize: '12px' }}
+                  className="shared-filter-input"
                   value={filterForm.contact_from_date}
                   onChange={(e) => handleInputChange('contact_from_date', e.target.value)}
                 />
               </div>
 
-              <div>
-<<<<<<< HEAD
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--text-main, #f1f5f9)', marginBottom: '4px' }}>
-=======
-                <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: '#334155', marginBottom: '4px' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+              <div className="shared-filter-field">
+                <label className="shared-filter-label">
                   Contact Created To Date
                 </label>
                 <input
                   type="date"
-                  className="apex-form-input"
-                  style={{ width: '100%', height: '34px', fontSize: '12px' }}
+                  className="shared-filter-input"
                   value={filterForm.contact_to_date}
                   onChange={(e) => handleInputChange('contact_to_date', e.target.value)}
                 />
               </div>
+            </div>
 
-              {/* Action Buttons: Search and Clear Filters */}
-              <div
-                style={{
-                  gridColumn: 'span 3',
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  gap: '0.6rem',
-                  marginTop: '0.5rem',
-                }}
+            <div className="shared-filter-actions">
+              <button
+                type="submit"
+                className="btn-filter-search"
               >
-                <button
-                  type="submit"
-                  className="btn-primary btn-filter-search"
-                  style={{
-                    borderRadius: '5px',
-                    padding: '8px 26px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  Search
-                </button>
-                <button
-                  type="button"
-                  onClick={handleClearFilters}
-                  className="btn-secondary btn-filter-clear"
-                  style={{
-                    borderRadius: '5px',
-                    padding: '8px 22px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  Clear Filters
-                </button>
-              </div>
+                Search
+              </button>
+              <button
+                type="button"
+                onClick={handleClearFilters}
+                className="btn-filter-clear"
+              >
+                Clear Filters
+              </button>
             </div>
           </form>
         </div>
@@ -1072,9 +880,10 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
         }}
       >
         {/* KPI Cards Row */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+        <div className="apex-kpi-grid" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
           {/* Card 1: COMPANY */}
           <div
+            className="apex-card apex-kpi-card company-kpi-card"
             style={{
               backgroundColor: 'var(--bg-card, #101a2f)',
               border: '1px solid var(--border, rgba(99, 102, 241, 0.25))',
@@ -1094,7 +903,7 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
               }}
             >
-              {Number(kpis.companyCount).toLocaleString()}
+              <CountUpNumber endValue={kpis.companyCount} duration={300} />
             </div>
             <div
               style={{
@@ -1112,6 +921,7 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
 
           {/* Card 2: CONTACT */}
           <div
+            className="apex-card apex-kpi-card company-kpi-card"
             style={{
               backgroundColor: 'var(--bg-card, #101a2f)',
               border: '1px solid var(--border, rgba(20, 184, 166, 0.25))',
@@ -1131,7 +941,7 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
                 fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
               }}
             >
-              {Number(kpis.contactCount).toLocaleString()}
+              <CountUpNumber endValue={kpis.contactCount} duration={300} />
             </div>
             <div
               style={{
@@ -1207,72 +1017,71 @@ export default function CompanyDashboard({ onNavigate, onShowToast }) {
       </div>
 
       {/* 4. INTERACTIVE REPORT REGION */}
-      <ApexInteractiveReport
-        key={activeTab}
-        reportId={`company_dashboard_${activeTab}`}
-        columns={columns}
-        data={reportData}
-        rowKey={(row, idx) => getDashboardRowKey(row, idx, activeTab)}
-        total={reportTotal}
-        page={page}
-        onPageChange={(newPage) => setPage(newPage)}
-        rowsPerPage={pageSize}
-        onRowsPerPageChange={(newSize) => {
-          setPageSize(newSize);
-          setPage(1);
-        }}
-        search={search}
-        onSearchChange={(val) => setSearch(val)}
-        onSearchSubmit={() => {
-          setPage(1);
-          loadReport(activeTab, appliedFilters, 1, pageSize, search);
-        }}
-        isServerSide={true}
-        isLoading={isLoading}
-        selectable={true}
-        selectedKeys={selectedRowKeys}
-        onSelectionChange={setSelectedRowKeys}
-<<<<<<< HEAD
-        onSelectAll={handleSelectAll}
-        onDeselectAll={handleDeselectAll}
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-        onRefresh={() => loadReport(activeTab, appliedFilters, page, pageSize, search)}
-        toolbarButtons={
-          <button
-            type="button"
-            onClick={handleDownloadSelected}
-            className="btn-secondary btn-apex-download"
-            style={{
-              borderRadius: '5px',
-              padding: '6px 16px',
-              fontSize: '12px',
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              transition: 'all 0.15s ease',
-            }}
-          >
-            <span>{selectedRowKeys.length > 0 ? `Download Selected (${selectedRowKeys.length})` : 'Download Report'}</span>
-            {selectedRowKeys.length > 0 && (
-              <span
-                style={{
-                  backgroundColor: '#ffffff',
-                  color: '#0b1a3d',
-                  borderRadius: '10px',
-                  padding: '1px 6px',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                }}
-              >
-                {selectedRowKeys.length}
-              </span>
-            )}
-          </button>
-        }
-      />
+      <div className="apex-subtab-pane-transition" key={activeTab}>
+        <ApexInteractiveReport
+          key={activeTab}
+          reportId={`company_dashboard_${activeTab}`}
+          columns={columns}
+          data={reportData}
+          rowKey={(row, idx) => getDashboardRowKey(row, idx, activeTab)}
+          total={reportTotal}
+          page={page}
+          onPageChange={(newPage) => setPage(newPage)}
+          rowsPerPage={pageSize}
+          onRowsPerPageChange={(newSize) => {
+            setPageSize(newSize);
+            setPage(1);
+          }}
+          search={search}
+          onSearchChange={(val) => setSearch(val)}
+          onSearchSubmit={() => {
+            setPage(1);
+            loadReport(activeTab, appliedFilters, 1, pageSize, search);
+          }}
+          isServerSide={true}
+          isLoading={isLoading}
+          selectable={true}
+          selectedKeys={selectedRowKeys}
+          onSelectionChange={setSelectedRowKeys}
+          onSelectAll={handleSelectAll}
+          onDeselectAll={handleDeselectAll}
+          onRefresh={() => loadReport(activeTab, appliedFilters, page, pageSize, search)}
+          toolbarButtons={
+            <button
+              type="button"
+              onClick={handleDownloadSelected}
+              className="btn-secondary btn-apex-download"
+              style={{
+                borderRadius: '5px',
+                padding: '6px 16px',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <span>{selectedRowKeys.length > 0 ? `Download Selected (${selectedRowKeys.length})` : 'Download Report'}</span>
+              {selectedRowKeys.length > 0 && (
+                <span
+                  style={{
+                    backgroundColor: '#ffffff',
+                    color: '#0b1a3d',
+                    borderRadius: '10px',
+                    padding: '1px 6px',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                  }}
+                >
+                  {selectedRowKeys.length}
+                </span>
+              )}
+            </button>
+          }
+        />
+      </div>
     </div>
   );
 }

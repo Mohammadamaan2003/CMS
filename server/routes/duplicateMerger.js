@@ -33,9 +33,21 @@ router.get('/companies/candidates', async (req, res, next) => {
  */
 router.get('/company-report', async (req, res, next) => {
   try {
-    const { search = '', page = 1, limit = 50 } = req.query;
+    const {
+      search = '',
+      company_name = '',
+      website = '',
+      country = '',
+      duplicate_type = '',
+      page = 1,
+      limit = 50,
+    } = req.query;
     const result = await duplicateMergerService.getDuplicateCompanyReport({
       search,
+      company_name,
+      website,
+      country,
+      duplicate_type,
       page,
       limit,
     });
@@ -52,14 +64,42 @@ router.get('/company-report', async (req, res, next) => {
 });
 
 /**
+ * GET /api/duplicate-merger/company-report/filters
+ * Distinct filter values for duplicate company report
+ */
+router.get('/company-report/filters', async (req, res, next) => {
+  try {
+    const data = await duplicateMergerService.getDuplicateCompanyFilterOptions();
+    res.json({
+      success: true,
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
  * GET /api/duplicate-merger/contact-report
  * Flattened report of all duplicate contact records
  */
 router.get('/contact-report', async (req, res, next) => {
   try {
-    const { search = '', page = 1, limit = 50 } = req.query;
+    const {
+      search = '',
+      contact_name = '',
+      linkedin_url = '',
+      email = '',
+      duplicate_type = '',
+      page = 1,
+      limit = 50,
+    } = req.query;
     const result = await duplicateMergerService.getDuplicateContactReport({
       search,
+      contact_name,
+      linkedin_url,
+      email,
+      duplicate_type,
       page,
       limit,
     });
@@ -69,6 +109,22 @@ router.get('/contact-report', async (req, res, next) => {
       total: result.total,
       page: result.page,
       limit: result.limit,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /api/duplicate-merger/contact-report/filters
+ * Distinct filter values for duplicate contact report
+ */
+router.get('/contact-report/filters', async (req, res, next) => {
+  try {
+    const data = await duplicateMergerService.getDuplicateContactFilterOptions();
+    res.json({
+      success: true,
+      data,
     });
   } catch (err) {
     next(err);

@@ -2,6 +2,42 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { IconSearch, IconChevronDown, IconX, IconCheck } from './Icons';
 
 /**
+ * Formats a clean "All <Items>" placeholder for any field label.
+ * Ensures no dropdown ever displays "-" or blank.
+ */
+export function formatAllLabel(label) {
+  if (!label || typeof label !== 'string' || !label.trim()) return 'All';
+  const clean = label.trim();
+  if (clean.toLowerCase().startsWith('all ')) return clean;
+  const lower = clean.toLowerCase();
+  if (lower === 'industry') return 'All Industries';
+  if (lower === 'country' || lower.endsWith(' country')) {
+    return clean.replace(/country$/i, 'Countries').replace(/^(?!all\s)/i, 'All ');
+  }
+  if (lower === 'city') return 'All Cities';
+  if (lower === 'technology') return 'All Technologies';
+  if (lower === 'company' || lower.endsWith(' company') || lower.endsWith(' company name')) {
+    return 'All Companies';
+  }
+  if (lower === 'contact' || lower.endsWith(' contact') || lower.endsWith(' contact name')) {
+    return 'All Contacts';
+  }
+  if (lower === 'categories' || lower.endsWith(' categories') || lower.endsWith(' category')) {
+    return 'All Categories';
+  }
+  if (lower === 'status' || lower.endsWith(' status')) {
+    return clean.replace(/status$/i, 'Statuses').replace(/^(?!all\s)/i, 'All ');
+  }
+  if (lower.endsWith('y') && !lower.endsWith('ey') && !lower.endsWith('ay') && !lower.endsWith('oy')) {
+    return `All ${clean.slice(0, -1)}ies`;
+  }
+  if (lower.endsWith('s')) {
+    return `All ${clean}`;
+  }
+  return `All ${clean}s`;
+}
+
+/**
  * ExcelFilterDropdown
  *
  * Implements Microsoft Excel / Oracle APEX Interactive Grid style column filtering:
@@ -16,12 +52,9 @@ export default function ExcelFilterDropdown({
   label = '',
   options = [],
   value = [],
-<<<<<<< HEAD
   selected = [],
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   onChange,
-  placeholder = '-',
+  placeholder = '',
   allowBlank = true,
   disabled = false,
   className = '',
@@ -29,8 +62,15 @@ export default function ExcelFilterDropdown({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState('');
+
+  // Fallback to "All <Items>" whenever placeholder is empty or "-"
+  const defaultPlaceholder = useMemo(() => {
+    if (placeholder && placeholder !== '-' && placeholder.trim() !== '') {
+      return placeholder;
+    }
+    return formatAllLabel(label);
+  }, [placeholder, label]);
   
-<<<<<<< HEAD
   // Normalize value prop to array of strings (supports value or selected alias)
   const currentSelected = useMemo(() => {
     const activeVal = (value !== undefined && (!Array.isArray(value) || value.length > 0)) ? value : (selected || []);
@@ -39,48 +79,25 @@ export default function ExcelFilterDropdown({
     if (typeof activeVal === 'string' && activeVal.trim() !== '' && activeVal.trim() !== '-') return [activeVal];
     return [];
   }, [value, selected]);
-=======
-  // Normalize value prop to array of strings
-  const currentSelected = useMemo(() => {
-    if (!value) return [];
-    if (Array.isArray(value)) return value.map(String);
-    if (typeof value === 'string' && value.trim() !== '' && value.trim() !== '-') return [value];
-    return [];
-  }, [value]);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 
   const [staged, setStaged] = useState(currentSelected);
   const dropdownRef = useRef(null);
   const searchInputRef = useRef(null);
 
-<<<<<<< HEAD
   // Sync staged selection when prop changes
-=======
-  // Sync staged selection when prop changes or opens
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   useEffect(() => {
     setStaged(currentSelected);
   }, [currentSelected]);
 
-<<<<<<< HEAD
   // Focus search input when dropdown opens
   useEffect(() => {
     if (isOpen) {
-=======
-  useEffect(() => {
-    if (isOpen) {
-      setStaged(currentSelected);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
       setSearchText('');
       setTimeout(() => {
         if (searchInputRef.current) searchInputRef.current.focus();
       }, 50);
     }
-<<<<<<< HEAD
   }, [isOpen]);
-=======
-  }, [isOpen, currentSelected]);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -88,11 +105,6 @@ export default function ExcelFilterDropdown({
 
     function handleClickOutside(e) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-<<<<<<< HEAD
-=======
-        // Commit staged on outside click
-        onChange(staged);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
         setIsOpen(false);
       }
     }
@@ -109,11 +121,7 @@ export default function ExcelFilterDropdown({
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleKeyDown);
     };
-<<<<<<< HEAD
   }, [isOpen]);
-=======
-  }, [isOpen, staged, onChange]);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 
   // Clean options: unique strings sorted
   const cleanOptions = useMemo(() => {
@@ -152,7 +160,6 @@ export default function ExcelFilterDropdown({
 
   // Toggle (Select All)
   const handleToggleSelectAll = () => {
-<<<<<<< HEAD
     let next;
     if (areAllFilteredSelected) {
       // Unselect all filtered items
@@ -165,24 +172,10 @@ export default function ExcelFilterDropdown({
     }
     setStaged(next);
     if (onChange) onChange(next);
-=======
-    if (areAllFilteredSelected) {
-      // Unselect all filtered items
-      setStaged((prev) => prev.filter((item) => !filteredOptions.includes(item)));
-    } else {
-      // Select all filtered items
-      setStaged((prev) => {
-        const nextSet = new Set(prev);
-        filteredOptions.forEach((opt) => nextSet.add(opt));
-        return Array.from(nextSet);
-      });
-    }
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   };
 
   // Toggle (Blanks)
   const handleToggleBlanks = () => {
-<<<<<<< HEAD
     let next;
     if (isBlankSelected) {
       next = staged.filter((v) => v !== '(Blanks)' && v !== '__BLANK__');
@@ -191,20 +184,10 @@ export default function ExcelFilterDropdown({
     }
     setStaged(next);
     if (onChange) onChange(next);
-=======
-    setStaged((prev) => {
-      if (isBlankSelected) {
-        return prev.filter((v) => v !== '(Blanks)' && v !== '__BLANK__');
-      } else {
-        return [...prev, '(Blanks)'];
-      }
-    });
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   };
 
   // Toggle single option
   const handleToggleOption = (opt) => {
-<<<<<<< HEAD
     let next;
     if (staged.includes(opt)) {
       next = staged.filter((v) => v !== opt);
@@ -218,20 +201,6 @@ export default function ExcelFilterDropdown({
   // Commit Apply (close flyout)
   const handleApply = () => {
     if (onChange) onChange(staged);
-=======
-    setStaged((prev) => {
-      if (prev.includes(opt)) {
-        return prev.filter((v) => v !== opt);
-      } else {
-        return [...prev, opt];
-      }
-    });
-  };
-
-  // Commit Apply
-  const handleApply = () => {
-    onChange(staged);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     setIsOpen(false);
   };
 
@@ -239,16 +208,12 @@ export default function ExcelFilterDropdown({
   const handleClear = (e) => {
     if (e) e.stopPropagation();
     setStaged([]);
-<<<<<<< HEAD
     if (onChange) onChange([]);
-=======
-    onChange([]);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   };
 
-  // Summary label for trigger
+  // Summary label for trigger (defaults to "All <Items>", never "-" or blank)
   const triggerLabel = useMemo(() => {
-    if (currentSelected.length === 0) return placeholder;
+    if (currentSelected.length === 0) return defaultPlaceholder;
     if (currentSelected.length === 1 && currentSelected[0] === '(Blanks)') {
       return '(Blanks)';
     }
@@ -262,7 +227,7 @@ export default function ExcelFilterDropdown({
     if (parts.length === 1) return parts[0];
     if (parts.length === 2) return `${parts[0]}, ${parts[1]}`;
     return `${parts.length} selected`;
-  }, [currentSelected, placeholder, isBlankSelected]);
+  }, [currentSelected, defaultPlaceholder, isBlankSelected]);
 
   const hasActiveValue = currentSelected.length > 0;
 
@@ -274,38 +239,14 @@ export default function ExcelFilterDropdown({
     >
       {/* TRIGGER INPUT */}
       <div
+        className={`excel-filter-trigger shared-filter-control ${isOpen ? 'is-open' : ''} ${hasActiveValue ? 'has-value' : 'is-empty'} ${disabled ? 'disabled' : ''}`}
         onClick={() => {
           if (!disabled) setIsOpen(!isOpen);
         }}
-        style={{
-          width: '100%',
-          height: '34px',
-<<<<<<< HEAD
-          backgroundColor: disabled ? 'var(--bg-muted, #f8fafc)' : 'var(--bg-input, #ffffff)',
-          border: isOpen ? '1px solid var(--primary-accent, #0284c7)' : (hasActiveValue ? '1px solid var(--primary-accent, #0284c7)' : '1px solid var(--border, #cbd5e1)'),
-=======
-          backgroundColor: disabled ? '#f8fafc' : '#ffffff',
-          border: isOpen ? '1px solid #0284c7' : (hasActiveValue ? '1px solid #0284c7' : '1px solid #cbd5e1'),
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-          borderRadius: '4px',
-          padding: '0 8px 0 10px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          cursor: disabled ? 'not-allowed' : 'pointer',
-          fontSize: '12px',
-<<<<<<< HEAD
-          color: hasActiveValue ? 'var(--text-main, #0f172a)' : 'var(--text-muted, #94a3b8)',
-=======
-          color: hasActiveValue ? '#0f172a' : '#94a3b8',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-          fontWeight: hasActiveValue ? 600 : 400,
-          boxShadow: isOpen ? '0 0 0 2px rgba(2, 132, 199, 0.15)' : 'none',
-          transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
-        }}
-        title={hasActiveValue ? currentSelected.join(', ') : 'Click to filter'}
+        title={hasActiveValue ? currentSelected.join(', ') : defaultPlaceholder}
       >
         <span
+          className="excel-filter-trigger-text"
           style={{
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -322,6 +263,7 @@ export default function ExcelFilterDropdown({
             <span
               onClick={handleClear}
               title="Clear this filter"
+              className="excel-filter-clear-btn"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -329,28 +271,16 @@ export default function ExcelFilterDropdown({
                 width: '16px',
                 height: '16px',
                 borderRadius: '50%',
-<<<<<<< HEAD
-                backgroundColor: 'var(--bg-muted, #e2e8f0)',
-                color: 'var(--text-muted, #475569)',
+                backgroundColor: 'rgba(148, 163, 184, 0.2)',
+                color: 'inherit',
                 cursor: 'pointer',
                 transition: 'background-color 0.1s ease',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--border, #cbd5e1)')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-muted, #e2e8f0)')}
-=======
-                backgroundColor: '#e2e8f0',
-                color: '#475569',
-                cursor: 'pointer',
-                transition: 'background-color 0.1s ease',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#cbd5e1')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#e2e8f0')}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             >
               <IconX size={10} />
             </span>
           )}
-          <span style={{ color: '#64748b', display: 'flex', alignItems: 'center' }}>
+          <span className="excel-filter-chevron" style={{ display: 'flex', alignItems: 'center' }}>
             <IconChevronDown size={13} />
           </span>
         </div>
@@ -552,13 +482,8 @@ export default function ExcelFilterDropdown({
           <div
             style={{
               padding: '8px 10px',
-<<<<<<< HEAD
               borderTop: '1px solid var(--border, #e2e8f0)',
               backgroundColor: 'var(--bg-muted, #f8fafc)',
-=======
-              borderTop: '1px solid #e2e8f0',
-              backgroundColor: '#f8fafc',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
@@ -568,52 +493,33 @@ export default function ExcelFilterDropdown({
               type="button"
               onClick={() => {
                 setStaged([]);
-<<<<<<< HEAD
                 if (onChange) onChange([]);
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
               }}
               style={{
                 background: 'none',
                 border: 'none',
                 fontSize: '11px',
                 fontWeight: 600,
-<<<<<<< HEAD
                 color: 'var(--text-muted, #64748b)',
-=======
-                color: '#64748b',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                 cursor: 'pointer',
                 padding: '2px 6px',
                 borderRadius: '3px',
               }}
               onMouseEnter={(e) => (e.currentTarget.style.color = '#ef4444')}
-<<<<<<< HEAD
               onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted, #64748b)')}
-=======
-              onMouseLeave={(e) => (e.currentTarget.style.color = '#64748b')}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             >
               Clear
             </button>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-<<<<<<< HEAD
               <span style={{ fontSize: '11px', color: 'var(--text-muted, #64748b)' }}>
-=======
-              <span style={{ fontSize: '11px', color: '#64748b' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                 {staged.length} selected
               </span>
               <button
                 type="button"
                 onClick={handleApply}
                 style={{
-<<<<<<< HEAD
                   backgroundColor: 'var(--primary-blue, #2563eb)',
-=======
-                  backgroundColor: '#0b1a3d',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                   color: '#ffffff',
                   border: 'none',
                   borderRadius: '4px',

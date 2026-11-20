@@ -32,6 +32,242 @@ import { IconChevronDown } from './Icons';
  * - Scoped local layout persistence per reportId
  * - Destructive and non-destructive isolation: Reset never modifies underlying database records
  */
+function isValidFilter(f) {
+  if (!f) return false;
+  if (f.key === null && f.value === null) return false;
+  if (f.type === 'row' || (f.expression && !f.key && !f.column)) {
+    return Boolean(String(f.expression || f.value || '').trim());
+  }
+  const op = String(f.operator || '=').toLowerCase().trim();
+  if (op === 'is null' || op === 'is not null') {
+    return Boolean(f.column || f.key);
+  }
+  return Boolean((f.column || f.key) && f.value !== undefined && f.value !== null && String(f.value).trim() !== '');
+}
+
+function normalizeFilters(filterState) {
+  if (!filterState) return [];
+  if (Array.isArray(filterState)) {
+    return filterState.filter((f) => isValidFilter(f));
+  }
+  if (filterState.filters && Array.isArray(filterState.filters)) {
+    return filterState.filters.filter((f) => isValidFilter(f));
+  }
+  if (isValidFilter(filterState)) {
+    return [filterState];
+  }
+  return [];
+}
+
+function evaluateOperator(val, op, filterVal) {
+  const normOp = String(op || '=').replace(/\s+/g, ' ').toLowerCase().trim();
+
+  // IS NULL
+  if (normOp === 'is null' || normOp === 'isnull') {
+    return val === undefined || val === null || String(val).trim() === '' || String(val).trim() === '—';
+  }
+
+  // IS NOT NULL
+  if (normOp === 'is not null' || normOp === 'isnotnull') {
+    return val !== undefined && val !== null && String(val).trim() !== '' && String(val).trim() !== '—';
+  }
+
+  if (val === undefined || val === null) {
+    return normOp === '!=' || normOp === '<>';
+  }
+
+  const strVal = String(val).trim();
+  const strFilter = String(filterVal).trim();
+  const lowerVal = strVal.toLowerCase();
+  const lowerFilter = strFilter.toLowerCase();
+
+  // EQUALS
+  if (normOp === '=' || normOp === '==') {
+    const numVal = Number(strVal);
+    const numFilter = Number(strFilter);
+    if (!isNaN(numVal) && !isNaN(numFilter) && strVal !== '' && strFilter !== '') {
+      return numVal === numFilter;
+    }
+    const dateVal = Date.parse(strVal);
+    const dateFilter = Date.parse(strFilter);
+    if (!isNaN(dateVal) && !isNaN(dateFilter) && strVal.length >= 8 && strFilter.length >= 8) {
+      return dateVal === dateFilter;
+    }
+    return lowerVal === lowerFilter;
+  }
+
+  // NOT EQUALS
+  if (normOp === '!=' || normOp === '<>') {
+    const numVal = Number(strVal);
+    const numFilter = Number(strFilter);
+    if (!isNaN(numVal) && !isNaN(numFilter) && strVal !== '' && strFilter !== '') {
+      return numVal !== numFilter;
+    }
+    return lowerVal !== lowerFilter;
+  }
+
+  // CONTAINS / LIKE
+  if (normOp === 'contains' || normOp === 'like') {
+    return lowerVal.includes(lowerFilter);
+  }
+
+  // STARTS WITH
+  if (normOp === 'starts with' || normOp === 'startswith') {
+    return lowerVal.startsWith(lowerFilter);
+  }
+
+  // ENDS WITH
+  if (normOp === 'ends with' || normOp === 'endswith') {
+    return lowerVal.endsWith(lowerFilter);
+  }
+
+  // GREATER THAN
+  if (normOp === '>') {
+    const numVal = Number(strVal);
+    const numFilter = Number(strFilter);
+    if (!isNaN(numVal) && !isNaN(numFilter) && strVal !== '' && strFilter !== '') {
+      return numVal > numFilter;
+    }
+    const dateVal = Date.parse(strVal);
+    const dateFilter = Date.parse(strFilter);
+    if (!isNaN(dateVal) && !isNaN(dateFilter) && strVal.length >= 8 && strFilter.length >= 8) {
+      return dateVal > dateFilter;
+    }
+    return lowerVal.localeCompare(lowerFilter, undefined, { numeric: true, sensitivity: 'base' }) > 0;
+  }
+
+  // GREATER THAN OR EQUAL
+  if (normOp === '>=') {
+    const numVal = Number(strVal);
+    const numFilter = Number(strFilter);
+    if (!isNaN(numVal) && !isNaN(numFilter) && strVal !== '' && strFilter !== '') {
+      return numVal >= numFilter;
+    }
+    const dateVal = Date.parse(strVal);
+    const dateFilter = Date.parse(strFilter);
+    if (!isNaN(dateVal) && !isNaN(dateFilter) && strVal.length >= 8 && strFilter.length >= 8) {
+      return dateVal >= dateFilter;
+    }
+    return lowerVal.localeCompare(lowerFilter, undefined, { numeric: true, sensitivity: 'base' }) >= 0;
+  }
+
+  // LESS THAN
+  if (normOp === '<') {
+    const numVal = Number(strVal);
+    const numFilter = Number(strFilter);
+    if (!isNaN(numVal) && !isNaN(numFilter) && strVal !== '' && strFilter !== '') {
+      return numVal < numFilter;
+    }
+    const dateVal = Date.parse(strVal);
+    const dateFilter = Date.parse(strFilter);
+    if (!isNaN(dateVal) && !isNaN(dateFilter) && strVal.length >= 8 && strFilter.length >= 8) {
+      return dateVal < dateFilter;
+    }
+    return lowerVal.localeCompare(lowerFilter, undefined, { numeric: true, sensitivity: 'base' }) < 0;
+  }
+
+  // LESS THAN OR EQUAL
+  if (normOp === '<=') {
+    const numVal = Number(strVal);
+    const numFilter = Number(strFilter);
+    if (!isNaN(numVal) && !isNaN(numFilter) && strVal !== '' && strFilter !== '') {
+      return numVal <= numFilter;
+    }
+    const dateVal = Date.parse(strVal);
+    const dateFilter = Date.parse(strFilter);
+    if (!isNaN(dateVal) && !isNaN(dateFilter) && strVal.length >= 8 && strFilter.length >= 8) {
+      return dateVal <= dateFilter;
+    }
+    return lowerVal.localeCompare(lowerFilter, undefined, { numeric: true, sensitivity: 'base' }) <= 0;
+  }
+
+  return lowerVal.includes(lowerFilter);
+}
+
+function evaluateFilter(row, filt, allColumns = [], visColumns = []) {
+  if (!filt) return true;
+
+  // 1. Row Filter / Free-text Expression
+  if (filt.type === 'row' || (filt.expression && !filt.key && !filt.column)) {
+    const rawExpr = String(filt.expression || filt.value || '').trim();
+    if (!rawExpr) return true;
+
+    const andClauses = rawExpr.split(/\s+and\s+/i);
+    return andClauses.every((clause) => {
+      const orClauses = clause.split(/\s+or\s+/i);
+      return orClauses.some((subClause) => {
+        const trimmed = subClause.trim();
+        const match = trimmed.match(
+          /^([a-zA-Z0-9_\s]+?)\s*(=|!=|<>|<=|>=|<|>|contains|like|starts\s+with|ends\s+with|is\s+not\s+null|is\s+null)\s*(.*)$/i
+        );
+        if (match) {
+          const colIdent = match[1].trim();
+          const op = match[2].trim().toLowerCase();
+          let targetVal = match[3] ? match[3].trim() : '';
+          if (
+            (targetVal.startsWith("'") && targetVal.endsWith("'")) ||
+            (targetVal.startsWith('"') && targetVal.endsWith('"'))
+          ) {
+            targetVal = targetVal.slice(1, -1);
+          }
+
+          const targetCol = allColumns.find((c) => {
+            const k = (c.key || c.id || '').toLowerCase();
+            const lbl = (c.label || c.title || '').toLowerCase();
+            const ident = colIdent.toLowerCase();
+            return k === ident || lbl === ident || k.replace(/_/g, ' ') === ident || ident.replace(/\s+/g, '_') === k;
+          });
+
+          let val;
+          if (targetCol && typeof targetCol.getValue === 'function') {
+            val = targetCol.getValue(row);
+          } else if (targetCol) {
+            val = row[targetCol.key || targetCol.id];
+          } else {
+            val = row[colIdent] !== undefined ? row[colIdent] : row[colIdent.replace(/\s+/g, '_')];
+          }
+
+          return evaluateOperator(val, op, targetVal);
+        }
+
+        const query = trimmed.toLowerCase();
+        const searchCols = visColumns && visColumns.length > 0 ? visColumns : allColumns;
+        return searchCols.some((col) => {
+          let val;
+          if (typeof col.getValue === 'function') val = col.getValue(row);
+          else val = row[col.key || col.id];
+          return val !== undefined && val !== null && String(val).toLowerCase().includes(query);
+        });
+      });
+    });
+  }
+
+  // 2. Column Filter
+  const colKey = filt.column || filt.key;
+  if (!colKey) return true;
+
+  const targetCol = allColumns.find((c) => (c.key || c.id) === colKey);
+  let val;
+  if (targetCol && typeof targetCol.getValue === 'function') {
+    val = targetCol.getValue(row);
+  } else {
+    val = row[colKey];
+  }
+
+  const op = (filt.operator || '=').toLowerCase().trim();
+  const filterVal = filt.value !== undefined && filt.value !== null ? String(filt.value).trim() : '';
+
+  const matchesFormatted = evaluateOperator(val, op, filterVal);
+  if (matchesFormatted) return true;
+  if (targetCol && (targetCol.key || targetCol.id)) {
+    const rawVal = row[targetCol.key || targetCol.id];
+    if (rawVal !== undefined && rawVal !== val) {
+      return evaluateOperator(rawVal, op, filterVal);
+    }
+  }
+  return false;
+}
+
 export default function ApexInteractiveReport({
   // Column definitions: [{ key, label, getValue, render, width, minWidth, align, sortable, defaultHidden }]
   columns = [],
@@ -73,6 +309,7 @@ export default function ApexInteractiveReport({
   // Toolbar configuration
   showToolbar = true,
   toolbarButtons = null, // Custom action buttons (e.g. Create, Delete, Upload)
+  toolbarRight = null, // Custom right-aligned buttons on toolbar (e.g. Validation Rules, Download)
   // Row selection props
   selectable = false,
   selectedKeys = [],
@@ -181,7 +418,6 @@ export default function ApexInteractiveReport({
     return () => observer.disconnect();
   }, []);
 
-<<<<<<< HEAD
   // Helper: returns a style object adjusted for dark/blue/lumina themes
   const isDark = currentTheme === 'dark' || currentTheme === 'blue' || currentTheme === 'lumina';
   // Colors for tables/rows that must adapt to theme
@@ -209,35 +445,6 @@ export default function ApexInteractiveReport({
     badgeReportBg: isDark ? (currentTheme === 'blue' ? 'rgba(100,116,139,0.25)' : currentTheme === 'lumina' ? '#241952' : '#2A2A2A') : '#e2e8f0',
     badgeReportColor: isDark ? (currentTheme === 'blue' ? '#CBD5E1' : currentTheme === 'lumina' ? '#c4b5fd' : '#A3A3A3') : '#475569',
     aggLabelColor: isDark ? (currentTheme === 'blue' ? '#94A3B8' : currentTheme === 'lumina' ? '#c4b5fd' : '#A3A3A3') : '#64748b',
-=======
-  // Helper: returns a style object adjusted for dark/blue themes
-  const isDark = currentTheme === 'dark' || currentTheme === 'blue';
-  // Colors for tables/rows that must adapt to theme
-  const themeColors = {
-    tdText: isDark ? (currentTheme === 'blue' ? '#F1F5F9' : '#F5F5F5') : '#1e293b',
-    thText: isDark ? (currentTheme === 'blue' ? '#94A3B8' : '#A3A3A3') : '#1e293b',
-    rowAlt: isDark ? (currentTheme === 'blue' ? '#111C2E' : '#191919') : '#fafafa',
-    rowBase: isDark ? (currentTheme === 'blue' ? '#0D1728' : '#1C1C1C') : '#ffffff',
-    totalRowBg: isDark ? (currentTheme === 'blue' ? '#15223d' : '#252525') : '#f1f5f9',
-    totalRowBorder: isDark ? (currentTheme === 'blue' ? '#26364F' : '#383838') : '#cbd5e1',
-    totalText: isDark ? (currentTheme === 'blue' ? '#F1F5F9' : '#F5F5F5') : '#0f172a',
-    accentViolet: isDark ? '#c084fc' : '#7048e8',
-    accentVioletBg: isDark ? (currentTheme === 'blue' ? 'rgba(139,92,246,0.25)' : 'rgba(139,92,246,0.2)') : '#faf5ff',
-    accentPurpleTotal: isDark ? (currentTheme === 'blue' ? 'rgba(139,92,246,0.3)' : 'rgba(139,92,246,0.25)') : '#f3e8ff',
-    borderColor: isDark ? (currentTheme === 'blue' ? '#26364F' : '#2C2C2C') : '#e2e8f0',
-    controlBreakBg: isDark ? (currentTheme === 'blue' ? '#15223d' : '#252525') : '#f1f5f9',
-    controlBreakText: isDark ? (currentTheme === 'blue' ? '#F1F5F9' : '#F5F5F5') : '#0f172a',
-    accentBlue: isDark ? (currentTheme === 'blue' ? '#38bdf8' : '#60a5fa') : '#0284c7',
-    selectedRowBg: isDark ? (currentTheme === 'blue' ? 'rgba(6,182,212,0.2)' : 'rgba(59,130,246,0.2)') : '#dbeafe',
-    bannerBtnBg: isDark ? (currentTheme === 'blue' ? '#17243c' : '#2A2A2A') : '#ffffff',
-    bannerBtnBorder: isDark ? '#c084fc' : '#c084fc',
-    bannerBtnColor: isDark ? '#c084fc' : '#7048e8',
-    badgeViewBg: isDark ? (currentTheme === 'blue' ? 'rgba(14,165,233,0.2)' : 'rgba(14,165,233,0.15)') : '#e0f2fe',
-    badgeViewColor: isDark ? '#7dd3fc' : '#0369a1',
-    badgeReportBg: isDark ? (currentTheme === 'blue' ? 'rgba(100,116,139,0.25)' : '#2A2A2A') : '#e2e8f0',
-    badgeReportColor: isDark ? (currentTheme === 'blue' ? '#CBD5E1' : '#A3A3A3') : '#475569',
-    aggLabelColor: isDark ? (currentTheme === 'blue' ? '#94A3B8' : '#A3A3A3') : '#64748b',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   };
 
   // Load Saved Reports from localStorage scoped by reportId
@@ -421,18 +628,11 @@ export default function ApexInteractiveReport({
       }
     }
 
-    // 2. Active Column Header Filter (key = "value")
-    if (headerFilter && headerFilter.key && headerFilter.value !== null && headerFilter.value !== undefined) {
-      const targetCol = allAvailableColumns.find((c) => (c.key || c.id) === headerFilter.key);
-      const filterVal = String(headerFilter.value).toLowerCase();
+    // 2. Active Column Header & Action Modal Filters (Column and Row filters)
+    const activeFilterList = normalizeFilters(headerFilter);
+    if (activeFilterList.length > 0) {
       result = result.filter((row) => {
-        let val;
-        if (targetCol && typeof targetCol.getValue === 'function') {
-          val = targetCol.getValue(row);
-        } else {
-          val = row[headerFilter.key];
-        }
-        return val !== undefined && val !== null && String(val).toLowerCase().includes(filterVal);
+        return activeFilterList.every((filt) => evaluateFilter(row, filt, allAvailableColumns, visibleColumns));
       });
     }
 
@@ -497,19 +697,26 @@ export default function ApexInteractiveReport({
     return result;
   }, [data, isServerSide, search, activeSearch, visibleColumns, headerFilter, allAvailableColumns, multiSortRules, sortKey, sortDir, breakColumn]);
 
-  // Compute total count
-  const effectiveTotal = total !== null && total !== undefined
-    ? total
-    : (isServerSide ? data.length : processedData.length);
+  const isFiltered = Boolean(
+    normalizeFilters(headerFilter).length > 0 ||
+    (!isServerSide && (activeSearch || search).trim())
+  );
 
-  // Paginated Slice for display (client-side mode)
+  // Compute total count
+  const effectiveTotal = isFiltered
+    ? processedData.length
+    : (total !== null && total !== undefined
+      ? total
+      : (isServerSide ? data.length : processedData.length));
+
+  // Paginated Slice for display (client-side mode or active filter view)
   const displayRows = useMemo(() => {
-    if (isServerSide) return processedData;
+    if (isServerSide && !isFiltered) return processedData;
     if (rows === 'all') return processedData;
     const numRows = Number(rows) || 50;
     const start = (page - 1) * numRows;
     return processedData.slice(start, start + numRows);
-  }, [processedData, isServerSide, page, rows]);
+  }, [processedData, isServerSide, page, rows, isFiltered]);
 
   // All report keys across the entire report (not just current page)
   const allReportKeys = useMemo(() => {
@@ -701,13 +908,13 @@ export default function ApexInteractiveReport({
   };
 
   const handleMenuFilterValue = (columnKey, val) => {
-    setHeaderFilter({ key: columnKey, value: val });
+    setHeaderFilter({ key: columnKey, column: columnKey, value: val, operator: '=' });
     setHeaderMenu({ isOpen: false, column: null, anchorRect: null });
     if (onShowToast) onShowToast('info', `Filtered: ${columnKey} = "${val}"`);
   };
 
   const handleClearFilter = () => {
-    setHeaderFilter({ key: null, value: null });
+    setHeaderFilter(null);
     if (onShowToast) onShowToast('info', 'Filter cleared.');
   };
 
@@ -1008,13 +1215,14 @@ export default function ApexInteractiveReport({
           onRevertEdits={onRevertEdits}
           onDeleteSelected={onDeleteSelected}
           hasSelection={hasSelection || selectedKeys.length > 0}
+          toolbarRight={toolbarRight}
         >
           {toolbarButtons}
         </ApexReportToolbar>
       )}
 
-      {/* Active Column Header Filter Banner */}
-      {headerFilter && headerFilter.key && headerFilter.value && (
+      {/* Active Column Header & Action Filter Banner */}
+      {normalizeFilters(headerFilter).length > 0 && (
         <ApexActiveFilterBanner
           filter={headerFilter}
           columns={allAvailableColumns}
@@ -1331,7 +1539,6 @@ export default function ApexInteractiveReport({
             <tr className="apex-report-header-row">
               {selectable && (
                 <th style={{ width: '40px', textAlign: 'center', padding: '6px 8px' }}>
-<<<<<<< HEAD
                   {(() => {
                     const reportTotalCount = (effectiveTotal !== null && effectiveTotal !== undefined && effectiveTotal > 0)
                       ? effectiveTotal
@@ -1374,43 +1581,6 @@ export default function ApexInteractiveReport({
                       />
                     );
                   })()}
-=======
-                  <input
-                    type="checkbox"
-                    className="table-checkbox"
-                    checked={allReportKeys.length > 0 && selectedKeys.length >= allReportKeys.length}
-                    ref={(el) => {
-                      if (el) {
-                        el.indeterminate = selectedKeys.length > 0 && selectedKeys.length < allReportKeys.length;
-                      }
-                    }}
-                    onChange={() => {
-                      const isAllReportSelected = allReportKeys.length > 0 && selectedKeys.length >= allReportKeys.length;
-                      if (onSelectAll && !isAllReportSelected) {
-                        onSelectAll();
-                        return;
-                      }
-                      if (onDeselectAll && isAllReportSelected) {
-                        onDeselectAll();
-                        return;
-                      }
-                      if (!onSelectionChange) return;
-                      if (isAllReportSelected) {
-                        onSelectionChange([]);
-                        if (onShowToast) onShowToast('info', 'Deselected all records.');
-                      } else {
-                        onSelectionChange(allReportKeys);
-                        if (onShowToast) onShowToast('info', `Selected all ${allReportKeys.length} records throughout report.`);
-                      }
-                    }}
-                    aria-label={`Select all ${allReportKeys.length} records throughout report`}
-                    title={
-                      allReportKeys.length > 0 && selectedKeys.length >= allReportKeys.length
-                        ? `All ${allReportKeys.length} records throughout report selected`
-                        : `Select all ${allReportKeys.length} records throughout report`
-                    }
-                  />
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                 </th>
               )}
 
@@ -1683,10 +1853,22 @@ export default function ApexInteractiveReport({
           onClose={() => setShowFilterModal(false)}
           columns={allAvailableColumns}
           activeFilter={headerFilter}
+          initialFilter={headerFilter}
           onApply={(newFilter) => {
             setHeaderFilter(newFilter);
             setShowFilterModal(false);
-            if (onShowToast) onShowToast('success', 'Filter applied.');
+            if (onShowToast) {
+              if (newFilter) onShowToast('success', 'Filter applied.');
+              else onShowToast('info', 'Filter cleared.');
+            }
+          }}
+          onApplyFilter={(newFilter) => {
+            setHeaderFilter(newFilter);
+            setShowFilterModal(false);
+            if (onShowToast) {
+              if (newFilter) onShowToast('success', 'Filter applied.');
+              else onShowToast('info', 'Filter cleared.');
+            }
           }}
         />
       )}

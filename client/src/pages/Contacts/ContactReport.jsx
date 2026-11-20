@@ -20,10 +20,7 @@ import ApexGroupByModal from '../../components/ApexGroupByModal';
 import ApexAggregateModal from '../../components/ApexAggregateModal';
 import ActiveAggregationsBar from '../../components/ActiveAggregationsBar';
 import ApexColumnHeaderMenu from '../../components/ApexColumnHeaderMenu';
-<<<<<<< HEAD
 import ExcelFilterDropdown from '../../components/ExcelFilterDropdown';
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 import { computeAggregationValue } from '../../utils/aggregationUtils';
 import { api } from '../../api/client';
 import { formatAppDate } from '../../utils/dateUtils';
@@ -32,28 +29,17 @@ export const CONTACT_ALL_COLUMNS = [
   {
     key: 'id',
     label: 'ID',
-<<<<<<< HEAD
     render: (c) => <span style={{ color: 'var(--text-muted, #475569)', fontSize: '0.8rem', fontWeight: 600 }}>{c.id}</span>,
-=======
-    render: (c) => <span style={{ color: '#475569', fontSize: '0.8rem', fontWeight: 600 }}>{c.id}</span>,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     getValue: (c) => c.id,
   },
   {
     key: 'comp_id',
     label: 'COMP_ID',
     render: (c, handleOpenEdit, onNavigateToCompany) => (
-<<<<<<< HEAD
       <span style={{ color: 'var(--text-muted, #475569)', fontSize: '0.8rem' }}>
         {c.comp_id || c.company_id ? (
           <span
             style={{ cursor: 'pointer', color: 'var(--primary-blue, #2563eb)', fontWeight: 500 }}
-=======
-      <span style={{ color: '#475569', fontSize: '0.8rem' }}>
-        {c.comp_id || c.company_id ? (
-          <span
-            style={{ cursor: 'pointer', color: '#1d4ed8', fontWeight: 500 }}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             onClick={() => {
               if (onNavigateToCompany) {
                 onNavigateToCompany(c.comp_id || c.company_id);
@@ -73,17 +59,10 @@ export const CONTACT_ALL_COLUMNS = [
     key: 'comp_name',
     label: 'COMP_NAME',
     render: (c, handleOpenEdit, onNavigateToCompany) => (
-<<<<<<< HEAD
       <span style={{ color: 'var(--text-main, #1e293b)' }}>
         {c.comp_name || c.company_name ? (
           <span
             style={{ cursor: (c.comp_id || c.company_id) ? 'pointer' : 'default', color: 'var(--text-main, #0f172a)', fontWeight: 500 }}
-=======
-      <span style={{ color: '#1e293b' }}>
-        {c.comp_name || c.company_name ? (
-          <span
-            style={{ cursor: (c.comp_id || c.company_id) ? 'pointer' : 'default', color: '#0f172a', fontWeight: 500 }}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             onClick={() => {
               const cid = c.comp_id || c.company_id;
               if (cid && onNavigateToCompany) {
@@ -611,7 +590,6 @@ export default function ContactReport({ onShowToast, onNavigateToCompany, initia
     id_from: '',
     id_to: '',
     comp_id: '',
-<<<<<<< HEAD
     comp_name: [],
     contact_name: [],
     contactstatus: [],
@@ -632,28 +610,6 @@ export default function ContactReport({ onShowToast, onNavigateToCompany, initia
     preferred_linkedin_connected: [],
     linkedin_cnnctd_acc: [],
     linkedin_conn_send_acc: [],
-=======
-    comp_name: '',
-    contact_name: '',
-    contactstatus: '',
-    salesperson: '',
-    email: '',
-    website: '',
-    source: '',
-    pos_type: '',
-    remark: '',
-    country: '',
-    designation: '',
-    industry: '',
-    linkedin_url: '',
-    priority_contact: '',
-    email_tool_verified: '',
-    company_type: '',
-    technology: '',
-    preferred_linkedin_connected: '',
-    linkedin_cnnctd_acc: '',
-    linkedin_conn_send_acc: '',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     created_from: '',
     created_to: '',
     modified_from: '',
@@ -811,11 +767,8 @@ export default function ContactReport({ onShowToast, onNavigateToCompany, initia
 
   const handleClearFilters = () => {
     setFilters(initialFilterState);
-<<<<<<< HEAD
     setActiveSearch('');
     setSearchInput('');
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     setAppliedFilters({});
     setPage(1);
   };
@@ -867,7 +820,6 @@ export default function ContactReport({ onShowToast, onNavigateToCompany, initia
         };
         const res = await api.getContactIds(queryParams);
         if (res.success && Array.isArray(res.ids) && res.ids.length > 0) {
-<<<<<<< HEAD
           setSelectedIds(new Set(res.ids.map(String)));
           if (onShowToast) onShowToast('info', `Selected all ${res.ids.length} records throughout report.`);
         } else {
@@ -883,35 +835,17 @@ export default function ContactReport({ onShowToast, onNavigateToCompany, initia
       } catch (err) {
         console.warn('Failed to select all contact records:', err.message);
         setSelectedIds(new Set(contacts.map((c) => String(c.id))));
-=======
-          setSelectedIds(new Set(res.ids));
-          if (onShowToast) onShowToast('info', `Selected all ${res.ids.length} records throughout report.`);
-        } else {
-          setSelectedIds(new Set(contacts.map((c) => c.id)));
-        }
-      } catch (err) {
-        console.warn('Failed to select all contact records:', err.message);
-        setSelectedIds(new Set(contacts.map((c) => c.id)));
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
       }
     }
   };
 
   const handleToggleSelectOne = (id) => {
-<<<<<<< HEAD
     const strId = String(id);
     const next = new Set(selectedIds);
     if (next.has(strId)) {
       next.delete(strId);
     } else {
       next.add(strId);
-=======
-    const next = new Set(selectedIds);
-    if (next.has(id)) {
-      next.delete(id);
-    } else {
-      next.add(id);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     }
     setSelectedIds(next);
   };
@@ -1671,15 +1605,10 @@ export default function ContactReport({ onShowToast, onNavigateToCompany, initia
             type="button"
             className={`btn-apex-top ${showFilters ? 'btn-active-filter' : ''}`}
             onClick={() => setShowFilters(!showFilters)}
-<<<<<<< HEAD
             title="Toggle search and filter panel"
           >
             <IconFilter size={14} />
             {showFilters ? 'Hide Filter' : 'Show Filter'}
-=======
-          >
-            {showFilters ? 'Hide Filters' : 'Show Filters'}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
           </button>
 
           <button
@@ -1712,457 +1641,256 @@ export default function ContactReport({ onShowToast, onNavigateToCompany, initia
 
       {/* Comprehensive Filter Panel matching Contact Screenshot */}
       {showFilters && (
-        <form onSubmit={handleApplyFilters} className="company-filters-card">
-          <div className="company-filters-grid">
-            {/* ROW 1: ID From | ID To | Company ID | Company Name | Contact Name | Contact Status */}
-            <div className="company-filter-field">
-              <label className="company-filter-label">ID From</label>
+        <form onSubmit={handleApplyFilters} className="shared-filter-card">
+          <div className="shared-filter-grid">
+            {/* ROW 1: ID From | ID To | Company ID | Company Name | Contact Name */}
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">ID From</label>
               <input
                 type="text"
-                className="company-filter-input"
+                placeholder="ID From"
+                className="shared-filter-input"
                 value={filters.id_from}
                 onChange={(e) => setFilters({ ...filters, id_from: e.target.value })}
               />
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">ID To</label>
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">ID To</label>
               <input
                 type="text"
-                className="company-filter-input"
+                placeholder="ID To"
+                className="shared-filter-input"
                 value={filters.id_to}
                 onChange={(e) => setFilters({ ...filters, id_to: e.target.value })}
               />
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Company ID</label>
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Company ID</label>
               <input
                 type="text"
-                className="company-filter-input"
+                placeholder="Company ID"
+                className="shared-filter-input"
                 value={filters.comp_id}
                 onChange={(e) => setFilters({ ...filters, comp_id: e.target.value })}
               />
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Company Name</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Company Name</label>
               <ExcelFilterDropdown
                 label="Company Name"
                 options={filterOptions.companyNames}
                 value={filters.comp_name}
                 onChange={(vals) => setFilters({ ...filters, comp_name: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.comp_name}
-                onChange={(e) => setFilters({ ...filters, comp_name: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.companyNames.map((cn) => (
-                  <option key={cn} value={cn}>{cn}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Contact Name</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Contact Name</label>
               <ExcelFilterDropdown
                 label="Contact Name"
                 options={filterOptions.contactNames}
                 value={filters.contact_name}
                 onChange={(vals) => setFilters({ ...filters, contact_name: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.contact_name}
-                onChange={(e) => setFilters({ ...filters, contact_name: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.contactNames.map((ctn) => (
-                  <option key={ctn} value={ctn}>{ctn}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Contact Status</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Contact Status</label>
               <ExcelFilterDropdown
                 label="Contact Status"
                 options={filterOptions.contactStatuses}
                 value={filters.contactstatus}
                 onChange={(vals) => setFilters({ ...filters, contactstatus: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.contactstatus}
-                onChange={(e) => setFilters({ ...filters, contactstatus: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.contactStatuses.map((cs) => (
-                  <option key={cs} value={cs}>{cs}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             {/* ROW 2: Sales Person | Email | Website | Source | Position Type | Remark */}
-            <div className="company-filter-field">
-              <label className="company-filter-label">Sales Person</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Sales Person</label>
               <ExcelFilterDropdown
                 label="Sales Person"
                 options={filterOptions.salespersons}
                 value={filters.salesperson}
                 onChange={(vals) => setFilters({ ...filters, salesperson: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.salesperson}
-                onChange={(e) => setFilters({ ...filters, salesperson: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.salespersons.map((sp) => (
-                  <option key={sp} value={sp}>{sp}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Email</label>
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Email</label>
               <input
                 type="text"
-                className="company-filter-input"
+                placeholder="Email"
+                className="shared-filter-input"
                 value={filters.email}
                 onChange={(e) => setFilters({ ...filters, email: e.target.value })}
               />
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Website</label>
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Website</label>
               <input
                 type="text"
-                className="company-filter-input"
+                placeholder="Website"
+                className="shared-filter-input"
                 value={filters.website}
                 onChange={(e) => setFilters({ ...filters, website: e.target.value })}
               />
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Source</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Source</label>
               <ExcelFilterDropdown
                 label="Source"
                 options={filterOptions.sources}
                 value={filters.source}
                 onChange={(vals) => setFilters({ ...filters, source: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.source}
-                onChange={(e) => setFilters({ ...filters, source: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.sources.map((s) => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Position Type</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Position Type</label>
               <ExcelFilterDropdown
                 label="Position Type"
                 options={filterOptions.positionTypes}
                 value={filters.pos_type}
                 onChange={(vals) => setFilters({ ...filters, pos_type: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.pos_type}
-                onChange={(e) => setFilters({ ...filters, pos_type: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.positionTypes.map((pt) => (
-                  <option key={pt} value={pt}>{pt}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Remark</label>
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Remark</label>
               <input
                 type="text"
-                className="company-filter-input"
+                placeholder="Remark"
+                className="shared-filter-input"
                 value={filters.remark}
                 onChange={(e) => setFilters({ ...filters, remark: e.target.value })}
               />
             </div>
 
             {/* ROW 3: Country | Designation | Industry | LinkedIn URL | Priority Contact | Email Tool Verified */}
-            <div className="company-filter-field">
-              <label className="company-filter-label">Country</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Country</label>
               <ExcelFilterDropdown
                 label="Country"
                 options={filterOptions.countries}
                 value={filters.country}
                 onChange={(vals) => setFilters({ ...filters, country: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.country}
-                onChange={(e) => setFilters({ ...filters, country: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.countries.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Designation</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Designation</label>
               <ExcelFilterDropdown
                 label="Designation"
                 options={filterOptions.designations}
                 value={filters.designation}
                 onChange={(vals) => setFilters({ ...filters, designation: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.designation}
-                onChange={(e) => setFilters({ ...filters, designation: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.designations.map((d) => (
-                  <option key={d} value={d}>{d}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Industry</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Industry</label>
               <ExcelFilterDropdown
                 label="Industry"
                 options={filterOptions.industries}
                 value={filters.industry}
                 onChange={(vals) => setFilters({ ...filters, industry: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.industry}
-                onChange={(e) => setFilters({ ...filters, industry: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.industries.map((ind) => (
-                  <option key={ind} value={ind}>{ind}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">LinkedIn URL</label>
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">LinkedIn URL</label>
               <input
                 type="text"
-                className="company-filter-input"
+                placeholder="LinkedIn URL"
+                className="shared-filter-input"
                 value={filters.linkedin_url}
                 onChange={(e) => setFilters({ ...filters, linkedin_url: e.target.value })}
               />
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Priority Contact</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Priority Contact</label>
               <ExcelFilterDropdown
                 label="Priority Contact"
                 options={filterOptions.priorityContacts}
                 value={filters.priority_contact}
                 onChange={(vals) => setFilters({ ...filters, priority_contact: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.priority_contact}
-                onChange={(e) => setFilters({ ...filters, priority_contact: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.priorityContacts.map((pc) => (
-                  <option key={pc} value={pc}>{pc}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Email Tool Verified</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Email Tool Verified</label>
               <ExcelFilterDropdown
                 label="Email Tool Verified"
                 options={filterOptions.emailToolVerified}
                 value={filters.email_tool_verified}
                 onChange={(vals) => setFilters({ ...filters, email_tool_verified: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.email_tool_verified}
-                onChange={(e) => setFilters({ ...filters, email_tool_verified: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.emailToolVerified.map((ev) => (
-                  <option key={ev} value={ev}>{ev}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
             {/* ROW 4: Company Type | Technology | Preferred LinkedIn | LinkedIn Connected Account | LinkedIn Connection Send Account | Created From */}
-            <div className="company-filter-field">
-              <label className="company-filter-label">Company Type</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Company Type</label>
               <ExcelFilterDropdown
                 label="Company Type"
                 options={filterOptions.companyTypes}
                 value={filters.company_type}
                 onChange={(vals) => setFilters({ ...filters, company_type: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.company_type}
-                onChange={(e) => setFilters({ ...filters, company_type: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.companyTypes.map((ct) => (
-                  <option key={ct} value={ct}>{ct}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Technology</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Technology</label>
               <ExcelFilterDropdown
                 label="Technology"
                 options={filterOptions.technologies}
                 value={filters.technology}
                 onChange={(vals) => setFilters({ ...filters, technology: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.technology}
-                onChange={(e) => setFilters({ ...filters, technology: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.technologies.map((t) => (
-                  <option key={t} value={t}>{t}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Preferred LinkedIn</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Preferred LinkedIn</label>
               <ExcelFilterDropdown
                 label="Preferred LinkedIn"
                 options={filterOptions.preferredLinkedIns}
                 value={filters.preferred_linkedin_connected}
                 onChange={(vals) => setFilters({ ...filters, preferred_linkedin_connected: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.preferred_linkedin_connected}
-                onChange={(e) => setFilters({ ...filters, preferred_linkedin_connected: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.preferredLinkedIns.map((pl) => (
-                  <option key={pl} value={pl}>{pl}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">LinkedIn Connected Account</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">LinkedIn Connected Account</label>
               <ExcelFilterDropdown
                 label="LinkedIn Connected Account"
                 options={filterOptions.linkedinConnectedAccounts}
                 value={filters.linkedin_cnnctd_acc}
                 onChange={(vals) => setFilters({ ...filters, linkedin_cnnctd_acc: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.linkedin_cnnctd_acc}
-                onChange={(e) => setFilters({ ...filters, linkedin_cnnctd_acc: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.linkedinConnectedAccounts.map((lca) => (
-                  <option key={lca} value={lca}>{lca}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">LinkedIn Connection Send Account</label>
-<<<<<<< HEAD
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">LinkedIn Connection Send Account</label>
               <ExcelFilterDropdown
                 label="LinkedIn Connection Send Account"
                 options={filterOptions.linkedinConnSendAccounts}
                 value={filters.linkedin_conn_send_acc}
                 onChange={(vals) => setFilters({ ...filters, linkedin_conn_send_acc: vals })}
               />
-=======
-              <select
-                className="company-filter-select"
-                value={filters.linkedin_conn_send_acc}
-                onChange={(e) => setFilters({ ...filters, linkedin_conn_send_acc: e.target.value })}
-              >
-                <option value=""></option>
-                {filterOptions.linkedinConnSendAccounts.map((lsa) => (
-                  <option key={lsa} value={lsa}>{lsa}</option>
-                ))}
-              </select>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Created From</label>
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Created From</label>
               <div className="company-filter-date-wrapper">
                 <input
                   type="date"
                   placeholder="Created From"
-                  className="company-filter-input"
+                  className="shared-filter-input"
                   value={filters.created_from}
                   onChange={(e) => setFilters({ ...filters, created_from: e.target.value })}
                   title="Created From"
@@ -2170,14 +1898,14 @@ export default function ContactReport({ onShowToast, onNavigateToCompany, initia
               </div>
             </div>
 
-            {/* ROW 5: Created To | Modified From | Modified To | Search Button | Clear Filters Button | empty */}
-            <div className="company-filter-field">
-              <label className="company-filter-label">Created To</label>
+            {/* ROW 5: Created To | Modified From | Modified To */}
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Created To</label>
               <div className="company-filter-date-wrapper">
                 <input
                   type="date"
                   placeholder="Created To"
-                  className="company-filter-input"
+                  className="shared-filter-input"
                   value={filters.created_to}
                   onChange={(e) => setFilters({ ...filters, created_to: e.target.value })}
                   title="Created To"
@@ -2185,13 +1913,13 @@ export default function ContactReport({ onShowToast, onNavigateToCompany, initia
               </div>
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Modified From</label>
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Modified From</label>
               <div className="company-filter-date-wrapper">
                 <input
                   type="date"
                   placeholder="Modified From"
-                  className="company-filter-input"
+                  className="shared-filter-input"
                   value={filters.modified_from}
                   onChange={(e) => setFilters({ ...filters, modified_from: e.target.value })}
                   title="Modified From"
@@ -2199,42 +1927,35 @@ export default function ContactReport({ onShowToast, onNavigateToCompany, initia
               </div>
             </div>
 
-            <div className="company-filter-field">
-              <label className="company-filter-label">Modified To</label>
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">Modified To</label>
               <div className="company-filter-date-wrapper">
                 <input
                   type="date"
                   placeholder="Modified To"
-                  className="company-filter-input"
+                  className="shared-filter-input"
                   value={filters.modified_to}
                   onChange={(e) => setFilters({ ...filters, modified_to: e.target.value })}
                   title="Modified To"
                 />
               </div>
             </div>
+          </div>
 
-            <div className="company-filter-field" style={{ justifyContent: 'flex-end' }}>
-              <button
-                type="submit"
-                className="btn-primary btn-filter-search"
-                style={{ width: '100%', height: '38px', borderRadius: '4px', fontWeight: 600, cursor: 'pointer' }}
-              >
-                Search
-              </button>
-            </div>
-
-            <div className="company-filter-field" style={{ justifyContent: 'flex-end' }}>
-              <button
-                type="button"
-                className="btn-secondary btn-filter-clear"
-                style={{ width: '100%', height: '38px', borderRadius: '4px', fontWeight: 600, cursor: 'pointer' }}
-                onClick={handleClearFilters}
-              >
-                Clear Filters
-              </button>
-            </div>
-
-            <div className="company-filter-field"></div>
+          <div className="shared-filter-actions">
+            <button
+              type="submit"
+              className="btn-filter-search"
+            >
+              Search
+            </button>
+            <button
+              type="button"
+              className="btn-filter-clear"
+              onClick={handleClearFilters}
+            >
+              Clear Filters
+            </button>
           </div>
         </form>
       )}
@@ -2791,11 +2512,7 @@ export default function ContactReport({ onShowToast, onNavigateToCompany, initia
             </thead>
             <tbody>
               {contacts.map((contact) => {
-<<<<<<< HEAD
                 const isSelected = selectedIds.has(String(contact.id)) || selectedIds.has(contact.id);
-=======
-                const isSelected = selectedIds.has(contact.id);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                 return (
                   <tr key={contact.id} className={isSelected ? 'selected' : ''}>
                     {/* Edit icon */}

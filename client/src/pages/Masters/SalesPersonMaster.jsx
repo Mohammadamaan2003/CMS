@@ -413,20 +413,13 @@ export default function SalesPersonMaster({
     } catch (e) {}
   };
 
-<<<<<<< HEAD
   // Selection Checkboxes (Selects all records throughout report)
   const handleSelectAll = async () => {
     const isAllSelected = totalCount > 0 && selectedIds.size >= totalCount;
-=======
-  // Selection Checkboxes
-  const handleSelectAll = () => {
-    const isAllSelected = processedData.length > 0 && selectedIds.size >= processedData.length;
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     if (isAllSelected) {
       setSelectedIds(new Set());
       if (onShowToast) onShowToast('info', 'Deselected all records.');
     } else {
-<<<<<<< HEAD
       try {
         setLoading(true);
         const res = await api.getSalesPersons({
@@ -449,11 +442,6 @@ export default function SalesPersonMaster({
       } finally {
         setLoading(false);
       }
-=======
-      const allIds = new Set(processedData.map((m) => m.id));
-      setSelectedIds(allIds);
-      if (onShowToast) onShowToast('info', `Selected all ${processedData.length} records throughout report.`);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     }
   };
 
@@ -2068,31 +2056,18 @@ export default function SalesPersonMaster({
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <input
                           type="checkbox"
-<<<<<<< HEAD
                           checked={totalCount > 0 && selectedIds.size >= totalCount}
                           ref={(el) => {
                             if (el) {
                               el.indeterminate = selectedIds.size > 0 && selectedIds.size < totalCount;
-=======
-                          checked={processedData.length > 0 && selectedIds.size >= processedData.length}
-                          ref={(el) => {
-                            if (el) {
-                              el.indeterminate = selectedIds.size > 0 && selectedIds.size < processedData.length;
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                             }
                           }}
                           onChange={handleSelectAll}
                           style={{ cursor: 'pointer' }}
                           title={
-<<<<<<< HEAD
                             selectedIds.size >= totalCount && totalCount > 0
                               ? `All ${totalCount} records selected`
                               : `Select all ${totalCount} records throughout report`
-=======
-                            selectedIds.size >= processedData.length && processedData.length > 0
-                              ? `All ${processedData.length} records selected`
-                              : `Select all ${processedData.length} records throughout report`
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                           }
                         />
                   </div>

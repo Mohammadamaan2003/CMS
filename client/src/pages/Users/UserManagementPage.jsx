@@ -296,102 +296,105 @@ export default function UserManagementPage({ onShowToast, currentUser, onUserSwi
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(3, 1fr)',
-              columnGap: '2.5rem',
+              columnGap: '1.5rem',
               rowGap: '1.25rem',
-              alignItems: 'center',
               marginBottom: '1.25rem',
             }}
           >
             {/* Full Name */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <label
                 style={{
-                  minWidth: '100px',
-                  fontSize: '0.85rem',
+                  fontSize: '0.825rem',
                   fontWeight: 600,
-                  color: '#0f172a',
+                  color: 'inherit',
                 }}
               >
                 Full Name
               </label>
-              <div style={{ flex: 1, position: 'relative' }}>
+              <div style={{ width: '100%', position: 'relative' }}>
                 <input
                   type="text"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder=""
+                  placeholder="Enter full name"
                   style={{
                     width: '100%',
-                    height: '36px',
+                    height: '38px',
                     padding: '0 0.75rem',
-                    borderRadius: '4px',
+                    borderRadius: '6px',
                     border: '1px solid #cbd5e1',
                     fontSize: '0.85rem',
                     backgroundColor: '#ffffff',
                     outline: 'none',
+                    boxSizing: 'border-box',
                   }}
                 />
               </div>
             </div>
 
             {/* Username */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <label
                 style={{
-                  minWidth: '90px',
-                  fontSize: '0.85rem',
+                  fontSize: '0.825rem',
                   fontWeight: 600,
-                  color: '#0f172a',
+                  color: 'inherit',
                 }}
               >
                 Username
               </label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder=""
-                style={{
-                  flex: 1,
-                  height: '36px',
-                  padding: '0 0.75rem',
-                  borderRadius: '4px',
-                  border: '1px solid #cbd5e1',
-                  fontSize: '0.85rem',
-                  backgroundColor: '#ffffff',
-                  outline: 'none',
-                }}
-              />
+              <div style={{ width: '100%', position: 'relative' }}>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Enter username"
+                  style={{
+                    width: '100%',
+                    height: '38px',
+                    padding: '0 0.75rem',
+                    borderRadius: '6px',
+                    border: '1px solid #cbd5e1',
+                    fontSize: '0.85rem',
+                    backgroundColor: '#ffffff',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
             </div>
 
             {/* Email */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <label
                 style={{
-                  minWidth: '70px',
-                  fontSize: '0.85rem',
+                  fontSize: '0.825rem',
                   fontWeight: 600,
-                  color: '#0f172a',
+                  color: 'inherit',
                 }}
               >
                 Email
               </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder=""
-                style={{
-                  flex: 1,
-                  height: '36px',
-                  padding: '0 0.75rem',
-                  borderRadius: '4px',
-                  border: '1px solid #cbd5e1',
-                  fontSize: '0.85rem',
-                  backgroundColor: '#ffffff',
-                  outline: 'none',
-                }}
-              />
+              <div style={{ width: '100%', position: 'relative' }}>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter email address"
+                  style={{
+                    width: '100%',
+                    height: '38px',
+                    padding: '0 0.75rem',
+                    borderRadius: '6px',
+                    border: '1px solid #cbd5e1',
+                    fontSize: '0.85rem',
+                    backgroundColor: '#ffffff',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
             </div>
           </div>
 
@@ -400,39 +403,38 @@ export default function UserManagementPage({ onShowToast, currentUser, onUserSwi
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(3, 1fr)',
-              columnGap: '2.5rem',
+              columnGap: '1.5rem',
               rowGap: '1.25rem',
-              alignItems: 'center',
               marginBottom: '1.5rem',
             }}
           >
             {/* Password */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <label
                 style={{
-                  minWidth: '100px',
-                  fontSize: '0.85rem',
+                  fontSize: '0.825rem',
                   fontWeight: 600,
-                  color: '#0f172a',
+                  color: 'inherit',
                 }}
               >
                 Password
               </label>
-              <div style={{ flex: 1, position: 'relative' }}>
+              <div style={{ width: '100%', position: 'relative' }}>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder=""
+                  placeholder={editingUserId ? 'Leave blank to keep current' : 'Enter password'}
                   style={{
                     width: '100%',
-                    height: '36px',
+                    height: '38px',
                     padding: '0 2.2rem 0 0.75rem',
-                    borderRadius: '4px',
+                    borderRadius: '6px',
                     border: '1px solid #cbd5e1',
                     fontSize: '0.85rem',
                     backgroundColor: '#ffffff',
                     outline: 'none',
+                    boxSizing: 'border-box',
                   }}
                 />
                 <button
@@ -440,7 +442,7 @@ export default function UserManagementPage({ onShowToast, currentUser, onUserSwi
                   onClick={() => setShowPassword(!showPassword)}
                   style={{
                     position: 'absolute',
-                    right: '8px',
+                    right: '10px',
                     top: '50%',
                     transform: 'translateY(-50%)',
                     background: 'none',
@@ -459,32 +461,32 @@ export default function UserManagementPage({ onShowToast, currentUser, onUserSwi
             </div>
 
             {/* Confirm Password */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <label
                 style={{
-                  minWidth: '90px',
-                  fontSize: '0.85rem',
+                  fontSize: '0.825rem',
                   fontWeight: 600,
-                  color: '#0f172a',
+                  color: 'inherit',
                 }}
               >
                 Confirm Password
               </label>
-              <div style={{ flex: 1, position: 'relative' }}>
+              <div style={{ width: '100%', position: 'relative' }}>
                 <input
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder=""
+                  placeholder="Confirm password"
                   style={{
                     width: '100%',
-                    height: '36px',
+                    height: '38px',
                     padding: '0 2.2rem 0 0.75rem',
-                    borderRadius: '4px',
+                    borderRadius: '6px',
                     border: '1px solid #cbd5e1',
                     fontSize: '0.85rem',
                     backgroundColor: '#ffffff',
                     outline: 'none',
+                    boxSizing: 'border-box',
                   }}
                 />
                 <button
@@ -492,7 +494,7 @@ export default function UserManagementPage({ onShowToast, currentUser, onUserSwi
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   style={{
                     position: 'absolute',
-                    right: '8px',
+                    right: '10px',
                     top: '50%',
                     transform: 'translateY(-50%)',
                     background: 'none',
@@ -511,32 +513,32 @@ export default function UserManagementPage({ onShowToast, currentUser, onUserSwi
             </div>
 
             {/* Role */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <label
                 style={{
-                  minWidth: '70px',
-                  fontSize: '0.85rem',
+                  fontSize: '0.825rem',
                   fontWeight: 600,
-                  color: '#0f172a',
+                  color: 'inherit',
                 }}
               >
                 Role
               </label>
-              <div style={{ flex: 1, position: 'relative' }}>
+              <div style={{ width: '100%', position: 'relative' }}>
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                   style={{
                     width: '100%',
-                    height: '36px',
+                    height: '38px',
                     padding: '0 2rem 0 0.75rem',
-                    borderRadius: '4px',
+                    borderRadius: '6px',
                     border: '1px solid #cbd5e1',
                     fontSize: '0.85rem',
                     backgroundColor: '#ffffff',
                     outline: 'none',
                     cursor: 'pointer',
                     appearance: 'none',
+                    boxSizing: 'border-box',
                   }}
                 >
                   <option value="admin">Administrator, All, Marketing, Sales</option>

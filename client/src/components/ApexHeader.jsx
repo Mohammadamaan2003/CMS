@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import iqraLogo from '../assets/iqra-logo.png';
 import {
   IconMenu,
@@ -8,10 +8,13 @@ import {
   IconBriefcase,
   IconUsers,
   IconEye,
+  IconCheck,
   IconCheckCircle,
   IconAlertTriangle,
   IconSun,
   IconMoon,
+  IconOrbitGlobe,
+  IconGlassmorphism,
 } from './Icons';
 
 export default function ApexHeader({
@@ -25,11 +28,33 @@ export default function ApexHeader({
   onToggleTheme,
 }) {
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showThemeDropdown, setShowThemeDropdown] = useState(false);
+  const themeDropdownRef = useRef(null);
+
+  // Close theme dropdown on click outside or Escape key
+  useEffect(() => {
+    if (!showThemeDropdown) return;
+    const handleClickOutside = (e) => {
+      if (themeDropdownRef.current && !themeDropdownRef.current.contains(e.target)) {
+        setShowThemeDropdown(false);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShowThemeDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showThemeDropdown]);
 
   const role = (currentUser?.role || 'admin').toLowerCase();
 
-<<<<<<< HEAD
-const isDark = theme === 'dark' || theme === 'blue' || theme === 'lumina';
+const isDark = theme === 'dark' || theme === 'blue' || theme === 'lumina' || theme === 'orbit' || theme === 'glass';
 
 const IconLuminaGem = ({ size = 14, style = {} }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style}>
@@ -46,11 +71,74 @@ const IconLuminaGem = ({ size = 14, style = {} }) => (
     <polygon points="17.5,7.5 12,13 17.5,21.5" fill="#000000" opacity="0.25" />
   </svg>
 );
-=======
-  const isDark = theme === 'dark';
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 
-  const roleBadgeStyles = isDark ? {
+const themeOptions = [
+  {
+    id: 'dark',
+    name: 'Default',
+    subtitle: 'Midnight Dark',
+    badgeBg: 'rgba(99, 102, 241, 0.15)',
+    accentColor: '#818cf8',
+    renderIcon: (size = 14) => <IconMoon size={size} className="theme-icon-moon" style={{ color: '#818cf8' }} />,
+  },
+  {
+    id: 'lumina',
+    name: 'Lumina',
+    subtitle: 'Neon Violet Glass',
+    badgeBg: 'rgba(236, 72, 153, 0.18)',
+    accentColor: '#ec4899',
+    renderIcon: (size = 14) => <IconLuminaGem size={size} style={{ filter: 'drop-shadow(0 0 3px #ec4899)' }} />,
+  },
+  {
+    id: 'orbit',
+    name: 'Orbit',
+    subtitle: 'Cosmic Cyan / Indigo',
+    badgeBg: 'rgba(6, 182, 212, 0.18)',
+    accentColor: '#06b6d4',
+    renderIcon: (size = 14) => <IconOrbitGlobe size={size} style={{ color: '#06b6d4', filter: 'drop-shadow(0 0 3px #06b6d4)' }} />,
+  },
+  {
+    id: 'glass',
+    name: 'Glass',
+    subtitle: 'Frosted Glassmorphism',
+    badgeBg: 'rgba(255, 122, 24, 0.18)',
+    accentColor: '#ff7a18',
+    renderIcon: (size = 14) => <IconGlassmorphism size={size} style={{ filter: 'drop-shadow(0 0 4px rgba(255, 122, 24, 0.55))' }} />,
+  },
+  {
+    id: 'blue',
+    name: 'Blue',
+    subtitle: 'Classic APEX Navy',
+    badgeBg: 'rgba(2, 132, 199, 0.18)',
+    accentColor: '#38bdf8',
+    renderIcon: () => <span style={{ fontSize: '12px', lineHeight: 1 }}>🔷</span>,
+  },
+  {
+    id: 'light',
+    name: 'Light',
+    subtitle: 'Clean White Minimal',
+    badgeBg: 'rgba(245, 158, 11, 0.18)',
+    accentColor: '#f59e0b',
+    renderIcon: (size = 14) => <IconSun size={size} className="theme-icon-sun" style={{ color: '#f59e0b' }} />,
+  },
+];
+
+const currentThemeObj = themeOptions.find((t) => t.id === theme) || themeOptions[0];
+
+const handleSelectTheme = (themeId) => {
+  if (onToggleTheme) {
+    onToggleTheme(themeId);
+  }
+  setShowThemeDropdown(false);
+};
+
+  const roleBadgeStyles = theme === 'glass' ? {
+    admin: { bg: 'rgba(28, 21, 16, 0.08)', text: '#1c1510', border: 'rgba(28, 21, 16, 0.22)', label: 'Admin', icon: IconShield },
+    sales: { bg: 'rgba(194, 65, 12, 0.1)', text: '#c2410c', border: 'rgba(194, 65, 12, 0.25)', label: 'Sales', icon: IconBriefcase },
+    marketing: { bg: 'rgba(16, 185, 129, 0.1)', text: '#047857', border: 'rgba(16, 185, 129, 0.25)', label: 'Marketing', icon: IconUsers },
+    viewer: { bg: 'rgba(100, 116, 139, 0.12)', text: '#334155', border: 'rgba(100, 116, 139, 0.25)', label: 'Viewer', icon: IconEye },
+  }[role] || { bg: 'rgba(28, 21, 16, 0.08)', text: '#1c1510', border: 'rgba(28, 21, 16, 0.22)', label: role, icon: IconUser }
+  : isDark ? {
     admin: { bg: 'rgba(99, 102, 241, 0.25)', text: '#e0e7ff', border: 'rgba(129, 140, 248, 0.5)', label: 'Admin', icon: IconShield },
     sales: { bg: 'rgba(56, 189, 248, 0.25)', text: '#e0f2fe', border: 'rgba(56, 189, 248, 0.5)', label: 'Sales', icon: IconBriefcase },
     marketing: { bg: 'rgba(52, 211, 153, 0.25)', text: '#d1fae5', border: 'rgba(52, 211, 153, 0.5)', label: 'Marketing', icon: IconUsers },
@@ -110,44 +198,134 @@ const IconLuminaGem = ({ size = 14, style = {} }) => (
 
       {/* User Role Switcher, Theme Switcher & Profile Dropdown on the far right */}
       <div className="apex-topbar-right">
-<<<<<<< HEAD
-        {/* Light / Dark / Blue / Lumina Theme Switcher Pill Button */}
-=======
-        {/* Light / Dark / Blue Theme Switcher Pill Button */}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-        <button
-          type="button"
-          className="apex-theme-toggle-btn"
-          onClick={() => onToggleTheme && onToggleTheme()}
-<<<<<<< HEAD
-          title={`Currently ${theme === 'dark' ? 'Dark' : theme === 'blue' ? 'Blue' : theme === 'lumina' ? 'Lumina' : 'Light'} theme. Click to switch theme.`}
-=======
-          title={`Currently ${theme === 'dark' ? 'Dark' : theme === 'blue' ? 'Blue' : 'Light'} theme. Click to switch theme.`}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-          aria-label={`Switch theme`}
-        >
-          <span className="apex-theme-toggle-indicator">
-            {theme === 'dark' ? (
-              <IconMoon size={14} className="theme-icon-moon" />
-            ) : theme === 'blue' ? (
-              <span style={{ fontSize: '11px', lineHeight: 1 }}>🔷</span>
-<<<<<<< HEAD
-            ) : theme === 'lumina' ? (
-              <IconLuminaGem size={14} style={{ filter: 'drop-shadow(0 0 4px rgba(236, 72, 153, 0.8))' }} />
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-            ) : (
-              <IconSun size={14} className="theme-icon-sun" />
-            )}
-          </span>
-          <span className="apex-theme-toggle-label">
-<<<<<<< HEAD
-            {theme === 'dark' ? 'Dark' : theme === 'blue' ? 'Blue' : theme === 'lumina' ? 'Lumina' : 'Light'}
-=======
-            {theme === 'dark' ? 'Dark' : theme === 'blue' ? 'Blue' : 'Light'}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-          </span>
-        </button>
+        {/* Theme Selection Dropdown (Default, Lumina, Orbit, Blue, Light) */}
+        <div className="apex-theme-dropdown-container" ref={themeDropdownRef} style={{ position: 'relative' }}>
+          <button
+            type="button"
+            className="apex-theme-toggle-btn"
+            onClick={() => {
+              setShowThemeDropdown((prev) => !prev);
+              setShowUserMenu(false);
+            }}
+            title={`Active theme: ${currentThemeObj.name}. Click to choose theme.`}
+            aria-label="Select theme"
+            aria-expanded={showThemeDropdown}
+            aria-haspopup="true"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              cursor: 'pointer',
+            }}
+          >
+            <span className="apex-theme-toggle-indicator">
+              {currentThemeObj.renderIcon(14)}
+            </span>
+            <span className="apex-theme-toggle-label">{currentThemeObj.name}</span>
+            <IconChevronDown
+              size={12}
+              style={{
+                marginLeft: '2px',
+                transition: 'transform 0.2s ease',
+                transform: showThemeDropdown ? 'rotate(180deg)' : 'rotate(0deg)',
+              }}
+            />
+          </button>
+
+          {showThemeDropdown && (
+            <div
+              className="apex-theme-dropdown-menu"
+              style={{
+                position: 'absolute',
+                top: 'calc(100% + 8px)',
+                right: 0,
+                zIndex: 1100,
+                minWidth: '220px',
+                background: 'var(--bg-surface, #111C2E)',
+                border: '1px solid var(--border, #26364F)',
+                borderRadius: '8px',
+                boxShadow: '0 10px 25px -3px rgba(0,0,0,0.5)',
+                padding: '6px',
+              }}
+            >
+              <div
+                style={{
+                  padding: '6px 10px 8px',
+                  fontSize: '0.72rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  color: 'var(--text-muted, #94a3b8)',
+                  borderBottom: '1px solid var(--border, rgba(255, 255, 255, 0.1))',
+                  marginBottom: '4px',
+                }}
+              >
+                Select Theme
+              </div>
+              {themeOptions.map((opt) => {
+                const isActive = theme === opt.id;
+                return (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    onClick={() => handleSelectTheme(opt.id)}
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '8px 10px',
+                      borderRadius: '6px',
+                      border: 'none',
+                      background: isActive
+                        ? 'var(--bg-hover, rgba(255, 255, 255, 0.12))'
+                        : 'transparent',
+                      color: isActive ? (theme === 'glass' || theme === 'light' ? '#1a130f' : '#ffffff') : 'var(--text-main, #e2e8f0)',
+                      cursor: 'pointer',
+                      fontSize: '0.8rem',
+                      fontWeight: isActive ? 600 : 500,
+                      textAlign: 'left',
+                      transition: 'background-color 0.15s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isActive) e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)';
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) e.currentTarget.style.backgroundColor = 'transparent';
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '22px',
+                          height: '22px',
+                          borderRadius: '5px',
+                          background: opt.badgeBg,
+                        }}
+                      >
+                        {opt.renderIcon(13)}
+                      </span>
+                      <div>
+                        <div style={{ lineHeight: 1.2 }}>{opt.name}</div>
+                        <div style={{ fontSize: '0.68rem', color: 'var(--text-muted, #94a3b8)', lineHeight: 1.2 }}>
+                          {opt.subtitle}
+                        </div>
+                      </div>
+                    </div>
+                    {isActive && (
+                      <span style={{ color: opt.accentColor || '#38bdf8', display: 'flex', alignItems: 'center' }}>
+                        <IconCheck size={14} />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
         {/* Quick Role Simulation Badge */}
         <div
@@ -344,19 +522,17 @@ const IconLuminaGem = ({ size = 14, style = {} }) => (
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.785rem', fontWeight: 600, color: 'var(--text-main, #F1F5F9)' }}>
-<<<<<<< HEAD
                   {theme === 'dark' ? (
                     <IconMoon size={14} style={{ color: '#818cf8' }} />
-                  ) : theme === 'blue' ? (
-                    <span style={{ fontSize: '13px' }}>🔷</span>
                   ) : theme === 'lumina' ? (
                     <IconLuminaGem size={14} style={{ filter: 'drop-shadow(0 0 3px #ec4899)' }} />
+                  ) : theme === 'orbit' ? (
+                    <IconOrbitGlobe size={14} style={{ color: '#06b6d4', filter: 'drop-shadow(0 0 3px #06b6d4)' }} />
+                  ) : theme === 'blue' ? (
+                    <span style={{ fontSize: '13px' }}>🔷</span>
                   ) : (
                     <IconSun size={14} style={{ color: '#d97706' }} />
                   )}
-=======
-                  {theme === 'dark' ? <IconMoon size={14} style={{ color: '#818cf8' }} /> : theme === 'blue' ? <span style={{ fontSize: '13px' }}>🔷</span> : <IconSun size={14} style={{ color: '#d97706' }} />}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                   <span>Interface Theme:</span>
                 </div>
                 <div
@@ -373,16 +549,15 @@ const IconLuminaGem = ({ size = 14, style = {} }) => (
                 >
                   <button
                     type="button"
-                    onClick={() => onToggleTheme && onToggleTheme('dark')}
+                    onClick={() => {
+                      if (onToggleTheme) onToggleTheme('dark');
+                      setShowUserMenu(false);
+                    }}
                     style={{
                       border: 'none',
                       background: theme === 'dark' ? 'var(--btn-primary, #2563EB)' : 'transparent',
                       color: theme === 'dark' ? '#ffffff' : 'var(--text-muted, #A3A3A3)',
-<<<<<<< HEAD
                       padding: '3px 7px',
-=======
-                      padding: '3px 8px',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                       borderRadius: '4px',
                       fontSize: '0.725rem',
                       fontWeight: theme === 'dark' ? 700 : 500,
@@ -393,36 +568,14 @@ const IconLuminaGem = ({ size = 14, style = {} }) => (
                       gap: '4px',
                     }}
                   >
-                    <IconMoon size={12} /> Dark
+                    <IconMoon size={12} /> Default
                   </button>
                   <button
                     type="button"
-                    onClick={() => onToggleTheme && onToggleTheme('blue')}
-                    style={{
-                      border: 'none',
-                      background: theme === 'blue' ? 'var(--btn-primary, #0284c7)' : 'transparent',
-                      color: theme === 'blue' ? '#ffffff' : 'var(--text-muted, #A3A3A3)',
-<<<<<<< HEAD
-                      padding: '3px 7px',
-=======
-                      padding: '3px 8px',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-                      borderRadius: '4px',
-                      fontSize: '0.725rem',
-                      fontWeight: theme === 'blue' ? 700 : 500,
-                      cursor: 'pointer',
-                      boxShadow: theme === 'blue' ? '0 1px 3px rgba(0,0,0,0.3)' : 'none',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '4px',
+                    onClick={() => {
+                      if (onToggleTheme) onToggleTheme('lumina');
+                      setShowUserMenu(false);
                     }}
-                  >
-                    <span>🔷</span> Blue
-                  </button>
-                  <button
-                    type="button"
-<<<<<<< HEAD
-                    onClick={() => onToggleTheme && onToggleTheme('lumina')}
                     style={{
                       border: 'none',
                       background: theme === 'lumina' ? 'linear-gradient(135deg, #7c3aed 0%, #ec4899 100%)' : 'transparent',
@@ -442,18 +595,84 @@ const IconLuminaGem = ({ size = 14, style = {} }) => (
                   </button>
                   <button
                     type="button"
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-                    onClick={() => onToggleTheme && onToggleTheme('light')}
+                    onClick={() => {
+                      if (onToggleTheme) onToggleTheme('orbit');
+                      setShowUserMenu(false);
+                    }}
+                    style={{
+                      border: 'none',
+                      background: theme === 'orbit' ? 'linear-gradient(135deg, #06b6d4 0%, #6366f1 100%)' : 'transparent',
+                      color: theme === 'orbit' ? '#ffffff' : 'var(--text-muted, #A3A3A3)',
+                      padding: '3px 7px',
+                      borderRadius: '4px',
+                      fontSize: '0.725rem',
+                      fontWeight: theme === 'orbit' ? 700 : 500,
+                      cursor: 'pointer',
+                      boxShadow: theme === 'orbit' ? '0 1px 4px rgba(6, 182, 212, 0.45)' : 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <IconOrbitGlobe size={12} style={{ color: theme === 'orbit' ? '#ffffff' : '#06b6d4' }} /> Orbit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (onToggleTheme) onToggleTheme('glass');
+                      setShowUserMenu(false);
+                    }}
+                    style={{
+                      border: 'none',
+                      background: theme === 'glass' ? 'linear-gradient(135deg, #ff7a18 0%, #ea580c 100%)' : 'transparent',
+                      color: theme === 'glass' ? '#ffffff' : 'var(--text-muted, #A3A3A3)',
+                      padding: '3px 7px',
+                      borderRadius: '4px',
+                      fontSize: '0.725rem',
+                      fontWeight: theme === 'glass' ? 700 : 500,
+                      cursor: 'pointer',
+                      boxShadow: theme === 'glass' ? '0 1px 4px rgba(255, 122, 24, 0.45)' : 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <IconGlassmorphism size={12} style={{ color: theme === 'glass' ? '#ffffff' : '#ff7a18' }} /> Glass
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (onToggleTheme) onToggleTheme('blue');
+                      setShowUserMenu(false);
+                    }}
+                    style={{
+                      border: 'none',
+                      background: theme === 'blue' ? 'var(--btn-primary, #0284c7)' : 'transparent',
+                      color: theme === 'blue' ? '#ffffff' : 'var(--text-muted, #A3A3A3)',
+                      padding: '3px 7px',
+                      borderRadius: '4px',
+                      fontSize: '0.725rem',
+                      fontWeight: theme === 'blue' ? 700 : 500,
+                      cursor: 'pointer',
+                      boxShadow: theme === 'blue' ? '0 1px 3px rgba(0,0,0,0.3)' : 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                    }}
+                  >
+                    <span>🔷</span> Blue
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (onToggleTheme) onToggleTheme('light');
+                      setShowUserMenu(false);
+                    }}
                     style={{
                       border: 'none',
                       background: theme === 'light' ? '#ffffff' : 'transparent',
                       color: theme === 'light' ? '#0f172a' : 'var(--text-muted, #A3A3A3)',
-<<<<<<< HEAD
                       padding: '3px 7px',
-=======
-                      padding: '3px 8px',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                       borderRadius: '4px',
                       fontSize: '0.725rem',
                       fontWeight: theme === 'light' ? 700 : 500,

@@ -1,0 +1,1041 @@
+/* ==========================================================================
+   ApexSidebar.css — Restyled & Modernized CRM Sidebar
+   Supports Default (Solid Black), Lumina (Frosted Glass), and Orbit (Cosmic Glow)
+   ========================================================================== */
+
+/* 1. Main Sidebar Container */
+.apex-sidebar {
+  width: 260px;
+  height: calc(100vh - 48px);
+  position: sticky;
+  top: 48px;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s ease,
+              box-shadow 0.3s ease,
+              transform 0.25s ease;
+  user-select: none;
+  flex-shrink: 0;
+  z-index: 40;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   Theme Styles: Default (Solid Black), Lumina (Glass), Orbit (Cyan Glow)
+   ========================================================================== */
+
+/* Default Theme: Solid Black / Obsidian */
+.apex-sidebar-dark,
+.apex-sidebar {
+  background-color: #09090b;
+  border-right: 1px solid #1f242d;
+  color: #e2e8f0;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.45);
+}
+
+/* Lumina Theme: Frosted Violet/Navy Glass */
+.apex-sidebar-lumina,
+.apex-theme-lumina .apex-sidebar,
+[data-theme="lumina"] .apex-sidebar {
+  background: linear-gradient(180deg, rgba(76, 29, 149, 0.5) 0%, rgba(30, 27, 75, 0.72) 100%) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 20px !important;
+  margin: 10px 0 10px 12px !important;
+  height: calc(100vh - 68px) !important;
+  color: #c4b5fd !important;
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5), 0 0 30px -5px rgba(139, 92, 246, 0.25) !important;
+}
+
+/* Orbit Theme: Cosmic Dark with Cyan Border Glow */
+.apex-sidebar-orbit,
+.apex-theme-orbit .apex-sidebar,
+[data-theme="orbit"] .apex-sidebar {
+  background: linear-gradient(180deg, #070c18 0%, #03060f 100%) !important;
+  border: 1px solid rgba(6, 182, 212, 0.28) !important;
+  border-radius: 20px !important;
+  margin: 10px 0 10px 12px !important;
+  height: calc(100vh - 68px) !important;
+  color: #94a3b8 !important;
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6), 0 0 25px -4px rgba(6, 182, 212, 0.22) !important;
+}
+
+/* Glass Theme: Warm Mocha Frosted Glass Pill */
+.apex-sidebar-glass,
+.apex-theme-glass .apex-sidebar,
+[data-theme="glass"] .apex-sidebar {
+  background: rgba(140, 118, 102, 0.48) !important;
+  backdrop-filter: blur(28px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(160%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  border-radius: 28px !important;
+  margin: 10px 0 10px 12px !important;
+  height: calc(100vh - 68px) !important;
+  color: #ffffff !important;
+  box-shadow: 0 16px 40px -10px rgba(60, 45, 35, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.5) !important;
+}
+
+/* ==========================================================================
+   2. Collapsible & Hover-Expanded Behavior
+   ========================================================================== */
+
+.apex-sidebar.collapsed {
+  width: 68px;
+}
+
+.apex-sidebar.collapsed.hover-expanded {
+  width: 260px;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.65) !important;
+}
+
+/* Top Action Header: Search & Pin Toggle */
+.apex-sidebar-top-bar {
+  padding: 0.75rem 0.65rem 0.5rem 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+/* Search Box Container */
+.apex-sidebar-search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 0.35rem 0.55rem;
+  gap: 0.45rem;
+  transition: all 0.2s ease;
+  min-width: 0;
+}
+
+.apex-sidebar-search-box:focus-within {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.25);
+}
+
+.apex-sidebar-orbit .apex-sidebar-search-box:focus-within {
+  border-color: #06b6d4;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.35);
+}
+
+.apex-sidebar-lumina .apex-sidebar-search-box:focus-within {
+  border-color: #ec4899;
+  box-shadow: 0 0 12px rgba(236, 72, 153, 0.35);
+}
+
+.apex-sidebar-search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  font-size: 0.8rem;
+  width: 100%;
+  font-family: inherit;
+}
+
+.apex-sidebar-search-input::placeholder {
+  color: #64748b;
+  font-size: 0.775rem;
+}
+
+.apex-sidebar-search-clear {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  transition: color 0.15s ease;
+}
+
+.apex-sidebar-search-clear:hover {
+  color: #ffffff;
+}
+
+/* Pin Toggle Button */
+.apex-sidebar-pin-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.apex-sidebar-pin-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.apex-sidebar-pin-btn.pinned {
+  color: #818cf8;
+}
+
+.apex-sidebar-orbit .apex-sidebar-pin-btn.pinned {
+  color: #06b6d4;
+}
+
+.apex-sidebar-lumina .apex-sidebar-pin-btn.pinned {
+  color: #ec4899;
+}
+
+/* ==========================================================================
+   3. Scrollable Navigation List
+   ========================================================================== */
+
+.apex-sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.5rem 0.55rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.apex-sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.apex-sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.apex-sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+}
+
+.apex-sidebar-lumina .apex-sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.35);
+}
+
+.apex-sidebar-orbit .apex-sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(6, 182, 212, 0.35);
+}
+
+/* Section Headings */
+.apex-sidebar-section-heading {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+  padding: 0.75rem 0.65rem 0.25rem 0.65rem;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+}
+
+.apex-sidebar-section-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 0.5rem 0.4rem;
+}
+
+/* ==========================================================================
+   4. Menu Item Styling — Rounded Pill with Glow
+   ========================================================================== */
+
+.apex-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.58rem 0.75rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
+  outline: none;
+  font-family: inherit;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.apex-nav-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+/* Dedicated Icon Wrappers with Semantic Colors */
+.apex-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+}
+
+.apex-nav-item:hover .apex-nav-icon,
+.apex-nav-item.active .apex-nav-icon {
+  transform: scale(1.12);
+  filter: drop-shadow(0 0 8px currentColor);
+}
+
+/* Label text - Un-truncated, readable */
+.apex-nav-text {
+  flex: 1;
+  white-space: normal;
+  line-height: 1.25;
+  overflow: visible;
+  text-overflow: unset;
+  letter-spacing: -0.01em;
+}
+
+.apex-nav-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  opacity: 0.6;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.apex-nav-item:hover .apex-nav-arrow {
+  opacity: 1;
+}
+
+/* Active State — Rounded Pill with Soft Glow */
+
+/* Default Theme Active Pill */
+.apex-nav-item.active {
+  background: rgba(99, 102, 241, 0.16) !important;
+  border: 1px solid rgba(129, 140, 248, 0.4) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Lumina Theme Active Pill */
+.apex-sidebar-lumina .apex-nav-item.active,
+.apex-theme-lumina .apex-nav-item.active,
+[data-theme="lumina"] .apex-nav-item.active {
+  background: rgba(255, 255, 255, 0.16) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 18px rgba(139, 92, 246, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Orbit Theme Active Pill */
+.apex-sidebar-orbit .apex-nav-item.active,
+.apex-theme-orbit .apex-nav-item.active,
+[data-theme="orbit"] .apex-nav-item.active {
+  background: rgba(6, 182, 212, 0.16) !important;
+  border: 1px solid rgba(6, 182, 212, 0.45) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 0 18px rgba(6, 182, 212, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Glass Theme Active Pill (Pure white pill with dark text matching screenshot) */
+.apex-sidebar-glass .apex-nav-item.active,
+.apex-theme-glass .apex-nav-item.active,
+[data-theme="glass"] .apex-nav-item.active {
+  background: #ffffff !important;
+  border: 1px solid #ffffff !important;
+  color: #1a130f !important;
+  font-weight: 700 !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 4px 14px rgba(60, 45, 35, 0.25) !important;
+}
+
+.apex-sidebar-glass .apex-nav-item.active .apex-nav-icon,
+.apex-theme-glass .apex-nav-item.active .apex-nav-icon,
+[data-theme="glass"] .apex-nav-item.active .apex-nav-icon {
+  color: #1a130f !important;
+}
+
+.apex-sidebar-glass .apex-sub-item.active,
+.apex-theme-glass .apex-sub-item.active,
+[data-theme="glass"] .apex-sub-item.active {
+  background: #ffffff !important;
+  color: #1a130f !important;
+  font-weight: 700 !important;
+  border-left: 2px solid #c2410c !important;
+  border-radius: 8px !important;
+}
+
+/* Group Active State (parent item when sub-item is active) */
+.apex-nav-item.active-group {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+  border-radius: 12px;
+}
+
+/* Small Count Badges */
+.apex-nav-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.12rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(168, 85, 247, 0.2);
+  color: #d8b4fe;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.25);
+  flex-shrink: 0;
+  margin-left: auto;
+  line-height: 1.2;
+}
+
+.apex-nav-badge-cyan {
+  background: rgba(6, 182, 212, 0.18);
+  color: #67e8f9;
+  border-color: rgba(6, 182, 212, 0.35);
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.25);
+}
+
+.apex-nav-badge-amber {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.35);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.25);
+}
+
+/* ==========================================================================
+   5. Smooth Accordion Submenus (CSS Grid Transition)
+   ========================================================================== */
+
+.apex-sub-menu-grid {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.apex-sub-menu-grid.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.apex-sub-menu-inner {
+  min-height: 0;
+  padding: 0.2rem 0.2rem 0.35rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.apex-sub-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.42rem 0.65rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: #94a3b8;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: left;
+  outline: none;
+  font-family: inherit;
+  white-space: normal;
+  line-height: 1.25;
+}
+
+.apex-sub-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  transform: translateX(3px);
+}
+
+.apex-sub-item.active {
+  background: rgba(99, 102, 241, 0.2) !important;
+  border: 1px solid rgba(129, 140, 248, 0.35) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.25) !important;
+}
+
+.apex-sidebar-lumina .apex-sub-item.active {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.3) !important;
+}
+
+.apex-sidebar-orbit .apex-sub-item.active {
+  background: rgba(6, 182, 212, 0.2) !important;
+  border: 1px solid rgba(6, 182, 212, 0.4) !important;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.3) !important;
+}
+
+.apex-sub-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   6. Bottom User Card & Theme Switcher
+   ========================================================================== */
+
+.apex-sidebar-user-card {
+  padding: 0.75rem 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  background: rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.apex-sidebar-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.apex-sidebar-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.apex-sidebar-lumina .apex-sidebar-avatar {
+  background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+}
+
+.apex-sidebar-orbit .apex-sidebar-avatar {
+  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+}
+
+.apex-sidebar-online-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 9px;
+  height: 9px;
+  background: #10b981;
+  border: 2px solid #09090b;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #10b981;
+}
+
+.apex-sidebar-user-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.apex-sidebar-username {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.apex-sidebar-role-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #a5b4fc;
+  letter-spacing: 0.05em;
+  margin-top: 1px;
+}
+
+.apex-sidebar-theme-toggle {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 0.35rem 0.55rem;
+  color: #cbd5e1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.apex-sidebar-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ==========================================================================
+   7. Quick Jump Search Results Dropdown Overlay
+   ========================================================================== */
+
+.apex-sidebar-search-results {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  margin: 0.4rem 0.55rem;
+  padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-height: 280px;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  z-index: 50;
+}
+
+.apex-sidebar-search-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
+  font-size: 0.825rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.apex-sidebar-search-item:hover {
+  background: rgba(99, 102, 241, 0.25);
+  color: #ffffff;
+}
+
+.apex-sidebar-search-badge {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-left: auto;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   8. Glass Theme (Warm Mocha Frosted Glass Capsule Sidebar)
+   Matching Luxury Interior Frosted Glass Aesthetic:
+   - Soft translucent warm mocha glass pill with 28px radius
+   - Frosted pill search box with crisp white input & soft ivory placeholder
+   - Clean monochrome white icons for all inactive items
+   - Solid pure white capsule for active item with dark espresso (#1a130f) icon & typography
+   - Refined frosted translucent count badges
+   - Warm champagne section headers (no muddy slate blues)
+   - Harmonious bottom user card & theme pill
+   ========================================================================== */
+
+/* 1. Main Sidebar Capsule */
+.apex-sidebar-glass,
+.apex-theme-glass .apex-sidebar,
+[data-theme="glass"] .apex-sidebar {
+  background: rgba(140, 118, 102, 0.48) !important;
+  backdrop-filter: blur(28px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(160%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  border-radius: 28px !important;
+  margin: 10px 0 10px 12px !important;
+  height: calc(100vh - 68px) !important;
+  color: #ffffff !important;
+  box-shadow: 0 16px 40px -10px rgba(60, 45, 35, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.5) !important;
+}
+
+/* 2. Top Bar & Search Box */
+.apex-sidebar-glass .apex-sidebar-top-bar,
+.apex-theme-glass .apex-sidebar .apex-sidebar-top-bar,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-top-bar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16) !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-search-box,
+.apex-theme-glass .apex-sidebar .apex-sidebar-search-box,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-search-box {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  border-radius: 9999px !important;
+  padding: 0.35rem 0.65rem !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-search-box:focus-within,
+.apex-theme-glass .apex-sidebar .apex-sidebar-search-box:focus-within,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-search-box:focus-within {
+  background: rgba(255, 255, 255, 0.28) !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.4) !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-search-box svg,
+.apex-theme-glass .apex-sidebar .apex-sidebar-search-box svg,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-search-box svg {
+  color: rgba(255, 255, 255, 0.85) !important;
+  stroke: rgba(255, 255, 255, 0.85) !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-search-input,
+.apex-theme-glass .apex-sidebar .apex-sidebar-search-input,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-search-input {
+  color: #ffffff !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-search-input::placeholder,
+.apex-theme-glass .apex-sidebar .apex-sidebar-search-input::placeholder,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-search-input::placeholder {
+  color: rgba(255, 245, 235, 0.65) !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-search-clear,
+.apex-theme-glass .apex-sidebar .apex-sidebar-search-clear,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-search-clear {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-pin-btn,
+.apex-theme-glass .apex-sidebar .apex-sidebar-pin-btn,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-pin-btn {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-pin-btn:hover,
+.apex-theme-glass .apex-sidebar .apex-sidebar-pin-btn:hover,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-pin-btn:hover {
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-pin-btn.pinned,
+.apex-theme-glass .apex-sidebar .apex-sidebar-pin-btn.pinned,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-pin-btn.pinned {
+  color: #ffffff !important;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5)) !important;
+}
+
+/* 3. Section Headings (Warm Champagne / Soft Ivory) */
+.apex-sidebar-glass .apex-sidebar-section-heading,
+.apex-theme-glass .apex-sidebar .apex-sidebar-section-heading,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-section-heading {
+  color: rgba(255, 240, 225, 0.7) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  font-size: 0.67rem !important;
+  text-shadow: 0 1px 2px rgba(40, 30, 20, 0.25) !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-section-divider,
+.apex-theme-glass .apex-sidebar .apex-sidebar-section-divider,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-section-divider {
+  background: rgba(255, 255, 255, 0.16) !important;
+}
+
+/* 4. Navigation Items & Clean Monochrome White Icons */
+.apex-sidebar-glass .apex-nav-item,
+.apex-theme-glass .apex-sidebar .apex-nav-item,
+[data-theme="glass"] .apex-sidebar .apex-nav-item {
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 9999px !important;
+  padding: 0.58rem 0.85rem !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.apex-sidebar-glass .apex-nav-item:hover,
+.apex-theme-glass .apex-sidebar .apex-nav-item:hover,
+[data-theme="glass"] .apex-sidebar .apex-nav-item:hover {
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+  transform: translateX(2px) !important;
+}
+
+/* Overriding inline icon colors with consistent luxury white */
+.apex-sidebar-glass .apex-nav-icon,
+.apex-theme-glass .apex-sidebar .apex-nav-icon,
+[data-theme="glass"] .apex-sidebar .apex-nav-icon {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.apex-sidebar-glass .apex-nav-icon svg,
+.apex-theme-glass .apex-sidebar .apex-nav-icon svg,
+[data-theme="glass"] .apex-sidebar .apex-nav-icon svg {
+  color: rgba(255, 255, 255, 0.9) !important;
+  stroke: rgba(255, 255, 255, 0.9) !important;
+}
+
+.apex-sidebar-glass .apex-nav-icon svg[fill]:not([fill="none"]),
+.apex-theme-glass .apex-sidebar .apex-nav-icon svg[fill]:not([fill="none"]),
+[data-theme="glass"] .apex-sidebar .apex-nav-icon svg[fill]:not([fill="none"]) {
+  fill: rgba(255, 255, 255, 0.9) !important;
+}
+
+.apex-sidebar-glass .apex-nav-item:hover .apex-nav-icon,
+.apex-theme-glass .apex-sidebar .apex-nav-item:hover .apex-nav-icon,
+[data-theme="glass"] .apex-sidebar .apex-nav-item:hover .apex-nav-icon {
+  color: #ffffff !important;
+  transform: scale(1.1) !important;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6)) !important;
+}
+
+.apex-sidebar-glass .apex-nav-item:hover .apex-nav-icon svg,
+.apex-theme-glass .apex-sidebar .apex-nav-item:hover .apex-nav-icon svg,
+[data-theme="glass"] .apex-sidebar .apex-nav-item:hover .apex-nav-icon svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+/* Chevrons */
+.apex-sidebar-glass .apex-nav-arrow,
+.apex-theme-glass .apex-sidebar .apex-nav-arrow,
+[data-theme="glass"] .apex-sidebar .apex-nav-arrow {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* 5. Active State (Solid White Capsule with Dark Espresso Icon & Typography) */
+.apex-sidebar-glass .apex-nav-item.active,
+.apex-theme-glass .apex-sidebar .apex-nav-item.active,
+[data-theme="glass"] .apex-sidebar .apex-nav-item.active {
+  background: #ffffff !important;
+  border: 1px solid #ffffff !important;
+  color: #1a130f !important;
+  font-weight: 700 !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 4px 14px rgba(40, 30, 20, 0.25) !important;
+}
+
+.apex-sidebar-glass .apex-nav-item.active .apex-nav-text,
+.apex-theme-glass .apex-sidebar .apex-nav-item.active .apex-nav-text,
+[data-theme="glass"] .apex-sidebar .apex-nav-item.active .apex-nav-text {
+  color: #1a130f !important;
+  font-weight: 700 !important;
+}
+
+.apex-sidebar-glass .apex-nav-item.active .apex-nav-icon,
+.apex-theme-glass .apex-sidebar .apex-nav-item.active .apex-nav-icon,
+[data-theme="glass"] .apex-sidebar .apex-nav-item.active .apex-nav-icon {
+  color: #1a130f !important;
+}
+
+.apex-sidebar-glass .apex-nav-item.active .apex-nav-icon svg,
+.apex-theme-glass .apex-sidebar .apex-nav-item.active .apex-nav-icon svg,
+[data-theme="glass"] .apex-sidebar .apex-nav-item.active .apex-nav-icon svg {
+  color: #1a130f !important;
+  stroke: #1a130f !important;
+}
+
+.apex-sidebar-glass .apex-nav-item.active .apex-nav-arrow,
+.apex-theme-glass .apex-sidebar .apex-nav-item.active .apex-nav-arrow,
+[data-theme="glass"] .apex-sidebar .apex-nav-item.active .apex-nav-arrow {
+  color: #1a130f !important;
+}
+
+/* Group Active State */
+.apex-sidebar-glass .apex-nav-item.active-group,
+.apex-theme-glass .apex-sidebar .apex-nav-item.active-group,
+[data-theme="glass"] .apex-sidebar .apex-nav-item.active-group {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: #ffffff !important;
+  border-radius: 9999px !important;
+}
+
+/* 6. Count Badges (Frosted Translucent Capsules) */
+.apex-sidebar-glass .apex-nav-badge,
+.apex-sidebar-glass .apex-nav-badge-cyan,
+.apex-sidebar-glass .apex-nav-badge-amber,
+.apex-theme-glass .apex-sidebar .apex-nav-badge,
+.apex-theme-glass .apex-sidebar .apex-nav-badge-cyan,
+.apex-theme-glass .apex-sidebar .apex-nav-badge-amber,
+[data-theme="glass"] .apex-sidebar .apex-nav-badge,
+[data-theme="glass"] .apex-sidebar .apex-nav-badge-cyan,
+[data-theme="glass"] .apex-sidebar .apex-nav-badge-amber {
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 2px 6px rgba(40, 30, 20, 0.15) !important;
+  font-weight: 700 !important;
+}
+
+.apex-sidebar-glass .apex-nav-item.active .apex-nav-badge,
+.apex-theme-glass .apex-sidebar .apex-nav-item.active .apex-nav-badge,
+[data-theme="glass"] .apex-sidebar .apex-nav-item.active .apex-nav-badge {
+  background: rgba(28, 21, 16, 0.12) !important;
+  color: #1a130f !important;
+  border-color: rgba(28, 21, 16, 0.25) !important;
+}
+
+/* 7. Accordion Submenus */
+.apex-sidebar-glass .apex-sub-menu-inner,
+.apex-theme-glass .apex-sidebar .apex-sub-menu-inner,
+[data-theme="glass"] .apex-sidebar .apex-sub-menu-inner {
+  border-left: 1px solid rgba(255, 255, 255, 0.25) !important;
+  margin-left: 1.1rem !important;
+  padding-left: 0.8rem !important;
+}
+
+.apex-sidebar-glass .apex-sub-item,
+.apex-theme-glass .apex-sidebar .apex-sub-item,
+[data-theme="glass"] .apex-sidebar .apex-sub-item {
+  color: rgba(255, 255, 255, 0.82) !important;
+  border-radius: 9999px !important;
+}
+
+.apex-sidebar-glass .apex-sub-item:hover,
+.apex-theme-glass .apex-sidebar .apex-sub-item:hover,
+[data-theme="glass"] .apex-sidebar .apex-sub-item:hover {
+  background: rgba(255, 255, 255, 0.18) !important;
+  color: #ffffff !important;
+}
+
+.apex-sidebar-glass .apex-sub-item.active,
+.apex-theme-glass .apex-sidebar .apex-sub-item.active,
+[data-theme="glass"] .apex-sidebar .apex-sub-item.active {
+  background: #ffffff !important;
+  color: #1a130f !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(40, 30, 20, 0.2) !important;
+}
+
+.apex-sidebar-glass .apex-sub-item.active .apex-sub-icon,
+.apex-theme-glass .apex-sidebar .apex-sub-item.active .apex-sub-icon,
+[data-theme="glass"] .apex-sidebar .apex-sub-item.active .apex-sub-icon {
+  color: #1a130f !important;
+}
+
+.apex-sidebar-glass .apex-sub-item.active .apex-sub-icon svg,
+.apex-theme-glass .apex-sidebar .apex-sub-item.active .apex-sub-icon svg,
+[data-theme="glass"] .apex-sidebar .apex-sub-item.active .apex-sub-icon svg {
+  color: #1a130f !important;
+  stroke: #1a130f !important;
+}
+
+/* 8. Bottom User Card & Theme Switcher */
+.apex-sidebar-glass .apex-sidebar-user-card,
+.apex-theme-glass .apex-sidebar .apex-sidebar-user-card,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-user-card {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.28) !important;
+  border-bottom-left-radius: 28px !important;
+  border-bottom-right-radius: 28px !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-avatar,
+.apex-theme-glass .apex-sidebar .apex-sidebar-avatar,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-avatar {
+  background: #1c1510 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 2px 8px rgba(28, 21, 16, 0.3) !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-online-dot,
+.apex-theme-glass .apex-sidebar .apex-sidebar-online-dot,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-online-dot {
+  background: #10b981 !important;
+  border-color: #8c7666 !important;
+  box-shadow: 0 0 6px #10b981 !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-username,
+.apex-theme-glass .apex-sidebar .apex-sidebar-username,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-username {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-role-badge,
+.apex-theme-glass .apex-sidebar .apex-sidebar-role-badge,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-role-badge {
+  color: rgba(255, 240, 225, 0.75) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-theme-toggle,
+.apex-theme-glass .apex-sidebar .apex-sidebar-theme-toggle,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-theme-toggle {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  border-radius: 9999px !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(40, 30, 20, 0.15) !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-theme-toggle:hover,
+.apex-theme-glass .apex-sidebar .apex-sidebar-theme-toggle:hover,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-theme-toggle:hover {
+  background: #ffffff !important;
+  color: #1a130f !important;
+  border-color: #ffffff !important;
+}
+
+/* 9. Search Overlay Results */
+.apex-sidebar-glass .apex-sidebar-search-results,
+.apex-theme-glass .apex-sidebar .apex-sidebar-search-results,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-search-results {
+  background: rgba(140, 118, 102, 0.94) !important;
+  backdrop-filter: blur(28px) saturate(160%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 16px 36px rgba(40, 30, 20, 0.3) !important;
+  color: #ffffff !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-search-item,
+.apex-theme-glass .apex-sidebar .apex-sidebar-search-item,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-search-item {
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 8px !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-search-item:hover,
+.apex-theme-glass .apex-sidebar .apex-sidebar-search-item:hover,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-search-item:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  color: #ffffff !important;
+}
+
+.apex-sidebar-glass .apex-sidebar-search-badge,
+.apex-theme-glass .apex-sidebar .apex-sidebar-search-badge,
+[data-theme="glass"] .apex-sidebar .apex-sidebar-search-badge {
+  color: rgba(255, 240, 225, 0.7) !important;
+}

@@ -63,6 +63,7 @@ export default function ApexReportToolbar({
   page = 1,
   total = 0,
   onPageChange,
+  toolbarRight = null,
   children,
   className = '',
   style = {},
@@ -238,17 +239,19 @@ export default function ApexReportToolbar({
         {children}
       </div>
 
-      {/* Right side: Pagination Strip ("1 - 50 of 9,634 < >") */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          color: '#64748b',
-          fontSize: '0.8rem',
-          fontWeight: 500,
-        }}
-      >
+      {/* Right side: custom toolbarRight actions + Pagination Strip ("1 - 50 of 9,634 < >") */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+        {toolbarRight}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+            color: '#64748b',
+            fontSize: '0.8rem',
+            fontWeight: 500,
+          }}
+        >
         <span>
           {total === 0 ? '0 of 0' : `${startIdx.toLocaleString()} - ${endIdx.toLocaleString()} of ${total.toLocaleString()}`}
         </span>
@@ -288,6 +291,7 @@ export default function ApexReportToolbar({
             <IconChevronRight size={16} />
           </button>
         </div>
+      </div>
       </div>
     </div>
   );

@@ -241,9 +241,27 @@ async function getLeadOverview(filters = {}) {
     // Total Leads by Source (matching Screenshot 1)
     db.query(`
       SELECT 
-        COALESCE(NULLIF(TRIM(l.source), ''), 'Unspecified') as label,
+        COALESCE(
+          NULLIF(
+            CASE 
+              WHEN TRIM(COALESCE(l.source, '')) ~ '^[0-9]+$' THEN ms.source
+              WHEN LOWER(TRIM(COALESCE(l.source, ''))) IN ('', 'null', 'undefined', 'n/a', 'na', '-', 'none', 'unknown', '?') THEN 'Unspecified'
+              ELSE TRIM(l.source)
+            END,
+            ''
+          ),
+          'Unspecified'
+        ) as label,
         COUNT(DISTINCT l.lead_id)::int as count
       FROM leads l
+      LEFT JOIN master_sources ms ON (
+        TRIM(COALESCE(l.source, '')) ~ '^[0-9]+$' 
+        AND ms.id = CASE WHEN TRIM(COALESCE(l.source, '')) ~ '^[0-9]+$' THEN TRIM(l.source)::int ELSE NULL END
+        AND ms.source IS NOT NULL 
+        AND TRIM(ms.source) != '' 
+        AND TRIM(ms.source) !~ '^[0-9]+$'
+        AND LOWER(TRIM(ms.source)) NOT IN ('null', 'undefined', 'n/a', 'na', '-', 'none', 'unknown', '?')
+      )
       ${whereClause}
       GROUP BY 1
       ORDER BY count DESC
@@ -253,9 +271,27 @@ async function getLeadOverview(filters = {}) {
     // Won Leads by Source (matching Screenshot 1)
     db.query(`
       SELECT 
-        COALESCE(NULLIF(TRIM(l.source), ''), 'Unspecified') as label,
+        COALESCE(
+          NULLIF(
+            CASE 
+              WHEN TRIM(COALESCE(l.source, '')) ~ '^[0-9]+$' THEN ms.source
+              WHEN LOWER(TRIM(COALESCE(l.source, ''))) IN ('', 'null', 'undefined', 'n/a', 'na', '-', 'none', 'unknown', '?') THEN 'Unspecified'
+              ELSE TRIM(l.source)
+            END,
+            ''
+          ),
+          'Unspecified'
+        ) as label,
         COUNT(DISTINCT l.lead_id)::int as count
       FROM leads l
+      LEFT JOIN master_sources ms ON (
+        TRIM(COALESCE(l.source, '')) ~ '^[0-9]+$' 
+        AND ms.id = CASE WHEN TRIM(COALESCE(l.source, '')) ~ '^[0-9]+$' THEN TRIM(l.source)::int ELSE NULL END
+        AND ms.source IS NOT NULL 
+        AND TRIM(ms.source) != '' 
+        AND TRIM(ms.source) !~ '^[0-9]+$'
+        AND LOWER(TRIM(ms.source)) NOT IN ('null', 'undefined', 'n/a', 'na', '-', 'none', 'unknown', '?')
+      )
       ${whereClause ? `${whereClause} AND UPPER(TRIM(COALESCE(l.lost_won, ''))) = 'WON'` : "WHERE UPPER(TRIM(COALESCE(l.lost_won, ''))) = 'WON'"}
       GROUP BY 1
       ORDER BY count DESC
@@ -393,8 +429,14 @@ async function getLeadOverview(filters = {}) {
       avgTimeToCloseDays: kpis.avg_time_to_close_days,
     },
     charts: {
-      totalLeadsBySource: leadsBySourceRes.rows,
-      wonLeadsBySource: wonLeadsBySourceRes.rows,
+      totalLeadsBySource: leadsBySourceRes.rows.map((r) => ({
+        ...r,
+        label: (!r.label || /^\d+$/.test(String(r.label).trim()) || ['null', 'undefined', 'n/a', 'na', '-', 'none', 'unknown', '?'].includes(String(r.label).trim().toLowerCase())) ? 'Unspecified' : String(r.label).trim(),
+      })),
+      wonLeadsBySource: wonLeadsBySourceRes.rows.map((r) => ({
+        ...r,
+        label: (!r.label || /^\d+$/.test(String(r.label).trim()) || ['null', 'undefined', 'n/a', 'na', '-', 'none', 'unknown', '?'].includes(String(r.label).trim().toLowerCase())) ? 'Unspecified' : String(r.label).trim(),
+      })),
       statusDonut: statusDonutRes.rows,
       lostByReason: lostReasonRes.rows,
       monthlyLeadsByYear: monthlyYearRes.rows,

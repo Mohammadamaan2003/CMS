@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '../../api/client';
 import ChartCard from '../../components/ChartCard';
-<<<<<<< HEAD
+import CountUpNumber from '../../components/CountUpNumber';
 import ExcelFilterDropdown from '../../components/ExcelFilterDropdown';
 const MultiSelectDropdown = ExcelFilterDropdown;
-=======
-import MultiSelectDropdown from '../../components/MultiSelectDropdown';
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 import ApexReportToolbar from '../../components/ApexReportToolbar';
 import ApexInteractiveReport from '../../components/ApexInteractiveReport';
+import ParticleChart from '../../components/ui/particle-chart';
 import {
   IconLightbulb,
   IconTarget,
@@ -99,151 +97,220 @@ const IconClock = ({ size = 16, color = 'currentColor', className = '' }) => (
   </svg>
 );
 
+// Standardized Drilldown Report Columns (Page 77)
+const drilldownLeadColumns = [
+  { key: 'lead_id', label: 'Lead ID', width: '90px', getValue: (r) => r.lead_id },
+  { key: 'company_name', label: 'Company', minWidth: '160px', getValue: (r) => r.company_name || '' },
+  { key: 'name_of_coordinator', label: 'Coordinator', minWidth: '130px', getValue: (r) => r.name_of_coordinator || '' },
+  { key: 'account_manager', label: 'Account Mgr', minWidth: '130px', getValue: (r) => r.account_manager || '' },
+  { key: 'technology', label: 'Technology', minWidth: '120px', getValue: (r) => r.technology || '' },
+  { key: 'lead_date', label: 'Lead Date', minWidth: '110px', getValue: (r) => r.lead_date || '' },
+  { key: 'country', label: 'Country', minWidth: '110px', getValue: (r) => r.country || '' },
+  {
+    key: 'lost_won',
+    label: 'Status / Outcome',
+    minWidth: '120px',
+    getValue: (r) => r.lost_won || 'Open',
+    render: (r) => (
+      <span
+        className={`apex-kpi-badge ${
+          r.lost_won === 'WON' || r.lost_won === 'Won'
+            ? 'badge-green'
+            : r.lost_won === 'Lost'
+            ? 'badge-blue'
+            : 'badge-amber'
+        }`}
+      >
+        {r.lost_won || 'Open'}
+      </span>
+    ),
+  },
+  {
+    key: 'amount_in_inr',
+    label: 'Amount (INR)',
+    minWidth: '120px',
+    align: 'right',
+    getValue: (r) => r.amount_in_inr ? `₹ ${Number(r.amount_in_inr).toLocaleString()}` : '-',
+  },
+];
+
+const drilldownLineColumns = [
+  { key: 'lead_line_id', label: 'Line ID', width: '85px', getValue: (r) => r.lead_line_id },
+  { key: 'lead_id', label: 'Lead ID', width: '85px', getValue: (r) => r.lead_id },
+  { key: 'company_name', label: 'Company', minWidth: '150px', getValue: (r) => r.company_name || '' },
+  { key: 'technology', label: 'Technology', minWidth: '120px', getValue: (r) => r.technology || '' },
+  { key: 'model', label: 'Model', minWidth: '110px', getValue: (r) => r.model || '' },
+  { key: 'experience', label: 'Experience', minWidth: '100px', getValue: (r) => r.experience || '' },
+  { key: 'rate', label: 'Rate', minWidth: '90px', align: 'right', getValue: (r) => r.rate || '' },
+  { key: 'no_of_resources', label: 'Resources', minWidth: '90px', align: 'right', getValue: (r) => r.no_of_resources || '' },
+  {
+    key: 'amount_in_inr',
+    label: 'Amount (INR)',
+    minWidth: '120px',
+    align: 'right',
+    getValue: (r) => r.amount_in_inr ? `₹ ${Number(r.amount_in_inr).toLocaleString()}` : '-',
+  },
+  { key: 'cv_sent', label: 'CV Sent', minWidth: '90px', getValue: (r) => r.cv_sent || 'No' },
+];
+
+const drilldownProposalColumns = [
+  { key: 'proposal_id', label: 'Proposal ID', width: '90px', getValue: (r) => r.proposal_id },
+  { key: 'lead_id', label: 'Lead ID', width: '85px', getValue: (r) => r.lead_id },
+  { key: 'company_name', label: 'Company', minWidth: '160px', getValue: (r) => r.company_name || '' },
+  { key: 'proposal_number', label: 'Proposal Number', minWidth: '130px', getValue: (r) => r.proposal_number || '' },
+  { key: 'date_sent', label: 'Date Sent', minWidth: '110px', getValue: (r) => r.date_sent || '' },
+  { key: 'proposal_description', label: 'Description', minWidth: '180px', getValue: (r) => r.proposal_description || '' },
+  { key: 'file_name', label: 'File', minWidth: '120px', getValue: (r) => r.file_name || 'Document' },
+];
+
+const drilldownResourceColumns = [
+  { key: 'resource_id', label: 'Resource ID', width: '90px', getValue: (r) => r.resource_id },
+  { key: 'lead_id', label: 'Lead ID', width: '85px', getValue: (r) => r.lead_id },
+  { key: 'resource_name', label: 'Resource Name', minWidth: '150px', getValue: (r) => r.resource_name || '' },
+  { key: 'designation', label: 'Designation', minWidth: '130px', getValue: (r) => r.designation || '' },
+  { key: 'technology', label: 'Technology', minWidth: '120px', getValue: (r) => r.technology || '' },
+  { key: 'status', label: 'Status', minWidth: '100px', getValue: (r) => r.status || '' },
+];
+
 // APEX Page 77 Column Bar Chart (Total Leads by Source & Won Leads by Source)
 function ApexColumnChart({
   title,
   data = [],
   step = 50,
-  maxVal = 450,
-  barColor = '#0284c7',
   onBarClick,
 }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
+  // Requirement 6: Keep the bars sorted highest-first
+  const sortedData = useMemo(() => {
+    return [...data].sort((a, b) => ((b.count ?? b.value ?? 0) - (a.count ?? a.value ?? 0)));
+  }, [data]);
+
+  // Requirement 2: Auto-scale the y-axis to the data (max = highest count rounded up to nearest step)
+  // Remove 450 floor; keep existing step prop behaviour
   const computedMax = useMemo(() => {
-    const highest = Math.max(...data.map((d) => d.count || 0), 0);
-    return Math.max(maxVal, Math.ceil(highest / step) * step);
-  }, [data, maxVal, step]);
+    const highest = Math.max(...sortedData.map((d) => Number(d.count ?? d.value) || 0), 0);
+    const stepSize = step && step > 0 ? step : 50;
+    const rounded = Math.ceil(highest / stepSize) * stepSize;
+    return Math.max(rounded, stepSize);
+  }, [sortedData, step]);
 
   const ticks = useMemo(() => {
+    const stepSize = step && step > 0 ? step : 50;
     const arr = [];
-    for (let v = 0; v <= computedMax; v += step) {
+    for (let v = 0; v <= computedMax; v += stepSize) {
       arr.push(v);
     }
     return arr;
   }, [computedMax, step]);
 
-  const chartHeight = 220;
-  const chartWidth = 560;
-  const paddingLeft = 45;
-  const paddingRight = 20;
-  const paddingTop = 20;
-  const paddingBottom = 45;
+  const chartId = useMemo(() => {
+    return (title || 'column-chart').toLowerCase().replace(/[^a-z0-9]/g, '-');
+  }, [title]);
+
+  // Requirement 3: Widen chart area and provide bottom padding for angled full labels
+  const chartWidth = 620;
+  const chartHeight = 280;
+  const paddingLeft = 52;
+  const paddingRight = 24;
+  const paddingTop = 32;
+  const paddingBottom = 75;
   const innerWidth = chartWidth - paddingLeft - paddingRight;
   const innerHeight = chartHeight - paddingTop - paddingBottom;
 
-  const barSlotWidth = data.length > 0 ? innerWidth / Math.max(data.length, 10) : 40;
-  const barWidth = Math.min(Math.max(barSlotWidth * 0.45, 10), 28);
+  const barCount = Math.max(sortedData.length, 1);
+  const barSlotWidth = innerWidth / Math.max(barCount, 10);
+  const barWidth = Math.min(Math.max(barSlotWidth * 0.52, 14), 26);
 
-
-  // Standardized Drilldown Report Columns
-  const drilldownLeadColumns = useMemo(() => [
-    { key: 'lead_id', label: 'Lead ID', width: '90px', getValue: (r) => r.lead_id },
-    { key: 'company_name', label: 'Company', minWidth: '160px', getValue: (r) => r.company_name || '' },
-    { key: 'name_of_coordinator', label: 'Coordinator', minWidth: '130px', getValue: (r) => r.name_of_coordinator || '' },
-    { key: 'account_manager', label: 'Account Mgr', minWidth: '130px', getValue: (r) => r.account_manager || '' },
-    { key: 'technology', label: 'Technology', minWidth: '120px', getValue: (r) => r.technology || '' },
-    { key: 'lead_date', label: 'Lead Date', minWidth: '110px', getValue: (r) => r.lead_date || '' },
-    { key: 'country', label: 'Country', minWidth: '110px', getValue: (r) => r.country || '' },
-    {
-      key: 'lost_won',
-      label: 'Status / Outcome',
-      minWidth: '120px',
-      getValue: (r) => r.lost_won || 'Open',
-      render: (r) => (
-        <span
-          className={`apex-kpi-badge ${
-            r.lost_won === 'WON' || r.lost_won === 'Won'
-              ? 'badge-green'
-              : r.lost_won === 'Lost'
-              ? 'badge-blue'
-              : 'badge-amber'
-          }`}
-        >
-          {r.lost_won || 'Open'}
-        </span>
-      ),
-    },
-    {
-      key: 'amount_in_inr',
-      label: 'Amount (INR)',
-      minWidth: '120px',
-      align: 'right',
-      getValue: (r) => r.amount_in_inr ? `₹ ${Number(r.amount_in_inr).toLocaleString()}` : '-',
-    },
-  ], []);
-
-  const drilldownLineColumns = useMemo(() => [
-    { key: 'lead_line_id', label: 'Line ID', width: '85px', getValue: (r) => r.lead_line_id },
-    { key: 'lead_id', label: 'Lead ID', width: '85px', getValue: (r) => r.lead_id },
-    { key: 'company_name', label: 'Company', minWidth: '150px', getValue: (r) => r.company_name || '' },
-    { key: 'technology', label: 'Technology', minWidth: '120px', getValue: (r) => r.technology || '' },
-    { key: 'model', label: 'Model', minWidth: '110px', getValue: (r) => r.model || '' },
-    { key: 'experience', label: 'Experience', minWidth: '100px', getValue: (r) => r.experience || '' },
-    { key: 'rate', label: 'Rate', minWidth: '90px', align: 'right', getValue: (r) => r.rate || '' },
-    { key: 'no_of_resources', label: 'Resources', minWidth: '90px', align: 'right', getValue: (r) => r.no_of_resources || '' },
-    {
-      key: 'amount_in_inr',
-      label: 'Amount (INR)',
-      minWidth: '120px',
-      align: 'right',
-      getValue: (r) => r.amount_in_inr ? `₹ ${Number(r.amount_in_inr).toLocaleString()}` : '-',
-    },
-    { key: 'cv_sent', label: 'CV Sent', minWidth: '90px', getValue: (r) => r.cv_sent || 'No' },
-  ], []);
-
-  const drilldownProposalColumns = useMemo(() => [
-    { key: 'proposal_id', label: 'Proposal ID', width: '90px', getValue: (r) => r.proposal_id },
-    { key: 'lead_id', label: 'Lead ID', width: '85px', getValue: (r) => r.lead_id },
-    { key: 'company_name', label: 'Company', minWidth: '160px', getValue: (r) => r.company_name || '' },
-    { key: 'proposal_number', label: 'Proposal Number', minWidth: '130px', getValue: (r) => r.proposal_number || '' },
-    { key: 'date_sent', label: 'Date Sent', minWidth: '110px', getValue: (r) => r.date_sent || '' },
-    { key: 'proposal_description', label: 'Description', minWidth: '180px', getValue: (r) => r.proposal_description || '' },
-    { key: 'file_name', label: 'File', minWidth: '120px', getValue: (r) => r.file_name || 'Document' },
-  ], []);
-
-  const drilldownResourceColumns = useMemo(() => [
-    { key: 'resource_id', label: 'Resource ID', width: '90px', getValue: (r) => r.resource_id },
-    { key: 'lead_id', label: 'Lead ID', width: '85px', getValue: (r) => r.lead_id },
-    { key: 'resource_name', label: 'Resource Name', minWidth: '150px', getValue: (r) => r.resource_name || '' },
-    { key: 'designation', label: 'Designation', minWidth: '130px', getValue: (r) => r.designation || '' },
-    { key: 'technology', label: 'Technology', minWidth: '120px', getValue: (r) => r.technology || '' },
-    { key: 'status', label: 'Status', minWidth: '100px', getValue: (r) => r.status || '' },
-  ], []);
+  // Helper for drawing a solid bar with rounded top corners and sharp baseline
+  const getRoundedBarPath = (x, y, w, h, radius = 4) => {
+    const barH = Math.max(h, 2);
+    const r = Math.min(radius, w / 2, barH / 2);
+    return `M ${x} ${y + barH} L ${x} ${y + r} A ${r} ${r} 0 0 1 ${x + r} ${y} L ${x + w - r} ${y} A ${r} ${r} 0 0 1 ${x + w} ${y + r} L ${x + w} ${y + barH} Z`;
+  };
 
   return (
     <div
       style={{
-        background: '#ffffff',
-        borderRadius: '8px',
-        border: '1px solid #cbd5e1',
+        background: 'rgba(11, 19, 43, 0.75)',
+        backdropFilter: 'blur(16px)',
+        borderRadius: '14px',
+        border: '1px solid rgba(139, 92, 246, 0.22)',
+        boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 0 1px 1px rgba(255, 255, 255, 0.05)',
         overflow: 'hidden',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
         display: 'flex',
         flexDirection: 'column',
       }}
     >
-      {/* Dark Navy Header matching screenshot */}
+      {/* Lumina Glass Card Header matching screenshot */}
       <div
         style={{
-          background: '#071531',
-          color: '#ffffff',
-          padding: '12px 18px',
-          fontWeight: 700,
-          fontSize: '15px',
-          letterSpacing: '0.01em',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '14px 20px',
+          borderBottom: '1px solid rgba(139, 92, 246, 0.15)',
+          background: 'rgba(15, 23, 62, 0.65)',
+          backdropFilter: 'blur(10px)',
         }}
       >
-        {title}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span
+            style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              backgroundColor: '#38bdf8',
+              boxShadow: '0 0 10px #38bdf8',
+            }}
+          />
+          <h3
+            style={{
+              margin: 0,
+              fontSize: '15.5px',
+              fontWeight: 700,
+              color: '#ffffff',
+              letterSpacing: '0.02em',
+              fontFamily: 'system-ui, -apple-system, sans-serif',
+            }}
+          >
+            {title}
+          </h3>
+        </div>
       </div>
 
       {/* SVG Chart Canvas */}
-      <div style={{ padding: '16px 12px 10px', position: 'relative' }}>
+      <div style={{ padding: '16px 16px 12px', position: 'relative' }}>
         <svg
           viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-          style={{ width: '100%', height: '260px', overflow: 'visible' }}
+          style={{ width: '100%', height: 'auto', maxHeight: '310px', overflow: 'visible' }}
         >
-          {/* Horizontal Grid lines and Y-axis tick values */}
+          <defs>
+            {/* Requirement 1: Full gradient fill (Lumina neon gradient, pink -> violet -> blue -> cyan) */}
+            <linearGradient id={`luminaBarGrad-${chartId}`} x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#ec4899" />
+              <stop offset="35%" stopColor="#a855f7" />
+              <stop offset="70%" stopColor="#3b82f6" />
+              <stop offset="100%" stopColor="#06b6d4" />
+            </linearGradient>
+
+            <linearGradient id={`luminaBarGradHover-${chartId}`} x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#f43f5e" />
+              <stop offset="35%" stopColor="#c084fc" />
+              <stop offset="70%" stopColor="#60a5fa" />
+              <stop offset="100%" stopColor="#22d3ee" />
+            </linearGradient>
+
+            {/* Requirement 1: Subtle glow so bars stay clearly visible on the dark card */}
+            <filter id={`luminaGlow-${chartId}`} x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#8b5cf6" floodOpacity="0.45" />
+            </filter>
+            <filter id={`luminaGlowHover-${chartId}`} x="-25%" y="-25%" width="150%" height="150%">
+              <feDropShadow dx="0" dy="0" stdDeviation="5" floodColor="#06b6d4" floodOpacity="0.75" />
+            </filter>
+          </defs>
+
+          {/* Horizontal Grid lines and Y-axis tick values (Requirement 7: subtle and readable on dark) */}
           {ticks.map((tickVal) => {
             const y = paddingTop + innerHeight - (tickVal / computedMax) * innerHeight;
             return (
@@ -253,7 +320,7 @@ function ApexColumnChart({
                   y1={y}
                   x2={chartWidth - paddingRight}
                   y2={y}
-                  stroke="#e2e8f0"
+                  stroke="rgba(148, 163, 184, 0.12)"
                   strokeWidth="1"
                 />
                 <text
@@ -261,29 +328,12 @@ function ApexColumnChart({
                   y={y + 3.5}
                   textAnchor="end"
                   fontSize="11"
-                  fill="#64748b"
+                  fill="#94a3b8"
                   fontFamily="system-ui, -apple-system, sans-serif"
                 >
                   {tickVal}
                 </text>
               </g>
-            );
-          })}
-
-          {/* Vertical Grid lines across column slots */}
-          {Array.from({ length: Math.max(data.length, 10) + 1 }).map((_, i) => {
-            const x = paddingLeft + i * barSlotWidth;
-            if (x > chartWidth - paddingRight + 1) return null;
-            return (
-              <line
-                key={i}
-                x1={x}
-                y1={paddingTop}
-                x2={x}
-                y2={paddingTop + innerHeight}
-                stroke="#f1f5f9"
-                strokeWidth="1"
-              />
             );
           })}
 
@@ -293,15 +343,16 @@ function ApexColumnChart({
             y1={paddingTop + innerHeight}
             x2={chartWidth - paddingRight}
             y2={paddingTop + innerHeight}
-            stroke="#cbd5e1"
+            stroke="rgba(148, 163, 184, 0.3)"
             strokeWidth="1.5"
           />
 
-          {/* Vertical Column Bars */}
-          {data.map((item, idx) => {
+          {/* Solid Column Bars with Lumina Neon Gradient */}
+          {sortedData.map((item, idx) => {
             const slotCenterX = paddingLeft + idx * barSlotWidth + barSlotWidth / 2;
             const barX = slotCenterX - barWidth / 2;
-            const h = computedMax > 0 ? (item.count / computedMax) * innerHeight : 0;
+            const countVal = Number(item.count ?? item.value ?? 0);
+            const h = computedMax > 0 ? (countVal / computedMax) * innerHeight : 0;
             const barY = paddingTop + innerHeight - h;
             const isHovered = hoveredIndex === idx;
 
@@ -313,60 +364,102 @@ function ApexColumnChart({
                 onMouseLeave={() => setHoveredIndex(null)}
                 onClick={() => onBarClick && onBarClick(item.label)}
               >
-                {/* Bar */}
-                <rect
-                  x={barX}
-                  y={barY}
-                  width={barWidth}
-                  height={Math.max(h, 2)}
-                  fill={isHovered ? '#0284c7' : barColor}
-                  rx="1"
-                  style={{ transition: 'fill 0.15s ease' }}
+                {/* Requirement 1: Solid bar with rounded top corners, full Lumina gradient, and subtle glow */}
+                <path
+                  className="apex-column-bar"
+                  d={getRoundedBarPath(barX, barY, barWidth, h, 4)}
+                  fill={isHovered ? `url(#luminaBarGradHover-${chartId})` : `url(#luminaBarGrad-${chartId})`}
+                  filter={isHovered ? `url(#luminaGlowHover-${chartId})` : `url(#luminaGlow-${chartId})`}
+                  style={{
+                    transition: 'all 0.15s ease',
+                    animationDelay: `${idx * 25}ms`,
+                  }}
                 />
+
+                {/* Requirement 4: Count value on top of each bar so numbers are readable without hovering */}
+                <text
+                  x={slotCenterX}
+                  y={barY - 6}
+                  textAnchor="middle"
+                  fontSize="10.5"
+                  fontWeight="600"
+                  fill={isHovered ? '#38bdf8' : '#e2e8f0'}
+                  fontFamily="system-ui, -apple-system, sans-serif"
+                  style={{
+                    transition: 'fill 0.15s ease',
+                    pointerEvents: 'none',
+                  }}
+                >
+                  {countVal.toLocaleString()}
+                </text>
 
                 {/* X-axis indicator dot */}
                 <circle
                   cx={slotCenterX}
                   cy={paddingTop + innerHeight + 6}
-                  r={isHovered ? 3 : 2}
-                  fill={isHovered ? '#0284c7' : '#94a3b8'}
+                  r={isHovered ? 3.5 : 2}
+                  fill={isHovered ? '#38bdf8' : '#64748b'}
+                  style={{ transition: 'all 0.15s ease' }}
                 />
 
-                {/* Truncated source label below */}
+                {/* Requirement 3: Full source name angled (35 degrees), never cut mid-word */}
                 <text
-                  x={slotCenterX}
-                  y={paddingTop + innerHeight + 20}
-                  textAnchor="middle"
-                  fontSize="9.5"
-                  fill={isHovered ? '#0f172a' : '#64748b'}
-                  style={{ pointerEvents: 'none' }}
+                  x={slotCenterX - 4}
+                  y={paddingTop + innerHeight + 16}
+                  textAnchor="end"
+                  transform={`rotate(-35, ${slotCenterX - 4}, ${paddingTop + innerHeight + 16})`}
+                  fontSize="10"
+                  fill={isHovered ? '#38bdf8' : '#94a3b8'}
+                  fontWeight={isHovered ? 600 : 500}
+                  fontFamily="system-ui, -apple-system, sans-serif"
+                  style={{
+                    transition: 'fill 0.15s ease',
+                    pointerEvents: 'none',
+                  }}
                 >
-                  {item.label.length > 7 ? `${item.label.slice(0, 6)}…` : item.label}
+                  {item.label}
                 </text>
               </g>
             );
           })}
         </svg>
 
-        {/* Hover Tooltip Overlay */}
-        {hoveredIndex !== null && data[hoveredIndex] && (
+        {/* Requirement 3: Hover Tooltip Overlay showing full name and count */}
+        {hoveredIndex !== null && sortedData[hoveredIndex] && (
           <div
             style={{
               position: 'absolute',
               top: '12px',
               right: '20px',
-              background: '#071531',
+              background: 'rgba(15, 23, 42, 0.94)',
+              backdropFilter: 'blur(12px)',
+              border: '1px solid rgba(56, 189, 248, 0.4)',
               color: '#ffffff',
-              padding: '6px 12px',
-              borderRadius: '6px',
+              padding: '8px 14px',
+              borderRadius: '8px',
               fontSize: '12px',
-              boxShadow: '0 4px 6px rgba(0,0,0,0.15)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.5), 0 0 12px rgba(56, 189, 248, 0.25)',
               pointerEvents: 'none',
               zIndex: 10,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '2px',
             }}
           >
-            <strong>{data[hoveredIndex].label}</strong>: {data[hoveredIndex].count.toLocaleString()} leads
-            {onBarClick && <span style={{ display: 'block', fontSize: '10px', color: '#94a3b8' }}>Click to view in Leads report</span>}
+            <div style={{ fontWeight: 700, color: '#38bdf8' }}>
+              {sortedData[hoveredIndex].label}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11.5px', color: '#cbd5e1' }}>
+              <span>Leads:</span>
+              <strong style={{ color: '#ffffff' }}>
+                {Number(sortedData[hoveredIndex].count ?? sortedData[hoveredIndex].value ?? 0).toLocaleString()}
+              </strong>
+            </div>
+            {onBarClick && (
+              <span style={{ fontSize: '10px', color: '#94a3b8', marginTop: '2px' }}>
+                Click to view in Leads report
+              </span>
+            )}
           </div>
         )}
       </div>
@@ -385,7 +478,11 @@ const SECTIONS = [
   { id: 'lead_proposals', label: 'Lead Proposals' },
 ];
 
-export default function LeadDashboard({ onNavigate, onShowToast }) {
+export default function LeadDashboard({ onNavigate, onShowToast, theme }) {
+  // Active Theme detection
+  const currentTheme = theme || (typeof document !== 'undefined' ? (document.documentElement.getAttribute('data-theme') || (document.body.classList.contains('apex-theme-lumina') ? 'lumina' : 'dark')) : 'dark');
+  const isDark = currentTheme === 'dark';
+
   // Active Section Tab
   const [activeSection, setActiveSection] = useState('overview');
 
@@ -889,11 +986,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
               transition: 'all 0.15s ease',
             }}
           >
-<<<<<<< HEAD
             <span>{showFilters ? 'Hide Filter' : 'Show Filter'}</span>
-=======
-            <span>{showFilters ? 'Hide Filters' : 'Show Filters'}</span>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             {activeFilterCount > 0 && (
               <span
                 style={{
@@ -917,16 +1010,13 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
           ======================================================== */}
       {showFilters && (
         <div
-          className="apex-table-card" style={{ borderRadius: '10px', border: '1px solid #e2e8f0',
-            padding: '18px 20px',
-            marginBottom: '20px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-          }}
+          className="shared-filter-card"
+          style={{ marginBottom: '20px' }}
         >
           {/* Quick Date Range Presets */}
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginBottom: '14px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: '#475569', marginRight: '4px', textTransform: 'uppercase' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-main, #475569)', marginRight: '4px', textTransform: 'uppercase' }}>
                 Time Period:
               </span>
               {[
@@ -948,8 +1038,8 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                     fontWeight: datePreset === p.id ? 600 : 500,
                     border: '1px solid',
                     borderColor: datePreset === p.id ? '#0284c7' : '#cbd5e1',
-                    background: datePreset === p.id ? '#f0f9ff' : '#ffffff',
-                    color: datePreset === p.id ? '#0284c7' : '#475569',
+                    background: datePreset === p.id ? '#f0f9ff' : 'var(--bg-surface, #ffffff)',
+                    color: datePreset === p.id ? '#0284c7' : 'var(--text-main, #475569)',
                     cursor: 'pointer',
                   }}
                 >
@@ -958,183 +1048,211 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
               ))}
             </div>
 
-            <div style={{ fontSize: '12px', color: '#64748b' }}>
+            <div style={{ fontSize: '12px', color: 'var(--text-muted, #64748b)' }}>
               Lead Date Field: <code>leads.lead_date</code> (DD/MM/YYYY)
             </div>
           </div>
 
           {/* Core APEX Filters Grid (19 Filters) */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-              gap: '12px',
-              alignItems: 'flex-start',
-            }}
-          >
+          <div className="shared-filter-grid">
             {/* 1. Company Name */}
-            <MultiSelectDropdown
-              label="Company Name"
-              options={filterOptions.companies}
-              selected={selectedCompanies}
-              onChange={setSelectedCompanies}
-              placeholder="All Companies"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Company Name"
+                options={filterOptions.companies}
+                selected={selectedCompanies}
+                onChange={setSelectedCompanies}
+                placeholder="All Companies"
+              />
+            </div>
 
             {/* 2. Coordinator */}
-            <MultiSelectDropdown
-              label="Coordinator"
-              options={filterOptions.coordinators}
-              selected={selectedCoordinators}
-              onChange={setSelectedCoordinators}
-              placeholder="All Coordinators"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Coordinator"
+                options={filterOptions.coordinators}
+                selected={selectedCoordinators}
+                onChange={setSelectedCoordinators}
+                placeholder="All Coordinators"
+              />
+            </div>
 
             {/* 3. Account Manager */}
-            <MultiSelectDropdown
-              label="Salesperson / Mgr"
-              options={filterOptions.accountManagers}
-              selected={selectedManagers}
-              onChange={setSelectedManagers}
-              placeholder="All Managers"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Salesperson / Mgr"
+                options={filterOptions.accountManagers}
+                selected={selectedManagers}
+                onChange={setSelectedManagers}
+                placeholder="All Managers"
+              />
+            </div>
 
             {/* 4. Industry */}
-            <MultiSelectDropdown
-              label="Industry"
-              options={filterOptions.industries}
-              selected={selectedIndustries}
-              onChange={setSelectedIndustries}
-              placeholder="All Industries"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Industry"
+                options={filterOptions.industries}
+                selected={selectedIndustries}
+                onChange={setSelectedIndustries}
+                placeholder="All Industries"
+              />
+            </div>
 
             {/* 5. Country */}
-            <MultiSelectDropdown
-              label="Country"
-              options={filterOptions.countries}
-              selected={selectedCountries}
-              onChange={setSelectedCountries}
-              placeholder="All Countries"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Country"
+                options={filterOptions.countries}
+                selected={selectedCountries}
+                onChange={setSelectedCountries}
+                placeholder="All Countries"
+              />
+            </div>
 
             {/* 6. City */}
-            <MultiSelectDropdown
-              label="City"
-              options={filterOptions.cities}
-              selected={selectedCities}
-              onChange={setSelectedCities}
-              placeholder="All Cities"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="City"
+                options={filterOptions.cities}
+                selected={selectedCities}
+                onChange={setSelectedCities}
+                placeholder="All Cities"
+              />
+            </div>
 
             {/* 7. Status */}
-            <MultiSelectDropdown
-              label="Status"
-              options={filterOptions.statuses}
-              selected={selectedStatuses}
-              onChange={setSelectedStatuses}
-              placeholder="All Statuses"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Status"
+                options={filterOptions.statuses}
+                selected={selectedStatuses}
+                onChange={setSelectedStatuses}
+                placeholder="All Statuses"
+              />
+            </div>
 
             {/* 8. Lost/Won */}
-            <MultiSelectDropdown
-              label="Lost / Won"
-              options={filterOptions.lostWon}
-              selected={selectedLostWon}
-              onChange={setSelectedLostWon}
-              placeholder="All Outcomes"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Lost / Won"
+                options={filterOptions.lostWon}
+                selected={selectedLostWon}
+                onChange={setSelectedLostWon}
+                placeholder="All Outcomes"
+              />
+            </div>
 
             {/* 9. Technology (Lead & Lead Lines) */}
-            <MultiSelectDropdown
-              label="Technology"
-              options={filterOptions.technologies}
-              selected={selectedTechnologies}
-              onChange={setSelectedTechnologies}
-              placeholder="All Technologies"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Technology"
+                options={filterOptions.technologies}
+                selected={selectedTechnologies}
+                onChange={setSelectedTechnologies}
+                placeholder="All Technologies"
+              />
+            </div>
 
             {/* 10. Lead Type */}
-            <MultiSelectDropdown
-              label="Lead Type"
-              options={filterOptions.leadTypes}
-              selected={selectedLeadTypes}
-              onChange={setSelectedLeadTypes}
-              placeholder="All Types"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Lead Type"
+                options={filterOptions.leadTypes}
+                selected={selectedLeadTypes}
+                onChange={setSelectedLeadTypes}
+                placeholder="All Types"
+              />
+            </div>
 
             {/* 11. Company Type */}
-            <MultiSelectDropdown
-              label="Company Type"
-              options={filterOptions.companyTypes}
-              selected={selectedCompanyTypes}
-              onChange={setSelectedCompanyTypes}
-              placeholder="All Company Types"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Company Type"
+                options={filterOptions.companyTypes}
+                selected={selectedCompanyTypes}
+                onChange={setSelectedCompanyTypes}
+                placeholder="All Company Types"
+              />
+            </div>
 
             {/* 12. Source */}
-            <MultiSelectDropdown
-              label="Source"
-              options={filterOptions.sources}
-              selected={selectedSources}
-              onChange={setSelectedSources}
-              placeholder="All Sources"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Source"
+                options={filterOptions.sources}
+                selected={selectedSources}
+                onChange={setSelectedSources}
+                placeholder="All Sources"
+              />
+            </div>
 
             {/* 13. Probability */}
-            <MultiSelectDropdown
-              label="Probability"
-              options={filterOptions.probabilities}
-              selected={selectedProbabilities}
-              onChange={setSelectedProbabilities}
-              placeholder="All Probabilities"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Probability"
+                options={filterOptions.probabilities}
+                selected={selectedProbabilities}
+                onChange={setSelectedProbabilities}
+                placeholder="All Probabilities"
+              />
+            </div>
 
             {/* 14. Lead-line Model */}
-            <MultiSelectDropdown
-              label="Line Model"
-              options={filterOptions.models}
-              selected={selectedModels}
-              onChange={setSelectedModels}
-              placeholder="All Models"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Line Model"
+                options={filterOptions.models}
+                selected={selectedModels}
+                onChange={setSelectedModels}
+                placeholder="All Models"
+              />
+            </div>
 
             {/* 15. Lead-line Required Service */}
-            <MultiSelectDropdown
-              label="Required Service"
-              options={filterOptions.requiredServices}
-              selected={selectedRequiredServices}
-              onChange={setSelectedRequiredServices}
-              placeholder="All Services"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Required Service"
+                options={filterOptions.requiredServices}
+                selected={selectedRequiredServices}
+                onChange={setSelectedRequiredServices}
+                placeholder="All Services"
+              />
+            </div>
 
             {/* 16. CV Sent */}
-            <MultiSelectDropdown
-              label="CV Sent"
-              options={filterOptions.cvSent}
-              selected={selectedCvSent}
-              onChange={setSelectedCvSent}
-              placeholder="CV Sent (Yes/No)"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="CV Sent"
+                options={filterOptions.cvSent}
+                selected={selectedCvSent}
+                onChange={setSelectedCvSent}
+                placeholder="All CV Sent"
+              />
+            </div>
 
             {/* 17. Connection Sent */}
-            <MultiSelectDropdown
-              label="Connection Sent"
-              options={filterOptions.connectionSent}
-              selected={selectedConnectionSent}
-              onChange={setSelectedConnectionSent}
-              placeholder="Connection Sent"
-            />
+            <div className="shared-filter-field">
+              <MultiSelectDropdown
+                label="Connection Sent"
+                options={filterOptions.connectionSent}
+                selected={selectedConnectionSent}
+                onChange={setSelectedConnectionSent}
+                placeholder="All Connection Sent"
+              />
+            </div>
 
             {/* 18. Year From & Year To */}
-            <div>
-              <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', marginBottom: '4px', textTransform: 'uppercase' }}>
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">
                 Year Range
               </label>
               <div style={{ display: 'flex', gap: '4px' }}>
                 <select
                   value={yearFrom}
                   onChange={(e) => setYearFrom(e.target.value)}
-                  style={{ width: '50%', height: '34px', padding: '0 4px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '12px' }}
+                  className="shared-filter-input"
+                  style={{ width: '50%' }}
                 >
                   <option value="">From</option>
                   {filterOptions.years.map((y) => (
@@ -1144,7 +1262,8 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                 <select
                   value={yearTo}
                   onChange={(e) => setYearTo(e.target.value)}
-                  style={{ width: '50%', height: '34px', padding: '0 4px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '12px' }}
+                  className="shared-filter-input"
+                  style={{ width: '50%' }}
                 >
                   <option value="">To</option>
                   {filterOptions.years.map((y) => (
@@ -1155,8 +1274,8 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
             </div>
 
             {/* 19. From / To Date */}
-            <div>
-              <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#475569', marginBottom: '4px', textTransform: 'uppercase' }}>
+            <div className="shared-filter-field">
+              <label className="shared-filter-label">
                 From / To Date
               </label>
               <div style={{ display: 'flex', gap: '4px' }}>
@@ -1167,7 +1286,8 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                     setStartDate(e.target.value);
                     setDatePreset('custom');
                   }}
-                  style={{ width: '50%', height: '34px', padding: '0 4px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '11px' }}
+                  className="shared-filter-input"
+                  style={{ width: '50%' }}
                   title="From Date"
                 />
                 <input
@@ -1177,79 +1297,29 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                     setEndDate(e.target.value);
                     setDatePreset('custom');
                   }}
-                  style={{ width: '50%', height: '34px', padding: '0 4px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '11px' }}
+                  className="shared-filter-input"
+                  style={{ width: '50%' }}
                   title="To Date"
                 />
               </div>
             </div>
           </div>
 
-<<<<<<< HEAD
           {/* Action Buttons: Search & Clear Filters */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '16px', paddingTop: '14px', borderTop: '1px solid #f1f5f9' }}>
+          <div className="shared-filter-actions">
             <button
               type="button"
               onClick={handleApplyFilters}
-              className="btn-primary btn-filter-search"
-              style={{
-                borderRadius: '5px',
-                padding: '8px 26px',
-=======
-          {/* Action Buttons: Apply & Reset */}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '16px', paddingTop: '14px', borderTop: '1px solid #f1f5f9' }}>
-            <button
-              type="button"
-              onClick={handleResetFilters}
-              className="btn-secondary"
-              style={{
-                padding: '7px 18px',
-                borderRadius: '6px',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-                fontSize: '13px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
+              className="btn-filter-search"
             >
-<<<<<<< HEAD
               Search
             </button>
             <button
               type="button"
               onClick={handleResetFilters}
-              className="btn-secondary btn-filter-clear"
-              style={{
-                borderRadius: '5px',
-                padding: '8px 26px',
-                fontSize: '13px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-              }}
+              className="btn-filter-clear"
             >
               Clear Filters
-=======
-              Reset Filters
-            </button>
-            <button
-              type="button"
-              onClick={handleApplyFilters}
-              className="btn-primary"
-              style={{
-                padding: '7px 22px',
-                borderRadius: '6px',
-                fontSize: '13px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                transition: 'all 0.15s ease',
-              }}
-            >
-              <IconCheck size={14} />
-              <span>Apply Filters</span>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </button>
           </div>
 
@@ -1347,6 +1417,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
             }}
           >
             <div
+              className="apex-kpi-grid lead-kpi-grid"
               style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
@@ -1355,6 +1426,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
             >
               {/* Card 1: Total Leads */}
               <div
+                className="apex-card apex-kpi-card lead-kpi-card"
                 style={{
                   background: '#ffffff',
                   borderRadius: '8px',
@@ -1375,7 +1447,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                 </div>
                 <div>
                   <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', lineHeight: 1.15 }}>
-                    {overviewData.kpis.totalLeads.toLocaleString()}
+                    {isDark ? <CountUpNumber endValue={overviewData.kpis.totalLeads} duration={300} /> : overviewData.kpis.totalLeads.toLocaleString()}
                   </div>
                   <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px', fontWeight: 500, whiteSpace: 'nowrap' }}>
                     Total Leads
@@ -1385,6 +1457,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
 
               {/* Card 2: Won Leads */}
               <div
+                className="apex-card apex-kpi-card lead-kpi-card"
                 style={{
                   background: '#ffffff',
                   borderRadius: '8px',
@@ -1405,7 +1478,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                 </div>
                 <div>
                   <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', lineHeight: 1.15 }}>
-                    {overviewData.kpis.wonLeads.toLocaleString()}
+                    {isDark ? <CountUpNumber endValue={overviewData.kpis.wonLeads} duration={300} /> : overviewData.kpis.wonLeads.toLocaleString()}
                   </div>
                   <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px', fontWeight: 500, whiteSpace: 'nowrap' }}>
                     Won Leads
@@ -1415,6 +1488,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
 
               {/* Card 3: Open Leads */}
               <div
+                className="apex-card apex-kpi-card lead-kpi-card"
                 style={{
                   background: '#ffffff',
                   borderRadius: '8px',
@@ -1435,7 +1509,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                 </div>
                 <div>
                   <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', lineHeight: 1.15 }}>
-                    {overviewData.kpis.openLeads.toLocaleString()}
+                    {isDark ? <CountUpNumber endValue={overviewData.kpis.openLeads} duration={300} /> : overviewData.kpis.openLeads.toLocaleString()}
                   </div>
                   <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px', fontWeight: 500, whiteSpace: 'nowrap' }}>
                     Open Leads
@@ -1445,6 +1519,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
 
               {/* Card 4: On Hold */}
               <div
+                className="apex-card apex-kpi-card lead-kpi-card"
                 style={{
                   background: '#ffffff',
                   borderRadius: '8px',
@@ -1465,7 +1540,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                 </div>
                 <div>
                   <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', lineHeight: 1.15 }}>
-                    {overviewData.kpis.onHoldLeads.toLocaleString()}
+                    {isDark ? <CountUpNumber endValue={overviewData.kpis.onHoldLeads} duration={300} /> : overviewData.kpis.onHoldLeads.toLocaleString()}
                   </div>
                   <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px', fontWeight: 500, whiteSpace: 'nowrap' }}>
                     On Hold
@@ -1475,6 +1550,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
 
               {/* Card 5: Lost Leads */}
               <div
+                className="apex-card apex-kpi-card lead-kpi-card"
                 style={{
                   background: '#ffffff',
                   borderRadius: '8px',
@@ -1495,7 +1571,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                 </div>
                 <div>
                   <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', lineHeight: 1.15 }}>
-                    {overviewData.kpis.lostLeads.toLocaleString()}
+                    {isDark ? <CountUpNumber endValue={overviewData.kpis.lostLeads} duration={300} /> : overviewData.kpis.lostLeads.toLocaleString()}
                   </div>
                   <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px', fontWeight: 500, whiteSpace: 'nowrap' }}>
                     Lost Leads
@@ -1505,6 +1581,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
 
               {/* Card 6: Win Rate */}
               <div
+                className="apex-card apex-kpi-card lead-kpi-card"
                 style={{
                   background: '#ffffff',
                   borderRadius: '8px',
@@ -1522,7 +1599,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                 </div>
                 <div>
                   <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', lineHeight: 1.15 }}>
-                    {overviewData.kpis.winRate}%
+                    {isDark ? <CountUpNumber endValue={overviewData.kpis.winRate} duration={300} /> : overviewData.kpis.winRate}%
                   </div>
                   <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px', fontWeight: 500, whiteSpace: 'nowrap' }}>
                     Win Rate
@@ -1532,6 +1609,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
 
               {/* Card 7: Contract Value (INR) */}
               <div
+                className="apex-card apex-kpi-card lead-kpi-card"
                 style={{
                   background: '#ffffff',
                   borderRadius: '8px',
@@ -1557,7 +1635,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                       wordBreak: 'break-all',
                     }}
                   >
-                    {Math.round(overviewData.kpis.contractValueInr).toLocaleString()}
+                    {isDark ? <CountUpNumber endValue={Math.round(overviewData.kpis.contractValueInr)} duration={300} /> : Math.round(overviewData.kpis.contractValueInr).toLocaleString()}
                   </div>
                   <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px', fontWeight: 500, whiteSpace: 'nowrap' }}>
                     Contract Value (INR)
@@ -1567,6 +1645,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
 
               {/* Card 8: Avg. Time to Close (days) */}
               <div
+                className="apex-card apex-kpi-card lead-kpi-card"
                 style={{
                   background: '#ffffff',
                   borderRadius: '8px',
@@ -1584,7 +1663,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                 </div>
                 <div>
                   <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a', lineHeight: 1.15 }}>
-                    {Math.round(overviewData.kpis.avgTimeToCloseDays)}
+                    {isDark ? <CountUpNumber endValue={Math.round(overviewData.kpis.avgTimeToCloseDays)} duration={300} /> : Math.round(overviewData.kpis.avgTimeToCloseDays)}
                   </div>
                   <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px', fontWeight: 500, whiteSpace: 'nowrap' }}>
                     Avg. Time to Close (days)
@@ -1601,20 +1680,22 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
 
           {/* Side-by-side Dark Navy Header Charts matching Screenshot 1 */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: '20px' }}>
-            <ApexColumnChart
+            <ParticleChart
               title="Total Leads by Source"
+              subtitle="Distribution across acquisition channels"
               data={overviewData.charts.totalLeadsBySource || []}
-              step={50}
-              maxVal={450}
-              barColor="#0284c7"
+              series={[
+                { name: 'All', data: overviewData.charts.totalLeadsBySource || [] },
+                { name: 'Top 6', data: (overviewData.charts.totalLeadsBySource || []).slice(0, 6) },
+              ]}
+              height={330}
+              speed={1.0}
               onBarClick={(source) => navigateToReport('leads', { source })}
             />
             <ApexColumnChart
               title="Won Leads by Source"
               data={overviewData.charts.wonLeadsBySource || []}
               step={5}
-              maxVal={30}
-              barColor="#336a86"
               onBarClick={(source) => navigateToReport('leads', { source, lost_won: 'Won' })}
             />
           </div>
@@ -1631,7 +1712,7 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
               </p>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', gap: '20px' }}>
                 {/* Visual SVG Donut */}
-                <div style={{ position: 'relative', width: '130px', height: '130px', flexShrink: 0 }}>
+                <div className="apex-donut-chart-wrap" style={{ position: 'relative', width: '130px', height: '130px', flexShrink: 0 }}>
                   <svg width="130" height="130" viewBox="0 0 100 100">
                     <circle cx="50" cy="50" r="38" fill="none" stroke="#e2e8f0" strokeWidth="16" />
                     {/* Slices */}
@@ -1659,7 +1740,9 @@ export default function LeadDashboard({ onNavigate, onShowToast }) {
                     />
                   </svg>
                   <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a' }}>{overviewData.kpis.totalLeads}</span>
+                    <span style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a' }}>
+                      {isDark ? <CountUpNumber endValue={overviewData.kpis.totalLeads} duration={300} /> : overviewData.kpis.totalLeads}
+                    </span>
                     <span style={{ fontSize: '10px', color: '#64748b', textTransform: 'uppercase' }}>Leads</span>
                   </div>
                 </div>

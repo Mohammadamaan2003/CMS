@@ -27,7 +27,6 @@ async function request(endpoint, options = {}) {
   }
 }
 
-<<<<<<< HEAD
 function buildQueryString(params = {}) {
   const query = new URLSearchParams();
   for (const [key, val] of Object.entries(params)) {
@@ -46,11 +45,10 @@ function buildQueryString(params = {}) {
   return query.toString() ? `?${query.toString()}` : '';
 }
 
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 export const api = {
   // Dashboard & Sync
   getDashboardStats: () => request('/dashboard/stats'),
+  getDashboardMonthlyData: () => request('/dashboard/monthly-data'),
   getDashboardAnalytics: (params = {}) => {
     const query = new URLSearchParams();
     for (const [key, val] of Object.entries(params)) {
@@ -206,31 +204,10 @@ export const api = {
 
   // Companies
   getCompanies: (params = {}) => {
-<<<<<<< HEAD
     return request(`/companies${buildQueryString(params)}`);
   },
   getCompanyIds: (params = {}) => {
     return request(`/companies/ids${buildQueryString(params)}`);
-=======
-    const query = new URLSearchParams();
-    for (const [key, val] of Object.entries(params)) {
-      if (val !== undefined && val !== null && val !== '') {
-        query.append(key, val);
-      }
-    }
-    const qStr = query.toString() ? `?${query.toString()}` : '';
-    return request(`/companies${qStr}`);
-  },
-  getCompanyIds: (params = {}) => {
-    const query = new URLSearchParams();
-    for (const [key, val] of Object.entries(params)) {
-      if (val !== undefined && val !== null && val !== '') {
-        query.append(key, val);
-      }
-    }
-    const qStr = query.toString() ? `?${query.toString()}` : '';
-    return request(`/companies/ids${qStr}`);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   getCompanyFilters: () => request('/companies/filters'),
   getCompany: (id) => request(`/companies/${id}`),
@@ -267,31 +244,10 @@ export const api = {
 
   // Contacts
   getContacts: (params = {}) => {
-<<<<<<< HEAD
     return request(`/contacts${buildQueryString(params)}`);
   },
   getContactIds: (params = {}) => {
     return request(`/contacts/ids${buildQueryString(params)}`);
-=======
-    const query = new URLSearchParams();
-    for (const [key, val] of Object.entries(params)) {
-      if (val !== undefined && val !== null && val !== '') {
-        query.append(key, val);
-      }
-    }
-    const qStr = query.toString() ? `?${query.toString()}` : '';
-    return request(`/contacts${qStr}`);
-  },
-  getContactIds: (params = {}) => {
-    const query = new URLSearchParams();
-    for (const [key, val] of Object.entries(params)) {
-      if (val !== undefined && val !== null && val !== '') {
-        query.append(key, val);
-      }
-    }
-    const qStr = query.toString() ? `?${query.toString()}` : '';
-    return request(`/contacts/ids${qStr}`);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   getContactFilters: () => request('/contacts/filters'),
   getContact: (id) => request(`/contacts/${id}`),
@@ -898,27 +854,10 @@ export const api = {
 
   // Leads
   getLeads: (params = {}) => {
-<<<<<<< HEAD
     return request(`/leads${buildQueryString(params)}`);
   },
   getLeadIds: (params = {}) => {
     return request(`/leads/ids${buildQueryString(params)}`);
-=======
-    const query = new URLSearchParams();
-    for (const [k, v] of Object.entries(params)) {
-      if (v !== undefined && v !== null && v !== '') query.append(k, v);
-    }
-    const qStr = query.toString() ? `?${query.toString()}` : '';
-    return request(`/leads${qStr}`);
-  },
-  getLeadIds: (params = {}) => {
-    const query = new URLSearchParams();
-    for (const [k, v] of Object.entries(params)) {
-      if (v !== undefined && v !== null && v !== '') query.append(k, v);
-    }
-    const qStr = query.toString() ? `?${query.toString()}` : '';
-    return request(`/leads/ids${qStr}`);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   getLead: (id) => request(`/leads/${id}`),
   getLeadLovs: () => request('/leads/meta/lovs'),
@@ -1037,6 +976,7 @@ export const api = {
     const qStr = query.toString() ? `?${query.toString()}` : '';
     return request(`/duplicate-merger/company-report${qStr}`);
   },
+  getDuplicateCompanyFilters: () => request('/duplicate-merger/company-report/filters'),
   getDuplicateContactReport: (params = {}) => {
     const query = new URLSearchParams();
     for (const [key, val] of Object.entries(params)) {
@@ -1047,6 +987,7 @@ export const api = {
     const qStr = query.toString() ? `?${query.toString()}` : '';
     return request(`/duplicate-merger/contact-report${qStr}`);
   },
+  getDuplicateContactFilters: () => request('/duplicate-merger/contact-report/filters'),
   getCompanyById: (id) => request(`/duplicate-merger/companies/${id}`),
   getContactById: (id) => request(`/duplicate-merger/contacts/${id}`),
   mergeCompanyPair: (payload) =>

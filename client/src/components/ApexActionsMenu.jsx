@@ -119,6 +119,7 @@ export default function ApexActionsMenu({
   const [internalHighlights, setInternalHighlights] = useState([]);
   const [internalGroupBy, setInternalGroupBy] = useState(null);
   const [internalPivot, setInternalPivot] = useState(null);
+  const [internalFilter, setInternalFilter] = useState(null);
   const [savedReports, setSavedReports] = useState([]);
   const [activeReportLayoutId, setActiveReportLayoutId] = useState('primary');
 
@@ -224,6 +225,7 @@ export default function ApexActionsMenu({
       onResetReport();
     }
     setInternalSortRules([]);
+    setInternalFilter(null);
     setInternalHighlights([]);
     setInternalBreakColumn(null);
     setInternalComputations([]);
@@ -710,7 +712,15 @@ export default function ApexActionsMenu({
           isOpen={true}
           onClose={() => setActiveModal(null)}
           columns={effectiveColumns}
+          activeFilter={internalFilter}
+          initialFilter={internalFilter}
           onApply={(newFilter) => {
+            setInternalFilter(newFilter);
+            setActiveModal(null);
+            if (onApplyFilter) onApplyFilter(newFilter);
+          }}
+          onApplyFilter={(newFilter) => {
+            setInternalFilter(newFilter);
             setActiveModal(null);
             if (onApplyFilter) onApplyFilter(newFilter);
           }}

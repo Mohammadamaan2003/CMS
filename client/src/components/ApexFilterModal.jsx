@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IconClose, IconFilter, IconColumns, IconTable } from './Icons';
 
 /**
  * ApexFilterModal
  * Recreated precisely to match Oracle APEX Interactive Report Filter Screen (User Reference Screenshot 3):
- * - Clean white card header with circular close button
+ * - Clean card header with circular close button
  * - Filter Mode Tabs: [Columns] Column (active with purple underline) and [Rows] Row
  * - Horizontal aligned fields: Column, Operator, Expression
  * - Styled Cancel and solid Purple Apply button
@@ -14,51 +14,102 @@ export default function ApexFilterModal({
   onClose,
   columns = [],
   onApplyFilter,
+  onApply,
+  onResetFilter,
   initialFilter = null,
+  activeFilter = null,
 }) {
-  const [filterTab, setFilterTab] = useState('column'); // 'column' | 'row'
-  const [selectedColumn, setSelectedColumn] = useState(
-    initialFilter?.column || initialFilter?.key || (columns[0]?.id || columns[0]?.key || '')
-  );
-  const [operator, setOperator] = useState(initialFilter?.operator || '=');
-  const [filterValue, setFilterValue] = useState(initialFilter?.value || '');
-  const [rowExpression, setRowExpression] = useState('');
+  const handleApply = onApplyFilter || onApply;
+  const currentFilter = initialFilter || activeFilter;
+
+  const [filterTab, setFilterTab] = useState(() => (currentFilter?.type === 'row' ? 'row' : 'column'));
+  const [selectedColumn, setSelectedColumn] = useState(() => {
+    return currentFilter?.column || currentFilter?.key || (columns[0]?.id || columns[0]?.key || '');
+  });
+  const [operator, setOperator] = useState(() => currentFilter?.operator || '=');
+  const [filterValue, setFilterValue] = useState(() => {
+    return currentFilter?.value !== undefined && currentFilter?.value !== null ? String(currentFilter.value) : '';
+  });
+  const [rowExpression, setRowExpression] = useState(() => {
+    return currentFilter?.expression || currentFilter?.value || '';
+  });
+
+  useEffect(() => {
+    if (isOpen) {
+      if (currentFilter?.type === 'row') {
+        setFilterTab('row');
+        setRowExpression(currentFilter?.expression || currentFilter?.value || '');
+      } else {
+        setFilterTab('column');
+        const defaultCol = columns[0]?.id || columns[0]?.key || '';
+        setSelectedColumn(currentFilter?.column || currentFilter?.key || defaultCol);
+        setOperator(currentFilter?.operator || '=');
+        setFilterValue(
+          currentFilter?.value !== undefined && currentFilter?.value !== null ? String(currentFilter.value) : ''
+        );
+      }
+    }
+  }, [isOpen, currentFilter, columns]);
 
   if (!isOpen) return null;
 
+  const isNullOp =
+    operator === 'is null' ||
+    operator === 'is not null' ||
+    operator === 'isNull' ||
+    operator === 'isNotNull';
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onApplyFilter) {
+    if (handleApply) {
       if (filterTab === 'column') {
-        onApplyFilter({
+        const filterObj = {
+          type: 'column',
           column: selectedColumn,
           key: selectedColumn,
           operator,
-          value: filterValue,
-        });
+          value: isNullOp ? '' : filterValue,
+          expression: isNullOp ? '' : filterValue,
+        };
+        handleApply(filterObj, isNullOp ? '' : filterValue);
       } else {
-        onApplyFilter({
+        const filterObj = {
           type: 'row',
           expression: rowExpression,
           value: rowExpression,
-        });
+        };
+        handleApply(filterObj, rowExpression);
       }
     }
     onClose();
   };
 
   const handleClear = () => {
-    if (onApplyFilter) {
-      onApplyFilter(null);
+    if (onResetFilter) {
+      onResetFilter();
+    }
+    if (handleApply) {
+      handleApply(null);
     }
     onClose();
   };
+
+  const hasActiveCriteria = Boolean(currentFilter || filterValue || rowExpression);
 
   return (
     <div className="apex-modal-overlay" style={{ zIndex: 1200 }}>
       <div className="apex-modal-container apex-filter-modal-dialog" style={{ maxWidth: '620px', width: '92%' }}>
         {/* Header matching APEX Reference Screenshot 3 */}
-        <div className="apex-modal-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px', borderBottom: '1px solid #f1f5f9' }}>
+        <div
+          className="apex-modal-header"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '14px 20px',
+            borderBottom: '1px solid #f1f5f9',
+          }}
+        >
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700, color: '#1e293b' }}>
               Filter
@@ -137,7 +188,7 @@ export default function ApexFilterModal({
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: operator === 'isNull' || operator === 'isNotNull' ? '1fr 1fr' : '1fr 140px 1.2fr',
+                  gridTemplateColumns: isNullOp ? '1fr 1fr' : '1fr 140px 1.2fr',
                   gap: '12px',
                   alignItems: 'flex-start',
                 }}
@@ -170,11 +221,15 @@ export default function ApexFilterModal({
                       backgroundColor: '#ffffff',
                     }}
                   >
-                    {columns.map((col) => (
-                      <option key={col.id || col.key} value={col.id || col.key}>
-                        {col.label || col.title || col.id || col.key}
-                      </option>
-                    ))}
+                    {columns.map((col, idx) => {
+                      const colKey = col.id || col.key || `col_${idx}`;
+                      const label = col.label || col.title || col.name || colKey;
+                      return (
+                        <option key={colKey} value={colKey}>
+                          {label}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
 
@@ -221,7 +276,7 @@ export default function ApexFilterModal({
                 </div>
 
                 {/* Expression / Value */}
-                {operator !== 'is null' && operator !== 'is not null' && (
+                {!isNullOp && (
                   <div>
                     <label
                       style={{
@@ -238,7 +293,7 @@ export default function ApexFilterModal({
                       type="text"
                       value={filterValue}
                       onChange={(e) => setFilterValue(e.target.value)}
-                      placeholder=""
+                      placeholder="Enter filter value..."
                       className="apex-form-input apex-modal-input"
                       style={{
                         width: '100%',
@@ -272,7 +327,7 @@ export default function ApexFilterModal({
                   type="text"
                   value={rowExpression}
                   onChange={(e) => setRowExpression(e.target.value)}
-                  placeholder="e.g. status = 'Active' and country = 'United States'"
+                  placeholder="e.g. status = 'Active' and country = 'United States' or company_name contains Webxloo"
                   className="apex-form-input apex-modal-input"
                   style={{
                     width: '100%',
@@ -303,7 +358,7 @@ export default function ApexFilterModal({
               backgroundColor: '#ffffff',
             }}
           >
-            {(initialFilter || filterValue) && (
+            {hasActiveCriteria && (
               <button
                 type="button"
                 className="apex-modal-cancel-btn"

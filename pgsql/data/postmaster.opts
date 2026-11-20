@@ -1,1 +1,1 @@
-C:/Amaan/CMS/pgsql/bin/postgres.exe "-D" "C:\Amaan\CMS\pgsql\data" "-p" "5432"
+C:/Amaan/CMS new/pgsql/bin/postgres.exe "-D" "C:/Amaan/CMS new/pgsql/data" "-p" "5432"

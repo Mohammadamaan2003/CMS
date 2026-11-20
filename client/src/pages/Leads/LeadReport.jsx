@@ -9,10 +9,7 @@ import ApexAggregateModal from '../../components/ApexAggregateModal';
 import ActiveAggregationsBar from '../../components/ActiveAggregationsBar';
 import ApexColumnHeaderMenu from '../../components/ApexColumnHeaderMenu';
 import ApexInteractiveReport from '../../components/ApexInteractiveReport';
-<<<<<<< HEAD
 import ExcelFilterDropdown from '../../components/ExcelFilterDropdown';
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 import { computeAggregationValue } from '../../utils/aggregationUtils';
 import {
   IconSearch,
@@ -292,7 +289,6 @@ export default function LeadReport({
 
   // Filter drawer (Screenshot 5: "Show Filters" button in top-right)
   const [showFilters, setShowFilters] = useState(false);
-<<<<<<< HEAD
   const initialFilterState = {
     company_name: [],
     account_manager: [],
@@ -308,20 +304,6 @@ export default function LeadReport({
   };
   const [filters, setFilters] = useState(initialFilterState);
   const [appliedFilters, setAppliedFilters] = useState({});
-=======
-  const [filters, setFilters] = useState({
-    company_name: '',
-    account_manager: '',
-    coordinator: '',
-    industry: '',
-    country: '',
-    technology: '',
-    probability: '',
-    company_type: '',
-    lead_type: '',
-    city: '',
-  });
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 
   // APEX Column Header Popover Menu
   const [headerMenu, setHeaderMenu] = useState({
@@ -422,11 +404,7 @@ export default function LeadReport({
         search: appliedSearch,
         sortBy,
         sortOrder,
-<<<<<<< HEAD
         ...appliedFilters,
-=======
-        ...filters,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
       };
       const res = await api.getLeads(params);
       if (res && res.success) {
@@ -438,17 +416,12 @@ export default function LeadReport({
     } finally {
       setLoading(false);
     }
-<<<<<<< HEAD
   }, [fetchLimit, offset, appliedSearch, sortBy, sortOrder, appliedFilters, onShowToast]);
-=======
-  }, [fetchLimit, offset, appliedSearch, sortBy, sortOrder, filters, onShowToast]);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 
   useEffect(() => {
     fetchLeads();
   }, [fetchLeads]);
 
-<<<<<<< HEAD
   const handleApplyFilters = (e) => {
     if (e && e.preventDefault) e.preventDefault();
     setAppliedFilters({ ...filters });
@@ -463,8 +436,6 @@ export default function LeadReport({
     setPage(1);
   };
 
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   // Load Child Data for Selected Lead
   const loadChildData = useCallback(async (leadId) => {
     if (!leadId) return;
@@ -770,18 +741,11 @@ export default function LeadReport({
 
   // Toggle Row Selection
   const toggleSelectRow = (leadId) => {
-<<<<<<< HEAD
     const strId = String(leadId);
     setSelectedLeadIds((prev) => {
       const next = new Set(prev);
       if (next.has(strId)) next.delete(strId);
       else next.add(strId);
-=======
-    setSelectedLeadIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(leadId)) next.delete(leadId);
-      else next.add(leadId);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
       return next;
     });
   };
@@ -795,7 +759,6 @@ export default function LeadReport({
       try {
         const params = {
           search: appliedSearch,
-<<<<<<< HEAD
           ...appliedFilters,
         };
         const res = await api.getLeadIds(params);
@@ -815,20 +778,6 @@ export default function LeadReport({
       } catch (err) {
         console.warn('Failed to select all lead records:', err.message);
         setSelectedLeadIds(new Set(leads.map((l) => String(l.lead_id))));
-=======
-          ...filters,
-        };
-        const res = await api.getLeadIds(params);
-        if (res && res.success && Array.isArray(res.ids) && res.ids.length > 0) {
-          setSelectedLeadIds(new Set(res.ids));
-          if (onShowToast) onShowToast('info', `Selected all ${res.ids.length} leads throughout report.`);
-        } else {
-          setSelectedLeadIds(new Set(leads.map((l) => l.lead_id)));
-        }
-      } catch (err) {
-        console.warn('Failed to select all lead records:', err.message);
-        setSelectedLeadIds(new Set(leads.map((l) => l.lead_id)));
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
       }
     }
   };
@@ -976,44 +925,19 @@ export default function LeadReport({
               }}
             >
               <IconFilter size={14} />
-<<<<<<< HEAD
               <span>{showFilters ? 'Hide Filter' : 'Show Filter'}</span>
-=======
-              <span>{showFilters ? 'Hide Filters' : 'Show Filters'}</span>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
             </button>
           </div>
 
           {/* Collapsible Filter Bar Drawer */}
           {showFilters && (
-<<<<<<< HEAD
             <form
               onSubmit={handleApplyFilters}
-=======
-            <div
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-              className="company-filters-card apex-filter-panel"
-              style={{
-                borderRadius: '8px',
-                padding: '1rem',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-<<<<<<< HEAD
-                marginBottom: '1rem',
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-              }}
+              className="shared-filter-card"
             >
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
-                  gap: '0.75rem',
-                  alignItems: 'flex-end',
-                }}
-              >
-                <div>
-<<<<<<< HEAD
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main, #475569)', marginBottom: '4px' }}>
+              <div className="shared-filter-grid">
+                <div className="shared-filter-field">
+                  <label className="shared-filter-label">
                     Company Name
                   </label>
                   <ExcelFilterDropdown
@@ -1024,8 +948,8 @@ export default function LeadReport({
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main, #475569)', marginBottom: '4px' }}>
+                <div className="shared-filter-field">
+                  <label className="shared-filter-label">
                     Account Manager
                   </label>
                   <ExcelFilterDropdown
@@ -1036,8 +960,8 @@ export default function LeadReport({
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main, #475569)', marginBottom: '4px' }}>
+                <div className="shared-filter-field">
+                  <label className="shared-filter-label">
                     Coordinator
                   </label>
                   <ExcelFilterDropdown
@@ -1048,8 +972,8 @@ export default function LeadReport({
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main, #475569)', marginBottom: '4px' }}>
+                <div className="shared-filter-field">
+                  <label className="shared-filter-label">
                     Probability
                   </label>
                   <ExcelFilterDropdown
@@ -1060,8 +984,8 @@ export default function LeadReport({
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main, #475569)', marginBottom: '4px' }}>
+                <div className="shared-filter-field">
+                  <label className="shared-filter-label">
                     Company Type
                   </label>
                   <ExcelFilterDropdown
@@ -1072,8 +996,8 @@ export default function LeadReport({
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main, #475569)', marginBottom: '4px' }}>
+                <div className="shared-filter-field">
+                  <label className="shared-filter-label">
                     Country
                   </label>
                   <ExcelFilterDropdown
@@ -1084,8 +1008,8 @@ export default function LeadReport({
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main, #475569)', marginBottom: '4px' }}>
+                <div className="shared-filter-field">
+                  <label className="shared-filter-label">
                     Industry
                   </label>
                   <ExcelFilterDropdown
@@ -1093,127 +1017,11 @@ export default function LeadReport({
                     options={lovs.industries || []}
                     value={filters.industry}
                     onChange={(vals) => setFilters((prev) => ({ ...prev, industry: vals }))}
-=======
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>
-                    Account Manager
-                  </label>
-                  <select
-                    className="apex-form-input"
-                    value={filters.account_manager}
-                    onChange={(e) => {
-                      setFilters({ ...filters, account_manager: e.target.value });
-                      setPage(1);
-                    }}
-                    style={{ width: '100%', height: '34px', fontSize: '0.825rem', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                  >
-                    <option value="">All Account Managers</option>
-                    {lovs.accountManagers.map((am) => (
-                      <option key={am} value={am}>{am}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>
-                    Coordinator
-                  </label>
-                  <select
-                    className="apex-form-input"
-                    value={filters.coordinator}
-                    onChange={(e) => {
-                      setFilters({ ...filters, coordinator: e.target.value });
-                      setPage(1);
-                    }}
-                    style={{ width: '100%', height: '34px', fontSize: '0.825rem', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                  >
-                    <option value="">All Coordinators</option>
-                    {lovs.coordinators.map((c) => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>
-                    Probability
-                  </label>
-                  <select
-                    className="apex-form-input"
-                    value={filters.probability}
-                    onChange={(e) => {
-                      setFilters({ ...filters, probability: e.target.value });
-                      setPage(1);
-                    }}
-                    style={{ width: '100%', height: '34px', fontSize: '0.825rem', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                  >
-                    <option value="">All Probabilities</option>
-                    {lovs.probabilities.map((p) => (
-                      <option key={p} value={p}>{p}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>
-                    Company Type
-                  </label>
-                  <select
-                    className="apex-form-input"
-                    value={filters.company_type}
-                    onChange={(e) => {
-                      setFilters({ ...filters, company_type: e.target.value });
-                      setPage(1);
-                    }}
-                    style={{ width: '100%', height: '34px', fontSize: '0.825rem', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                  >
-                    <option value="">All Types</option>
-                    {lovs.companyTypes.map((t) => (
-                      <option key={t} value={t}>{t}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>
-                    Country
-                  </label>
-                  <select
-                    className="apex-form-input"
-                    value={filters.country}
-                    onChange={(e) => {
-                      setFilters({ ...filters, country: e.target.value });
-                      setPage(1);
-                    }}
-                    style={{ width: '100%', height: '34px', fontSize: '0.825rem', borderRadius: '4px', border: '1px solid #cbd5e1' }}
-                  >
-                    <option value="">All Countries</option>
-                    {lovs.countries.map((c) => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>
-                    Industry
-                  </label>
-                  <input
-                    type="text"
-                    className="apex-form-input"
-                    placeholder="Search industry..."
-                    value={filters.industry}
-                    onChange={(e) => {
-                      setFilters({ ...filters, industry: e.target.value });
-                      setPage(1);
-                    }}
-                    style={{ width: '100%', height: '34px', fontSize: '0.825rem', borderRadius: '4px', border: '1px solid #cbd5e1' }}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                   />
                 </div>
 
-                <div>
-<<<<<<< HEAD
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main, #475569)', marginBottom: '4px' }}>
+                <div className="shared-filter-field">
+                  <label className="shared-filter-label">
                     Technology
                   </label>
                   <ExcelFilterDropdown
@@ -1221,27 +1029,11 @@ export default function LeadReport({
                     options={lovs.technologies || []}
                     value={filters.technology}
                     onChange={(vals) => setFilters((prev) => ({ ...prev, technology: vals }))}
-=======
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>
-                    Technology
-                  </label>
-                  <input
-                    type="text"
-                    className="apex-form-input"
-                    placeholder="Search technology..."
-                    value={filters.technology}
-                    onChange={(e) => {
-                      setFilters({ ...filters, technology: e.target.value });
-                      setPage(1);
-                    }}
-                    style={{ width: '100%', height: '34px', fontSize: '0.825rem', borderRadius: '4px', border: '1px solid #cbd5e1' }}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                   />
                 </div>
 
-                <div>
-<<<<<<< HEAD
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main, #475569)', marginBottom: '4px' }}>
+                <div className="shared-filter-field">
+                  <label className="shared-filter-label">
                     Lead Type
                   </label>
                   <ExcelFilterDropdown
@@ -1252,8 +1044,8 @@ export default function LeadReport({
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main, #475569)', marginBottom: '4px' }}>
+                <div className="shared-filter-field">
+                  <label className="shared-filter-label">
                     City
                   </label>
                   <ExcelFilterDropdown
@@ -1264,8 +1056,8 @@ export default function LeadReport({
                   />
                 </div>
 
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-main, #475569)', marginBottom: '4px' }}>
+                <div className="shared-filter-field">
+                  <label className="shared-filter-label">
                     Status
                   </label>
                   <ExcelFilterDropdown
@@ -1278,79 +1070,22 @@ export default function LeadReport({
               </div>
 
               {/* Action Buttons: Search & Clear filter */}
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  gap: '0.6rem',
-                  marginTop: '1rem',
-                  paddingTop: '0.75rem',
-                  borderTop: '1px solid var(--border, #e2e8f0)',
-                }}
-              >
+              <div className="shared-filter-actions">
                 <button
                   type="submit"
-                  className="btn-primary btn-filter-search"
-                  style={{
-                    borderRadius: '5px',
-                    padding: '8px 26px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
+                  className="btn-filter-search"
                 >
                   Search
                 </button>
                 <button
                   type="button"
                   onClick={handleClearFilters}
-                  className="btn-secondary btn-filter-clear"
-                  style={{
-                    borderRadius: '5px',
-                    padding: '8px 26px',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                  }}
+                  className="btn-filter-clear"
                 >
                   Clear Filters
                 </button>
               </div>
             </form>
-=======
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setFilters({
-                        account_manager: '',
-                        coordinator: '',
-                        industry: '',
-                        country: '',
-                        technology: '',
-                        probability: '',
-                        company_type: '',
-                        lead_type: '',
-                        city: '',
-                      });
-                      setPage(1);
-                    }}
-                    className="btn-apex-cancel"
-                    style={{
-                      height: '34px',
-                      padding: '0 14px',
-                      borderRadius: '4px',
-                      fontSize: '0.825rem',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      width: '100%',
-                    }}
-                  >
-                    Clear Filters
-                  </button>
-                </div>
-              </div>
-            </div>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
           )}
 
           {/* Master Toolbar & Table Card */}
@@ -1808,18 +1543,13 @@ export default function LeadReport({
                       </td>
                     </tr>
                   ) : (
-<<<<<<< HEAD
                     leads.map((row) => {
                       const isSelected = selectedLeadIds.has(String(row.lead_id)) || selectedLeadIds.has(row.lead_id);
                       return (
-=======
-                    leads.map((row) => (
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                       <tr
                         key={row.lead_id}
                         style={{
                           borderBottom: '1px solid #f1f5f9',
-<<<<<<< HEAD
                           backgroundColor: isSelected ? 'var(--primary-light, #f0f9ff)' : undefined,
                           transition: 'background-color 0.12s',
                         }}
@@ -1828,29 +1558,14 @@ export default function LeadReport({
                         }}
                         onMouseLeave={(e) => {
                           if (!isSelected) e.currentTarget.style.backgroundColor = 'transparent';
-=======
-                          backgroundColor: selectedLeadIds.has(row.lead_id) ? 'var(--primary-light, #f0f9ff)' : undefined,
-                          transition: 'background-color 0.12s',
-                        }}
-                        onMouseEnter={(e) => {
-                          if (!selectedLeadIds.has(row.lead_id)) e.currentTarget.style.backgroundColor = '#f8fafc';
-                        }}
-                        onMouseLeave={(e) => {
-                          if (!selectedLeadIds.has(row.lead_id)) e.currentTarget.style.backgroundColor = 'transparent';
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                         }}
                       >
                         <td style={{ padding: '0.5rem', textAlign: 'center' }}>
                           <input
                             type="checkbox"
-<<<<<<< HEAD
                             checked={isSelected}
                             onChange={() => toggleSelectRow(row.lead_id)}
                             style={{ cursor: 'pointer' }}
-=======
-                            checked={selectedLeadIds.has(row.lead_id)}
-                            onChange={() => toggleSelectRow(row.lead_id)}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                           />
                         </td>
                         <td style={{ padding: '0.5rem', textAlign: 'center' }}>
@@ -1962,14 +1677,9 @@ export default function LeadReport({
                           );
                         })}
                       </tr>
-<<<<<<< HEAD
                     );
                   })
                 )}
-=======
-                    ))
-                  )}
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                 </tbody>
               </table>
             </div>

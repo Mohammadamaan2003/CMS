@@ -263,20 +263,13 @@ export default function LeadSourceMaster({ onShowToast, onNavigateToCompanyForm,
     }
   }, [viewMode, selectedRecord, loadChildCompanies]);
 
-<<<<<<< HEAD
   // Selection Checkboxes (Selects all records throughout report)
   const handleSelectAll = async () => {
     const isAllSelected = masterTotal > 0 && selectedIds.size >= masterTotal;
-=======
-  // Selection Checkboxes
-  const handleSelectAll = () => {
-    const isAllSelected = processedMasterList.length > 0 && selectedIds.size >= processedMasterList.length;
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     if (isAllSelected) {
       setSelectedIds(new Set());
       if (onShowToast) onShowToast('info', 'Deselected all records.');
     } else {
-<<<<<<< HEAD
       try {
         setLoadingMaster(true);
         const res = await api.getLeadSources({
@@ -299,11 +292,6 @@ export default function LeadSourceMaster({ onShowToast, onNavigateToCompanyForm,
       } finally {
         setLoadingMaster(false);
       }
-=======
-      const allIds = new Set(processedMasterList.map((m) => m.id));
-      setSelectedIds(allIds);
-      if (onShowToast) onShowToast('info', `Selected all ${processedMasterList.length} records throughout report.`);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     }
   };
 
@@ -1049,31 +1037,18 @@ export default function LeadSourceMaster({ onShowToast, onNavigateToCompanyForm,
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <input
                           type="checkbox"
-<<<<<<< HEAD
                           checked={masterTotal > 0 && selectedIds.size >= masterTotal}
                           ref={(el) => {
                             if (el) {
                               el.indeterminate = selectedIds.size > 0 && selectedIds.size < masterTotal;
-=======
-                          checked={processedMasterList.length > 0 && selectedIds.size >= processedMasterList.length}
-                          ref={(el) => {
-                            if (el) {
-                              el.indeterminate = selectedIds.size > 0 && selectedIds.size < processedMasterList.length;
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                             }
                           }}
                           onChange={handleSelectAll}
                           style={{ cursor: 'pointer' }}
                           title={
-<<<<<<< HEAD
                             selectedIds.size >= masterTotal && masterTotal > 0
                               ? `All ${masterTotal} records selected`
                               : `Select all ${masterTotal} records throughout report`
-=======
-                            selectedIds.size >= processedMasterList.length && processedMasterList.length > 0
-                              ? `All ${processedMasterList.length} records selected`
-                              : `Select all ${processedMasterList.length} records throughout report`
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                           }
                         />
                     </div>

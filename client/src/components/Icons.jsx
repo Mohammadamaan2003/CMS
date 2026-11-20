@@ -151,6 +151,13 @@ export const IconArrowLeft = ({ size = 18, className = '' }) => (
   </svg>
 );
 
+export const IconArrowRight = ({ size = 18, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="m12 5 7 7-7 7"/>
+    <path d="M5 12h14"/>
+  </svg>
+);
+
 export const IconClose = ({ size = 18, className = '' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <path d="M18 6 6 18"/>
@@ -563,3 +570,82 @@ export const IconMoon = ({ size = 16, className = '' }) => (
     <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
   </svg>
 );
+
+export const IconOrbitGlobe = ({ size = 16, className = '', style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" strokeOpacity="0.45" />
+    <ellipse cx="12" cy="12" rx="9" ry="3.5" stroke="currentColor" strokeWidth="1.5" />
+    <ellipse cx="12" cy="12" rx="3.5" ry="9" stroke="currentColor" strokeWidth="1.2" strokeDasharray="2 2" strokeOpacity="0.7" />
+    <circle cx="12" cy="12" r="2.5" fill="currentColor" />
+    <circle cx="19.5" cy="8.5" r="1.5" fill="#06b6d4" />
+  </svg>
+);
+
+export const IconTrendingUp = ({ size = 16, className = '', style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style} className={className}>
+    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+    <polyline points="16 7 22 7 22 13" />
+  </svg>
+);
+
+export const IconZap = ({ size = 16, className = '', style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style} className={className}>
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+  </svg>
+);
+
+export const IconCompass = ({ size = 16, className = '', style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style} className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+  </svg>
+);
+
+export const IconFolder = ({ size = 16, className = '', style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style} className={className}>
+    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+  </svg>
+);
+
+export const IconMessageSquare = ({ size = 16, className = '', style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style} className={className}>
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+  </svg>
+);
+
+export const IconClock = ({ size = 16, className = '', style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style} className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12 6 12 12 16 14" />
+  </svg>
+);
+
+export const IconBell = ({ size = 16, className = '', style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style} className={className}>
+    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+  </svg>
+);
+
+export const IconGlassmorphism = ({ size = 16, className = '', style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} className={className}>
+    <defs>
+      <linearGradient id="glassIconGradAmber" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#f59e0b" />
+        <stop offset="50%" stopColor="#ff7a18" />
+        <stop offset="100%" stopColor="#ec4899" />
+      </linearGradient>
+      <linearGradient id="glassCardShineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#ffffff" stopOpacity="0.45" />
+        <stop offset="100%" stopColor="#ffffff" stopOpacity="0.08" />
+      </linearGradient>
+    </defs>
+    <rect x="2" y="6" width="13" height="14" rx="3" fill="#12141e" stroke="url(#glassIconGradAmber)" strokeWidth="1.5" />
+    <rect x="8" y="3" width="14" height="15" rx="3.5" fill="url(#glassCardShineGrad)" stroke="#ffffff" strokeWidth="1.2" strokeOpacity="0.75" />
+    <circle cx="15" cy="8" r="1.5" fill="#ff7a18" />
+    <line x1="11" y1="12" x2="19" y2="12" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.85" />
+    <line x1="11" y1="15" x2="16" y2="15" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeOpacity="0.55" />
+  </svg>
+);
+
+

@@ -1,9 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-<<<<<<< HEAD
 const { matchesMultiFilter } = require('../utils/filterHelper');
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 
 const companiesFile = path.join(__dirname, '..', 'data', 'companies_1000.json');
 const contactsFile = path.join(__dirname, '..', 'data', 'contacts_1000.json');
@@ -229,7 +226,6 @@ function getCompanies({
   }
 
   // Company Name
-<<<<<<< HEAD
   if (name || comp_name) {
     list = list.filter((c) => matchesMultiFilter(c.comp_name || c.name, name || comp_name));
   }
@@ -261,46 +257,10 @@ function getCompanies({
 
   // Website
   if (website && typeof website === 'string' && website.trim()) {
-=======
-  const targetName = (name || comp_name || '').trim().toLowerCase();
-  if (targetName) {
-    list = list.filter((c) => (c.comp_name || c.name || '').toLowerCase().includes(targetName));
-  }
-
-  // Technology
-  if (technology && technology.trim()) {
-    list = list.filter((c) => (c.technology || '').toLowerCase().includes(technology.trim().toLowerCase()));
-  }
-
-  // Company Type
-  if (company_type && company_type.trim()) {
-    list = list.filter((c) => (c.company_type || '').toLowerCase() === company_type.trim().toLowerCase());
-  }
-
-  // Categories
-  const cat = (company_categories || categories || '').trim().toLowerCase();
-  if (cat) {
-    list = list.filter((c) => (c.company_categories || '').toLowerCase().includes(cat));
-  }
-
-  // Country
-  if (country && country.trim()) {
-    list = list.filter((c) => (c.country || '').toLowerCase() === country.trim().toLowerCase());
-  }
-
-  // City
-  if (city && city.trim()) {
-    list = list.filter((c) => (c.city || '').toLowerCase().includes(city.trim().toLowerCase()));
-  }
-
-  // Website
-  if (website && website.trim()) {
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     list = list.filter((c) => (c.website || '').toLowerCase().includes(website.trim().toLowerCase()));
   }
 
   // Lead Count
-<<<<<<< HEAD
   if (lead_count !== '' && lead_count !== undefined && lead_count !== null) {
     list = list.filter((c) => matchesMultiFilter(c.lead_count, lead_count));
   }
@@ -308,15 +268,6 @@ function getCompanies({
   // Employee Size
   if (employee_size) {
     list = list.filter((c) => matchesMultiFilter(c.employee_size, employee_size));
-=======
-  if (lead_count !== '' && !isNaN(parseInt(lead_count, 10))) {
-    list = list.filter((c) => c.lead_count === parseInt(lead_count, 10));
-  }
-
-  // Employee Size
-  if (employee_size && employee_size.trim()) {
-    list = list.filter((c) => (c.employee_size || '').toLowerCase() === employee_size.trim().toLowerCase());
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   }
 
   // Contact Count (Dynamic filter)
@@ -325,7 +276,6 @@ function getCompanies({
   }
 
   // Source
-<<<<<<< HEAD
   if (source) {
     list = list.filter((c) => matchesMultiFilter(c.source, source));
   }
@@ -353,35 +303,6 @@ function getCompanies({
   // Created By
   if (created_by) {
     list = list.filter((c) => matchesMultiFilter(c.created_by, created_by));
-=======
-  if (source && source.trim()) {
-    list = list.filter((c) => (c.source || '').toLowerCase() === source.trim().toLowerCase());
-  }
-
-  // Industry
-  if (industry && industry.trim()) {
-    list = list.filter((c) => (c.industry || '').toLowerCase() === industry.trim().toLowerCase());
-  }
-
-  // Remark
-  if (remark && remark.trim()) {
-    list = list.filter((c) => (c.remark || c.remarks || '').toLowerCase().includes(remark.trim().toLowerCase()));
-  }
-
-  // Registration Status
-  if (registration_status && registration_status.trim()) {
-    list = list.filter((c) => (c.registration_status || '').toLowerCase() === registration_status.trim().toLowerCase());
-  }
-
-  // Supplier Number
-  if (supplier_number && supplier_number.trim()) {
-    list = list.filter((c) => (c.supplier_number || '').toLowerCase().includes(supplier_number.trim().toLowerCase()));
-  }
-
-  // Created By
-  if (created_by && created_by.trim()) {
-    list = list.filter((c) => (c.created_by || '').toLowerCase() === created_by.trim().toLowerCase());
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   }
 
   // Company Phone
@@ -525,7 +446,6 @@ function getCompanyFilters() {
 // ==========================================
 // CONTACTS CRUD
 // ==========================================
-<<<<<<< HEAD
 function getContacts(query = {}) {
   const {
     search = '',
@@ -564,43 +484,21 @@ function getContacts(query = {}) {
     page = 1,
     offset = null,
   } = query;
-=======
-function getContacts({
-  search = '',
-  company_id = '',
-  industry = '',
-  country = '',
-  position_type = '',
-  contact_status = '',
-  sortBy = 'id',
-  sortOrder = 'DESC',
-  limit = 50,
-  page = 1,
-  offset = null,
-} = {}) {
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   let list = [...inMemoryContacts];
 
   if (search && search.trim()) {
     const s = search.trim().toLowerCase();
     list = list.filter((ct) =>
       (ct.contact_name || '').toLowerCase().includes(s) ||
-<<<<<<< HEAD
       (ct.company_name || ct.comp_name || '').toLowerCase().includes(s) ||
       (ct.designation || '').toLowerCase().includes(s) ||
       (ct.email || ct.comp_email || '').toLowerCase().includes(s) ||
-=======
-      (ct.company_name || '').toLowerCase().includes(s) ||
-      (ct.designation || '').toLowerCase().includes(s) ||
-      (ct.email || '').toLowerCase().includes(s) ||
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
       (ct.phone || '').includes(s) ||
       (ct.mobile || '').includes(s) ||
       String(ct.id).includes(s)
     );
   }
 
-<<<<<<< HEAD
   const targetCompId = company_id || comp_id;
   if (targetCompId && String(targetCompId).trim()) {
     list = list.filter((ct) => String(ct.company_id || ct.comp_id) === String(targetCompId).trim());
@@ -656,22 +554,6 @@ function getContacts({
   }
   if (linkedin_conn_send_acc) {
     list = list.filter((ct) => matchesMultiFilter(ct.linkedin_conn_send_acc, linkedin_conn_send_acc));
-=======
-  if (company_id && String(company_id).trim()) {
-    list = list.filter((ct) => String(ct.company_id) === String(company_id).trim());
-  }
-  if (position_type && position_type.trim()) {
-    list = list.filter((ct) => (ct.position_type || '').toLowerCase() === position_type.trim().toLowerCase());
-  }
-  if (contact_status && contact_status.trim()) {
-    list = list.filter((ct) => (ct.contact_status || '').toLowerCase() === contact_status.trim().toLowerCase());
-  }
-  if (industry && industry.trim()) {
-    list = list.filter((ct) => (ct.industry || '').toLowerCase() === industry.trim().toLowerCase());
-  }
-  if (country && country.trim()) {
-    list = list.filter((ct) => (ct.country || '').toLowerCase() === country.trim().toLowerCase());
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   }
 
   const isAsc = sortOrder.toUpperCase() === 'ASC';

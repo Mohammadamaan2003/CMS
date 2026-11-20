@@ -225,18 +225,11 @@ export default function AnalyticsDashboard({ onNavigate, onShowToast, currentTab
       </div>
 
       {/* Control Bar: Filters & Date Pickers */}
-      <div style={{
-        background: '#ffffff',
-        borderRadius: '10px',
-        border: '1px solid #e2e8f0',
-        padding: '16px 20px',
-        marginBottom: '20px',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-      }}>
+      <div className="shared-filter-card" style={{ marginBottom: '20px' }}>
         {/* Preset Buttons & Date Boundaries */}
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginBottom: '14px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '13px', fontWeight: 600, color: '#475569', marginRight: '4px' }}>
+            <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-main, #475569)', marginRight: '4px' }}>
               Time Period:
             </span>
             {[
@@ -258,8 +251,8 @@ export default function AnalyticsDashboard({ onNavigate, onShowToast, currentTab
                   fontWeight: datePreset === p.id ? 600 : 500,
                   border: '1px solid',
                   borderColor: datePreset === p.id ? '#0284c7' : '#cbd5e1',
-                  background: datePreset === p.id ? '#f0f9ff' : '#ffffff',
-                  color: datePreset === p.id ? '#0284c7' : '#475569',
+                  background: datePreset === p.id ? '#f0f9ff' : 'var(--bg-surface, #ffffff)',
+                  color: datePreset === p.id ? '#0284c7' : 'var(--text-main, #475569)',
                   cursor: 'pointer',
                   transition: 'all 0.15s ease',
                 }}
@@ -269,81 +262,51 @@ export default function AnalyticsDashboard({ onNavigate, onShowToast, currentTab
             ))}
           </div>
 
-          <div style={{ fontSize: '12px', color: '#64748b' }}>
+          <div style={{ fontSize: '12px', color: 'var(--text-muted, #64748b)' }}>
             Boundaries: <strong>{startDate || 'Earliest record'}</strong> &rarr; <strong>{endDate || 'Latest record'}</strong>
           </div>
         </div>
 
         {/* Filter Inputs Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-          gap: '12px',
-          alignItems: 'flex-end',
-        }}>
-          <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>
+        <div className="shared-filter-grid">
+          <div className="shared-filter-field">
+            <label className="shared-filter-label">
               From Date
             </label>
             <input
               type="date"
+              className="shared-filter-input"
               value={startDate}
               onChange={(e) => {
                 setStartDate(e.target.value);
                 setDatePreset('custom');
               }}
-              style={{
-                width: '100%',
-                height: '34px',
-                padding: '0 8px',
-                borderRadius: '6px',
-                border: '1px solid #cbd5e1',
-                fontSize: '12px',
-                color: '#1e293b',
-              }}
             />
           </div>
 
-          <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>
+          <div className="shared-filter-field">
+            <label className="shared-filter-label">
               To Date
             </label>
             <input
               type="date"
+              className="shared-filter-input"
               value={endDate}
               onChange={(e) => {
                 setEndDate(e.target.value);
                 setDatePreset('custom');
               }}
-              style={{
-                width: '100%',
-                height: '34px',
-                padding: '0 8px',
-                borderRadius: '6px',
-                border: '1px solid #cbd5e1',
-                fontSize: '12px',
-                color: '#1e293b',
-              }}
             />
           </div>
 
-          <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>
+          <div className="shared-filter-field">
+            <label className="shared-filter-label">
               Country
             </label>
             <select
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
-              style={{
-                width: '100%',
-                height: '34px',
-                padding: '0 8px',
-                borderRadius: '6px',
-                border: '1px solid #cbd5e1',
-                fontSize: '12px',
-                color: '#1e293b',
-                background: '#ffffff',
-              }}
+              className="shared-filter-input"
             >
               <option value="">All Countries</option>
               {filterOptions.countries.map((c) => (
@@ -354,23 +317,14 @@ export default function AnalyticsDashboard({ onNavigate, onShowToast, currentTab
             </select>
           </div>
 
-          <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>
+          <div className="shared-filter-field">
+            <label className="shared-filter-label">
               Industry
             </label>
             <select
               value={selectedIndustry}
               onChange={(e) => setSelectedIndustry(e.target.value)}
-              style={{
-                width: '100%',
-                height: '34px',
-                padding: '0 8px',
-                borderRadius: '6px',
-                border: '1px solid #cbd5e1',
-                fontSize: '12px',
-                color: '#1e293b',
-                background: '#ffffff',
-              }}
+              className="shared-filter-input"
             >
               <option value="">All Industries</option>
               {filterOptions.industries.map((ind) => (
@@ -381,23 +335,14 @@ export default function AnalyticsDashboard({ onNavigate, onShowToast, currentTab
             </select>
           </div>
 
-          <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#475569', marginBottom: '4px' }}>
+          <div className="shared-filter-field">
+            <label className="shared-filter-label">
               Account Manager
             </label>
             <select
               value={selectedManager}
               onChange={(e) => setSelectedManager(e.target.value)}
-              style={{
-                width: '100%',
-                height: '34px',
-                padding: '0 8px',
-                borderRadius: '6px',
-                border: '1px solid #cbd5e1',
-                fontSize: '12px',
-                color: '#1e293b',
-                background: '#ffffff',
-              }}
+              className="shared-filter-input"
             >
               <option value="">All Account Managers</option>
               {filterOptions.accountManagers.map((mgr) => (
@@ -408,44 +353,21 @@ export default function AnalyticsDashboard({ onNavigate, onShowToast, currentTab
             </select>
           </div>
 
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div className="shared-filter-field" style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
             <button
               type="button"
               onClick={handleApplyFilters}
-              style={{
-                flex: 1,
-                height: '34px',
-                background: '#0284c7',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: '6px',
-                fontSize: '12px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '4px',
-              }}
+              className="btn-filter-search"
+              style={{ flex: 1 }}
             >
-              <IconFilter size={13} />
+              <IconFilter size={13} style={{ marginRight: '4px' }} />
               <span>Apply</span>
             </button>
             <button
               type="button"
               onClick={handleResetFilters}
               title="Reset all filters"
-              style={{
-                height: '34px',
-                padding: '0 12px',
-                background: '#f1f5f9',
-                color: '#475569',
-                border: '1px solid #cbd5e1',
-                borderRadius: '6px',
-                fontSize: '12px',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
+              className="btn-filter-clear"
             >
               Reset
             </button>

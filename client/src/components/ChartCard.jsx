@@ -85,6 +85,7 @@ export default function ChartCard({
                 </div>
 
                 <div
+                  className="apex-chart-bar-track"
                   style={{
                     flex: 1,
                     background: '#f1f5f9',
@@ -95,6 +96,7 @@ export default function ChartCard({
                   }}
                 >
                   <div
+                    className="apex-chart-bar-fill"
                     style={{
                       width: `${pctOfMax}%`,
                       height: '100%',
@@ -104,6 +106,7 @@ export default function ChartCard({
                     }}
                   />
                   <span
+                    className="apex-chart-bar-label"
                     style={{
                       position: 'absolute',
                       right: '6px',

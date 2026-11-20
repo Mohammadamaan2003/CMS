@@ -1,6 +1,5 @@
 [
   {
-<<<<<<< HEAD
     "comp_name": "Corpay",
     "name": "Corpay",
     "website": "https://www.corpay.com/",
@@ -57909,8 +57908,6 @@
     "updated_at": "11/19/2026"
   },
   {
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "id": 364666,
     "comp_name": "Solvo",
     "name": "Solvo",
@@ -57919,16 +57916,11 @@
     "city": "Tel Aviv",
     "industry": "Cloud Infrastructure Security & DevSecOps",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -57956,24 +57948,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364665,
@@ -57984,16 +57958,11 @@
     "city": "Dubai",
     "industry": "Financial Services",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58021,24 +57990,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364664,
@@ -58049,16 +58000,11 @@
     "city": "Hyderabad",
     "industry": "Information Technology and Services / Custom Software & Web Development",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58086,24 +58032,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364663,
@@ -58114,16 +58042,11 @@
     "city": "Doha",
     "industry": "Retail Supermarkets / Hypermarkets, Malls & Retail Group",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "1,001-5,000 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58151,24 +58074,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364662,
@@ -58179,16 +58084,11 @@
     "city": "Long Island City",
     "industry": "Telecommunications",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "10,001+ employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58216,24 +58116,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364661,
@@ -58244,16 +58126,11 @@
     "city": "Pune",
     "industry": "Advertising Services",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "51-200 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58281,24 +58158,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364660,
@@ -58309,16 +58168,11 @@
     "city": "Dubai",
     "industry": "Real Estate",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58346,24 +58200,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364659,
@@ -58374,16 +58210,11 @@
     "city": "Noida",
     "industry": "Information Technology and Services / Custom Software Development",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58411,24 +58242,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364658,
@@ -58439,16 +58252,11 @@
     "city": "Bangalore",
     "industry": "management consulting",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58476,24 +58284,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364657,
@@ -58504,16 +58294,11 @@
     "city": "Dubai",
     "industry": "Financial Services",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "201-500 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58541,24 +58326,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364656,
@@ -58569,16 +58336,11 @@
     "city": "Ghaziabad",
     "industry": "Environmental Services",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58606,24 +58368,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364655,
@@ -58634,16 +58378,11 @@
     "city": "Bangalore",
     "industry": "Machinery Manufacturing",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "51-200 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58671,48 +58410,21 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364654,
     "comp_name": "ENDOW W.L.L. - Investments and Real Estate Activities.",
     "name": "ENDOW W.L.L. - Investments and Real Estate Activities.",
-<<<<<<< HEAD
     "website": "",
-=======
-    "website": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "country": "Bahrain",
     "city": "Manama",
     "industry": "Real Estate",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "1-10 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58740,24 +58452,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364653,
@@ -58768,16 +58462,11 @@
     "city": "Dubai",
     "industry": "Construction & Project Management",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "501-1,000 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58805,48 +58494,21 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364652,
     "comp_name": "NONILLION TECH",
     "name": "NONILLION TECH",
-<<<<<<< HEAD
     "website": "",
-=======
-    "website": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "country": "UAE",
     "city": "Dubai",
     "industry": "Information Technology & Services",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "1-10 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58874,24 +58536,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364651,
@@ -58902,16 +58546,11 @@
     "city": "Riyadh",
     "industry": "Freight and Package Transportation / Warehousing, Logistics & Supply Chain",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "1,001-5,000 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -58939,24 +58578,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364650,
@@ -58967,16 +58588,11 @@
     "city": "Navi Mumbai",
     "industry": "Telecommunications",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "5,001-10,000 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59004,24 +58620,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364649,
@@ -59032,16 +58630,11 @@
     "city": "Chicago",
     "industry": "Financial Services",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "10,001+ employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59069,24 +58662,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364648,
@@ -59097,16 +58672,11 @@
     "city": "Sharjah",
     "industry": "Construction",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "51-200 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59134,24 +58704,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364647,
@@ -59162,16 +58714,11 @@
     "city": "Dubai",
     "industry": "Financial Services",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59199,30 +58746,11 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364646,
     "comp_name": "Enterpreneur",
     "name": "Enterpreneur",
-<<<<<<< HEAD
     "website": "",
     "country": "",
     "city": "",
@@ -59260,34 +58788,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "website": null,
-    "country": null,
-    "city": null,
-    "industry": null,
-    "company_type": "Direct Client",
-    "company_categories": null,
-    "employee_size": null,
-    "existingcomp": "N",
-    "existing_comp": "N",
-    "registration_status": "Active",
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364645,
@@ -59298,16 +58798,11 @@
     "city": "Dubai",
     "industry": "Information Technology and Services / Custom Software Solutions",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59335,24 +58830,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364644,
@@ -59363,16 +58840,11 @@
     "city": "London",
     "industry": "Banking",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "51-200 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59400,24 +58872,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364643,
@@ -59428,16 +58882,11 @@
     "city": "Cairo",
     "industry": "renewables & environment",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59465,24 +58914,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364642,
@@ -59493,16 +58924,11 @@
     "city": "Cleveland",
     "industry": "Mining & Metals / Flat-Rolled Steel & Iron Ore Pellet Producer",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "10,001+ employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59530,24 +58956,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364641,
@@ -59558,16 +58966,11 @@
     "city": "Dubai",
     "industry": "Wholesale",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "51-200 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59595,24 +58998,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364640,
@@ -59623,16 +59008,11 @@
     "city": "Dubai",
     "industry": "Automotive",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59660,24 +59040,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364639,
@@ -59688,16 +59050,11 @@
     "city": "Abu Dhabi",
     "industry": "Travel & Tourism",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "501-1,000 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59725,24 +59082,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364638,
@@ -59753,16 +59092,11 @@
     "city": "Dubai",
     "industry": "Staffing and Recruiting",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59790,24 +59124,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364637,
@@ -59818,16 +59134,11 @@
     "city": "Waukesha",
     "industry": "Electrical & Electronic Manufacturing / Backup Power Solutions",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "5,001-10,000 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59855,24 +59166,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364636,
@@ -59883,16 +59176,11 @@
     "city": "Abu Dhabi",
     "industry": "Government Administration",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "51-200 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59920,24 +59208,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364635,
@@ -59948,16 +59218,11 @@
     "city": "Riyadh",
     "industry": "Hospitality",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "51-200 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -59985,24 +59250,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364634,
@@ -60013,16 +59260,11 @@
     "city": "Tunis",
     "industry": "Industrial Machinery Manufacturing",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "51-200 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60050,24 +59292,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364633,
@@ -60078,16 +59302,11 @@
     "city": "Dubai",
     "industry": "IT Services and IT Consulting",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "501-1,000 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60115,24 +59334,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364632,
@@ -60143,16 +59344,11 @@
     "city": "Dubai",
     "industry": "Business Consulting and Services",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60180,24 +59376,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364631,
@@ -60208,16 +59386,11 @@
     "city": "Al Ain",
     "industry": "Food & Beverage Production",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "1,001-5,000 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60245,24 +59418,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364630,
@@ -60273,16 +59428,11 @@
     "city": "Manama",
     "industry": "Hospitality",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "51-200 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60310,24 +59460,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364629,
@@ -60338,16 +59470,11 @@
     "city": "Dubai",
     "industry": "Digital Marketing & Software Development",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60375,24 +59502,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364628,
@@ -60403,16 +59512,11 @@
     "city": "Dubai",
     "industry": "Utilities",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "501-1,000 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60440,24 +59544,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364627,
@@ -60468,16 +59554,11 @@
     "city": "Jeddah",
     "industry": "Wholesale",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "51-200 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60505,24 +59586,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364626,
@@ -60533,16 +59596,11 @@
     "city": "London",
     "industry": "Staffing and Recruiting",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60570,24 +59628,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364625,
@@ -60598,16 +59638,11 @@
     "city": "Santa Clara",
     "industry": "IT Services and IT Consulting",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "201-500 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60635,24 +59670,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364624,
@@ -60663,16 +59680,11 @@
     "city": "Wilmington",
     "industry": "IT Services and IT Consulting / Staff Augmentation",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "51-200 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60700,24 +59712,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364623,
@@ -60728,16 +59722,11 @@
     "city": "Dubai",
     "industry": "IT Services and IT Consulting",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "51-200 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60765,24 +59754,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364622,
@@ -60793,16 +59764,11 @@
     "city": "Rome",
     "industry": "Music & Education Technology",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "1-10 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60830,24 +59796,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364621,
@@ -60858,16 +59806,11 @@
     "city": "Santa Clara",
     "industry": "IT Services and IT Consulting",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "201-500 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60895,24 +59838,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364620,
@@ -60923,16 +59848,11 @@
     "city": "Riyadh",
     "industry": "Real Estate",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -60960,24 +59880,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364619,
@@ -60988,16 +59890,11 @@
     "city": "Muscat",
     "industry": "Information Technology and Services / IT Networking & Cabling",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -61025,24 +59922,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364618,
@@ -61053,16 +59932,11 @@
     "city": "Sharjah",
     "industry": "Information Technology and Services / IT Hardware & Support",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "11-50 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -61090,24 +59964,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364617,
@@ -61118,16 +59974,11 @@
     "city": "Dubai",
     "industry": "Outsourcing and Offshoring Consulting",
     "company_type": "Direct Client",
-<<<<<<< HEAD
     "company_categories": "",
-=======
-    "company_categories": null,
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     "employee_size": "501-1,000 employees",
     "existingcomp": "N",
     "existing_comp": "N",
     "registration_status": "Active",
-<<<<<<< HEAD
     "companyphone": "",
     "phone": "",
     "com_email": "",
@@ -61155,24 +60006,6 @@
     "prev_salesperson": "",
     "contacts_count": 0,
     "normalized_website": ""
-=======
-    "companyphone": null,
-    "phone": null,
-    "com_email": null,
-    "email": null,
-    "technology": null,
-    "source": null,
-    "salesperson": null,
-    "remark": null,
-    "remarks": null,
-    "da": null,
-    "supplier_number": null,
-    "joget_id": null,
-    "contact_count": 0,
-    "lead_count": 0,
-    "created_at": "11/16/2026",
-    "updated_at": "11/16/2026"
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   },
   {
     "id": 364616,

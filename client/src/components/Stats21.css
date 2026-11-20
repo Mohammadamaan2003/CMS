@@ -1,0 +1,603 @@
+/* ==========================================================================
+   Stats 21 Component Styles (React Bits Pro - Scrubbed Stats with Year Ruler)
+   Strictly scoped under .stats21-container / .stats21-card — zero global leaks
+   ========================================================================== */
+
+.stats21-card {
+  position: relative;
+  width: 100%;
+  background: #09090b;
+  border: 1px solid #27272a;
+  border-radius: 16px;
+  padding: 1.35rem 1.75rem 1.25rem 1.75rem;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow: hidden;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.45);
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+/* ==========================================================================
+   Lumina Theme Format Overrides for Stats 21
+   Vibrant neon gradients, frosted glass cards, glowing accents
+   ========================================================================== */
+
+[data-theme="lumina"] .stats21-card,
+.apex-theme-lumina .stats21-card {
+  background: linear-gradient(135deg, rgba(30, 27, 75, 0.72) 0%, rgba(15, 12, 41, 0.88) 100%) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5), 0 0 35px -5px rgba(139, 92, 246, 0.28) !important;
+}
+
+/* Top Subtitle / Instruction Header */
+.stats21-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.95rem;
+  gap: 1rem;
+}
+
+.stats21-subtitle {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #a1a1aa;
+  letter-spacing: -0.01em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+[data-theme="lumina"] .stats21-subtitle,
+.apex-theme-lumina .stats21-subtitle {
+  color: #c4b5fd !important;
+}
+
+.stats21-subtitle-highlight {
+  color: #f4f4f5;
+  font-weight: 500;
+}
+
+[data-theme="lumina"] .stats21-subtitle-highlight,
+.apex-theme-lumina .stats21-subtitle-highlight {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+.stats21-scrub-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #71717a;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="lumina"] .stats21-scrub-hint,
+.apex-theme-lumina .stats21-scrub-hint {
+  background: rgba(139, 92, 246, 0.18) !important;
+  border: 1px solid rgba(236, 72, 153, 0.35) !important;
+  color: #e0e7ff !important;
+}
+
+/* 3 Big Numbers Grid */
+.stats21-numbers-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-bottom: 1.35rem;
+}
+
+.stats21-stat-item {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  background: transparent;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stats21-stat-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  transform: translateY(-2px);
+}
+
+[data-theme="lumina"] .stats21-stat-item:hover,
+.apex-theme-lumina .stats21-stat-item:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 18px rgba(236, 72, 153, 0.15) !important;
+}
+
+.stats21-big-number {
+  font-size: 2.35rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+/* Lumina Neon Shimmer Big Numbers */
+[data-theme="lumina"] .stats21-big-number,
+.apex-theme-lumina .stats21-big-number {
+  background: linear-gradient(135deg, #ffffff 0%, #ede9fe 60%, #c4b5fd 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  filter: drop-shadow(0 2px 10px rgba(139, 92, 246, 0.4)) !important;
+}
+
+.stats21-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #f4f4f5;
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+[data-theme="lumina"] .stats21-label,
+.apex-theme-lumina .stats21-label {
+  color: #e0e7ff !important;
+}
+
+.stats21-view-icon {
+  opacity: 0;
+  transform: translateX(-3px);
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+  color: #eab308;
+}
+
+[data-theme="lumina"] .stats21-view-icon,
+.apex-theme-lumina .stats21-view-icon {
+  color: #ec4899 !important;
+}
+
+.stats21-stat-item:hover .stats21-view-icon {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.stats21-trend {
+  font-size: 0.775rem;
+  font-weight: 500;
+  color: #a1a1aa;
+  letter-spacing: -0.01em;
+}
+
+.stats21-trend-positive {
+  color: #a1a1aa;
+}
+
+[data-theme="lumina"] .stats21-trend,
+.apex-theme-lumina .stats21-trend {
+  color: #34d399 !important;
+}
+
+/* Visualization Timeline & Bars Area */
+.stats21-timeline-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 0.5rem;
+  touch-action: none;
+}
+
+.stats21-chart-area {
+  position: relative;
+  height: 95px;
+  width: 100%;
+  cursor: ew-resize;
+}
+
+.stats21-svg-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* SVG Bar styling in Default vs Lumina */
+.stats21-bar {
+  fill: rgba(255, 255, 255, 0.18);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.stats21-bar-active {
+  fill: #ffffff;
+}
+
+[data-theme="lumina"] .stats21-bar,
+.apex-theme-lumina .stats21-bar {
+  fill: rgba(196, 181, 253, 0.22) !important;
+}
+
+[data-theme="lumina"] .stats21-bar-active,
+.apex-theme-lumina .stats21-bar-active {
+  fill: url(#luminaActiveBarGrad) !important;
+  filter: drop-shadow(0 0 5px rgba(6, 182, 212, 0.6)) !important;
+}
+
+/* SVG Needle / Peak pin */
+.stats21-needle-line {
+  stroke: #eab308;
+  stroke-width: 1.5;
+}
+
+.stats21-needle-dot {
+  fill: #eab308;
+  filter: drop-shadow(0 0 5px rgba(234, 179, 8, 0.85));
+}
+
+[data-theme="lumina"] .stats21-needle-line,
+.apex-theme-lumina .stats21-needle-line {
+  stroke: url(#luminaNeedleGrad) !important;
+  stroke-width: 1.8 !important;
+}
+
+[data-theme="lumina"] .stats21-needle-dot,
+.apex-theme-lumina .stats21-needle-dot {
+  fill: #ec4899 !important;
+  filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.95)) !important;
+}
+
+/* Ruler Labels Row */
+.stats21-ruler-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 0.2rem;
+}
+
+[data-theme="lumina"] .stats21-ruler-row,
+.apex-theme-lumina .stats21-ruler-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.stats21-year-btn {
+  background: none;
+  border: none;
+  padding: 0.2rem 0.55rem;
+  color: #71717a;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+  font-family: inherit;
+}
+
+.stats21-year-btn:hover {
+  color: #e4e4e7;
+}
+
+[data-theme="lumina"] .stats21-year-btn,
+.apex-theme-lumina .stats21-year-btn {
+  color: #c4b5fd !important;
+}
+
+[data-theme="lumina"] .stats21-year-btn:hover,
+.apex-theme-lumina .stats21-year-btn:hover {
+  color: #ffffff !important;
+}
+
+/* Active Year Golden Pill Badge in Default Theme */
+.stats21-year-btn.stats21-active-year {
+  background: #eab308 !important;
+  color: #09090b !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(234, 179, 8, 0.35);
+  transform: scale(1.05);
+}
+
+/* Active Year Neon Gradient Badge in Lumina Theme (Pink -> Violet -> Cyan) */
+[data-theme="lumina"] .stats21-year-btn.stats21-active-year,
+.apex-theme-lumina .stats21-year-btn.stats21-active-year {
+  background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #06b6d4 100%) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 16px rgba(236, 72, 153, 0.65), 0 0 10px rgba(6, 182, 212, 0.45) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.08) !important;
+}
+
+/* Floating Tooltip */
+.stats21-tooltip {
+  position: absolute;
+  top: -34px;
+  transform: translateX(-50%);
+  background: rgba(18, 18, 24, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+}
+
+[data-theme="lumina"] .stats21-tooltip,
+.apex-theme-lumina .stats21-tooltip {
+  background: rgba(30, 27, 75, 0.92) !important;
+  border: 1px solid rgba(236, 72, 153, 0.4) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 10px rgba(139, 92, 246, 0.3) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .stats21-numbers-row {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .stats21-big-number {
+    font-size: 2rem;
+  }
+  .stats21-card {
+    padding: 1.15rem 1rem;
+  }
+}
+
+/* ==========================================================================
+   Smooth Animations & Bar Growth for Default Dark Theme in Stats 21
+   Strictly scoped to .apex-theme-dark / [data-theme="dark"]
+   ========================================================================== */
+
+@keyframes stats21BarGrowY {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.apex-theme-dark .stats21-bar,
+[data-theme="dark"] .stats21-bar {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: stats21BarGrowY 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Stagger monthly bars */
+.apex-theme-dark g:nth-child(1) > .stats21-bar, [data-theme="dark"] g:nth-child(1) > .stats21-bar { animation-delay: 0ms; }
+.apex-theme-dark g:nth-child(2) > .stats21-bar, [data-theme="dark"] g:nth-child(2) > .stats21-bar { animation-delay: 15ms; }
+.apex-theme-dark g:nth-child(3) > .stats21-bar, [data-theme="dark"] g:nth-child(3) > .stats21-bar { animation-delay: 30ms; }
+.apex-theme-dark g:nth-child(4) > .stats21-bar, [data-theme="dark"] g:nth-child(4) > .stats21-bar { animation-delay: 45ms; }
+.apex-theme-dark g:nth-child(5) > .stats21-bar, [data-theme="dark"] g:nth-child(5) > .stats21-bar { animation-delay: 60ms; }
+.apex-theme-dark g:nth-child(6) > .stats21-bar, [data-theme="dark"] g:nth-child(6) > .stats21-bar { animation-delay: 75ms; }
+.apex-theme-dark g:nth-child(7) > .stats21-bar, [data-theme="dark"] g:nth-child(7) > .stats21-bar { animation-delay: 90ms; }
+.apex-theme-dark g:nth-child(8) > .stats21-bar, [data-theme="dark"] g:nth-child(8) > .stats21-bar { animation-delay: 105ms; }
+.apex-theme-dark g:nth-child(9) > .stats21-bar, [data-theme="dark"] g:nth-child(9) > .stats21-bar { animation-delay: 120ms; }
+.apex-theme-dark g:nth-child(10) > .stats21-bar, [data-theme="dark"] g:nth-child(10) > .stats21-bar { animation-delay: 135ms; }
+.apex-theme-dark g:nth-child(11) > .stats21-bar, [data-theme="dark"] g:nth-child(11) > .stats21-bar { animation-delay: 150ms; }
+.apex-theme-dark g:nth-child(12) > .stats21-bar, [data-theme="dark"] g:nth-child(12) > .stats21-bar { animation-delay: 165ms; }
+
+/* Subtle Glow and Lift on Card & Numbers */
+.apex-theme-dark .stats21-card,
+[data-theme="dark"] .stats21-card {
+  transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 240ms ease !important;
+}
+
+.apex-theme-dark .stats21-card:hover,
+[data-theme="dark"] .stats21-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.7), 0 0 16px 2px rgba(59, 130, 246, 0.18) !important;
+  border-color: rgba(59, 130, 246, 0.35) !important;
+}
+
+.apex-theme-dark .stats21-stat-item:hover,
+[data-theme="dark"] .stats21-stat-item:hover {
+  background: rgba(59, 130, 246, 0.08) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 10px rgba(59, 130, 246, 0.25) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apex-theme-dark .stats21-bar,
+  [data-theme="dark"] .stats21-bar,
+  .apex-theme-dark .stats21-card,
+  [data-theme="dark"] .stats21-card,
+  .apex-theme-dark .stats21-stat-item,
+  [data-theme="dark"] .stats21-stat-item {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   Glass Theme (Frosted Glassmorphism) Overrides for Stats 21
+   Ultra-translucent frosted glass card letting background glowing blobs shine through
+   High-contrast protective value plates, crisp white text & golden/orange glowing accents
+   ========================================================================== */
+
+[data-theme="glass"] .stats21-card,
+.apex-theme-glass .stats21-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.18) 100%) !important;
+  backdrop-filter: blur(28px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(160%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 16px 40px -10px rgba(60, 45, 35, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.7) !important;
+  color: #1a130f !important;
+}
+
+[data-theme="glass"] .stats21-card:hover,
+.apex-theme-glass .stats21-card:hover {
+  border-color: #ffffff !important;
+  box-shadow: 0 20px 48px -10px rgba(60, 45, 35, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Value regions: Dedicated High-Contrast Frosted Plate matching screenshot */
+[data-theme="glass"] .stats21-stat-item,
+.apex-theme-glass .stats21-stat-item {
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.65) !important;
+  border-radius: 16px !important;
+  padding: 0.95rem 1.25rem !important;
+  box-shadow: 0 4px 14px rgba(70, 50, 35, 0.08), inset 0 1px 1px #ffffff !important;
+}
+
+[data-theme="glass"] .stats21-stat-item:hover,
+.apex-theme-glass .stats21-stat-item:hover {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(70, 50, 35, 0.14) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Big Numbers: Crisp, brilliant dark espresso */
+[data-theme="glass"] .stats21-big-number,
+.apex-theme-glass .stats21-big-number {
+  color: #1a130f !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  text-shadow: none !important;
+}
+
+/* Metric Labels */
+[data-theme="glass"] .stats21-label,
+.apex-theme-glass .stats21-label {
+  color: #4a3d35 !important;
+  font-weight: 700 !important;
+  text-shadow: none !important;
+}
+
+[data-theme="glass"] .stats21-view-icon,
+.apex-theme-glass .stats21-view-icon {
+  color: #c2410c !important;
+}
+
+/* Trend text */
+[data-theme="glass"] .stats21-trend,
+.apex-theme-glass .stats21-trend {
+  color: #c2410c !important;
+  font-weight: 700 !important;
+  text-shadow: none !important;
+}
+
+/* Header & Instruction Text with Strong Contrast */
+[data-theme="glass"] .stats21-subtitle,
+.apex-theme-glass .stats21-subtitle {
+  color: #3d3129 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+[data-theme="glass"] .stats21-subtitle-highlight,
+.apex-theme-glass .stats21-subtitle-highlight {
+  color: #1a130f !important;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+}
+
+/* Scrubber Hint Capsule: Dark Espresso Pill */
+[data-theme="glass"] .stats21-scrub-hint,
+.apex-theme-glass .stats21-scrub-hint {
+  background: #1c1510 !important;
+  border: 1px solid #1c1510 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(28, 21, 16, 0.25) !important;
+  border-radius: 9999px !important;
+}
+
+[data-theme="glass"] .stats21-scrub-hint strong,
+.apex-theme-glass .stats21-scrub-hint strong {
+  color: #f59e0b !important;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+}
+
+/* Timeline & Bar Visualizer Contrast Region */
+[data-theme="glass"] .stats21-chart-area,
+.apex-theme-glass .stats21-chart-area {
+  background: rgba(255, 255, 255, 0.45) !important;
+  border-radius: 14px !important;
+  padding: 8px 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Bars & Visualizer */
+[data-theme="glass"] .stats21-bar,
+.apex-theme-glass .stats21-bar {
+  fill: rgba(80, 60, 45, 0.28) !important;
+}
+
+[data-theme="glass"] .stats21-bar:hover,
+.apex-theme-glass .stats21-bar:hover {
+  fill: rgba(80, 60, 45, 0.6) !important;
+}
+
+[data-theme="glass"] .stats21-bar-active,
+.apex-theme-glass .stats21-bar-active {
+  fill: #1c1510 !important;
+  filter: drop-shadow(0 0 4px rgba(28, 21, 16, 0.4)) !important;
+}
+
+[data-theme="glass"] .stats21-needle-line,
+.apex-theme-glass .stats21-needle-line {
+  stroke: #c2410c !important;
+  stroke-width: 2 !important;
+}
+
+[data-theme="glass"] .stats21-needle-dot,
+.apex-theme-glass .stats21-needle-dot {
+  fill: #c2410c !important;
+}
+
+/* Year Ruler */
+[data-theme="glass"] .stats21-ruler-row,
+.apex-theme-glass .stats21-ruler-row {
+  border-top: 1px solid rgba(180, 155, 135, 0.3) !important;
+}
+
+[data-theme="glass"] .stats21-year-btn,
+.apex-theme-glass .stats21-year-btn {
+  color: #5a4a3f !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+[data-theme="glass"] .stats21-year-btn:hover,
+.apex-theme-glass .stats21-year-btn:hover {
+  color: #1a130f !important;
+}
+
+[data-theme="glass"] .stats21-year-btn.stats21-active-year,
+.apex-theme-glass .stats21-year-btn.stats21-active-year {
+  background: #1c1510 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 12px rgba(28, 21, 16, 0.35) !important;
+  border: none !important;
+  transform: scale(1.08) !important;
+}
+

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../db/pool');
-<<<<<<< HEAD
 const { buildMultiFilter, buildMultiFilterDual } = require('../utils/filterHelper');
 
 /**
@@ -90,8 +89,6 @@ function buildLeadConditions(query, values) {
 
   return whereClauses;
 }
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
 
 function formatOracleDate(dateObj = new Date()) {
   const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
@@ -130,11 +127,8 @@ router.get('/meta/lovs', async (req, res, next) => {
       industries,
       countries,
       companyTypes,
-<<<<<<< HEAD
       technologies,
       cities,
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     ] = await Promise.all([
       pool.query(`SELECT DISTINCT account_manager FROM leads WHERE account_manager IS NOT NULL AND account_manager != '' ORDER BY account_manager`),
       pool.query(`SELECT DISTINCT name_of_coordinator FROM leads WHERE name_of_coordinator IS NOT NULL AND name_of_coordinator != '' ORDER BY name_of_coordinator`),
@@ -149,11 +143,8 @@ router.get('/meta/lovs', async (req, res, next) => {
       pool.query(`SELECT DISTINCT industry FROM master_industries ORDER BY industry`),
       pool.query(`SELECT DISTINCT country FROM master_countries ORDER BY country`),
       pool.query(`SELECT DISTINCT master_company_type as company_type FROM master_company_types ORDER BY master_company_type`),
-<<<<<<< HEAD
       pool.query(`SELECT DISTINCT technology FROM leads WHERE technology IS NOT NULL AND technology != '' ORDER BY technology ASC LIMIT 200`),
       pool.query(`SELECT DISTINCT city FROM leads WHERE city IS NOT NULL AND city != '' ORDER BY city ASC LIMIT 200`),
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     ]);
 
     res.json({
@@ -172,11 +163,8 @@ router.get('/meta/lovs', async (req, res, next) => {
         industries: industries.rows.map(r => r.industry),
         countries: countries.rows.map(r => r.country),
         companyTypes: companyTypes.rows.map(r => r.company_type),
-<<<<<<< HEAD
         technologies: technologies.rows.map(r => r.technology),
         cities: cities.rows.map(r => r.city),
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
       },
     });
   } catch (err) {
@@ -237,122 +225,14 @@ router.get('/meta/column-values', async (req, res, next) => {
 router.get('/', async (req, res, next) => {
   try {
     const {
-<<<<<<< HEAD
-=======
-      search = '',
-      company_name = '',
-      account_manager = '',
-      coordinator = '',
-      name_of_coordinator = '',
-      industry = '',
-      country = '',
-      technology = '',
-      probability = '',
-      company_type = '',
-      lead_type = '',
-      city = '',
-      contacts = '',
-      lead_date = '',
-      status = '',
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
       limit = 50,
       offset = 0,
       sortBy = 'sr_no',
       sortOrder = 'ASC',
     } = req.query;
 
-<<<<<<< HEAD
     const values = [];
     const whereClauses = buildLeadConditions(req.query, values);
-=======
-    const whereClauses = [];
-    const values = [];
-
-    if (search && search.trim()) {
-      values.push(`%${search.trim().toLowerCase()}%`);
-      const idx = values.length;
-      whereClauses.push(`(
-        LOWER(COALESCE(company_name, '')) LIKE $${idx} OR
-        LOWER(COALESCE(name_of_coordinator, '')) LIKE $${idx} OR
-        LOWER(COALESCE(account_manager, '')) LIKE $${idx} OR
-        LOWER(COALESCE(industry, '')) LIKE $${idx} OR
-        LOWER(COALESCE(technology, '')) LIKE $${idx} OR
-        LOWER(COALESCE(city, '')) LIKE $${idx} OR
-        LOWER(COALESCE(country, '')) LIKE $${idx} OR
-        LOWER(COALESCE(probability, '')) LIKE $${idx} OR
-        LOWER(COALESCE(company_type, '')) LIKE $${idx} OR
-        LOWER(COALESCE(contacts, '')) LIKE $${idx} OR
-        CAST(sr_no AS TEXT) LIKE $${idx}
-      )`);
-    }
-
-    if (company_name && company_name.trim()) {
-      values.push(`%${company_name.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(company_name, '')) LIKE $${values.length}`);
-    }
-
-    if (account_manager && account_manager.trim()) {
-      values.push(account_manager.trim().toLowerCase());
-      whereClauses.push(`LOWER(COALESCE(account_manager, '')) = $${values.length}`);
-    }
-
-    const coordVal = coordinator || name_of_coordinator || '';
-    if (coordVal && coordVal.trim()) {
-      values.push(`%${coordVal.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(name_of_coordinator, '')) LIKE $${values.length}`);
-    }
-
-    if (industry && industry.trim()) {
-      values.push(`%${industry.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(industry, '')) LIKE $${values.length}`);
-    }
-
-    if (country && country.trim()) {
-      values.push(`%${country.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(country, '')) LIKE $${values.length}`);
-    }
-
-    if (technology && technology.trim()) {
-      values.push(`%${technology.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(technology, '')) LIKE $${values.length}`);
-    }
-
-    if (probability && probability.trim()) {
-      values.push(probability.trim().toLowerCase());
-      whereClauses.push(`LOWER(COALESCE(probability, '')) = $${values.length}`);
-    }
-
-    if (company_type && company_type.trim()) {
-      values.push(company_type.trim().toLowerCase());
-      whereClauses.push(`LOWER(COALESCE(company_type, '')) = $${values.length}`);
-    }
-
-    if (lead_type && lead_type.trim()) {
-      values.push(lead_type.trim().toLowerCase());
-      whereClauses.push(`LOWER(COALESCE(lead_type, '')) = $${values.length}`);
-    }
-
-    if (city && city.trim()) {
-      values.push(`%${city.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(city, '')) LIKE $${values.length}`);
-    }
-
-    if (contacts && contacts.trim()) {
-      values.push(`%${contacts.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(contacts, '')) LIKE $${values.length}`);
-    }
-
-    if (lead_date && lead_date.trim()) {
-      values.push(`%${lead_date.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(lead_date, '')) LIKE $${values.length}`);
-    }
-
-    if (status && status.trim()) {
-      values.push(`%${status.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(status, '')) LIKE $${values.length}`);
-    }
-
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     const whereSql = whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
 
     const allowedSort = ['sr_no', 'company_name', 'name_of_coordinator', 'account_manager', 'industry', 'technology', 'lead_date', 'city', 'country', 'probability', 'company_type', 'contacts', 'created_date', 'lead_id'];
@@ -405,116 +285,8 @@ router.get('/', async (req, res, next) => {
  */
 router.get('/ids', async (req, res, next) => {
   try {
-<<<<<<< HEAD
     const values = [];
     const whereClauses = buildLeadConditions(req.query, values);
-=======
-    const {
-      search = '',
-      company_name = '',
-      account_manager = '',
-      coordinator = '',
-      name_of_coordinator = '',
-      industry = '',
-      country = '',
-      technology = '',
-      probability = '',
-      company_type = '',
-      lead_type = '',
-      city = '',
-      contacts = '',
-      lead_date = '',
-      status = '',
-    } = req.query;
-
-    const whereClauses = [];
-    const values = [];
-
-    if (search && search.trim()) {
-      values.push(`%${search.trim().toLowerCase()}%`);
-      const idx = values.length;
-      whereClauses.push(`(
-        LOWER(COALESCE(company_name, '')) LIKE $${idx} OR
-        LOWER(COALESCE(name_of_coordinator, '')) LIKE $${idx} OR
-        LOWER(COALESCE(account_manager, '')) LIKE $${idx} OR
-        LOWER(COALESCE(industry, '')) LIKE $${idx} OR
-        LOWER(COALESCE(technology, '')) LIKE $${idx} OR
-        LOWER(COALESCE(city, '')) LIKE $${idx} OR
-        LOWER(COALESCE(country, '')) LIKE $${idx} OR
-        LOWER(COALESCE(probability, '')) LIKE $${idx} OR
-        LOWER(COALESCE(company_type, '')) LIKE $${idx} OR
-        LOWER(COALESCE(contacts, '')) LIKE $${idx} OR
-        CAST(sr_no AS TEXT) LIKE $${idx}
-      )`);
-    }
-
-    if (company_name && company_name.trim()) {
-      values.push(`%${company_name.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(company_name, '')) LIKE $${values.length}`);
-    }
-
-    if (account_manager && account_manager.trim()) {
-      values.push(account_manager.trim().toLowerCase());
-      whereClauses.push(`LOWER(COALESCE(account_manager, '')) = $${values.length}`);
-    }
-
-    const coordVal = coordinator || name_of_coordinator || '';
-    if (coordVal && coordVal.trim()) {
-      values.push(`%${coordVal.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(name_of_coordinator, '')) LIKE $${values.length}`);
-    }
-
-    if (industry && industry.trim()) {
-      values.push(`%${industry.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(industry, '')) LIKE $${values.length}`);
-    }
-
-    if (country && country.trim()) {
-      values.push(`%${country.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(country, '')) LIKE $${values.length}`);
-    }
-
-    if (technology && technology.trim()) {
-      values.push(`%${technology.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(technology, '')) LIKE $${values.length}`);
-    }
-
-    if (probability && probability.trim()) {
-      values.push(probability.trim().toLowerCase());
-      whereClauses.push(`LOWER(COALESCE(probability, '')) = $${values.length}`);
-    }
-
-    if (company_type && company_type.trim()) {
-      values.push(company_type.trim().toLowerCase());
-      whereClauses.push(`LOWER(COALESCE(company_type, '')) = $${values.length}`);
-    }
-
-    if (lead_type && lead_type.trim()) {
-      values.push(lead_type.trim().toLowerCase());
-      whereClauses.push(`LOWER(COALESCE(lead_type, '')) = $${values.length}`);
-    }
-
-    if (city && city.trim()) {
-      values.push(`%${city.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(city, '')) LIKE $${values.length}`);
-    }
-
-    if (contacts && contacts.trim()) {
-      values.push(`%${contacts.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(contacts, '')) LIKE $${values.length}`);
-    }
-
-    if (lead_date && lead_date.trim()) {
-      values.push(`%${lead_date.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(lead_date, '')) LIKE $${values.length}`);
-    }
-
-    if (status && status.trim()) {
-      values.push(`%${status.trim().toLowerCase()}%`);
-      whereClauses.push(`LOWER(COALESCE(status, '')) LIKE $${values.length}`);
-    }
-
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
     const whereSql = whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
     const idRes = await pool.query(`SELECT lead_id FROM leads ${whereSql} ORDER BY lead_id ASC`, values);
     const ids = idRes.rows.map((r) => r.lead_id);

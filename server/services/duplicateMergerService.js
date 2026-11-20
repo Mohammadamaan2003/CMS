@@ -966,7 +966,15 @@ async function restoreMerge({ historyId, restoredBy = 'admin' }) {
 /**
  * Get flattened duplicate company report records (matching APEX CRM.DUPLICATE_COMPANY_REPORT)
  */
-async function getDuplicateCompanyReport({ search = '', page = 1, limit = 50 } = {}) {
+async function getDuplicateCompanyReport({
+  search = '',
+  company_name = '',
+  website = '',
+  country = '',
+  duplicate_type = '',
+  page = 1,
+  limit = 50,
+} = {}) {
   const parsedPage = Math.max(1, parseInt(page, 10) || 1);
   const parsedLimit = Math.max(1, parseInt(limit, 10) || 50);
   const offset = (parsedPage - 1) * parsedLimit;
@@ -1048,18 +1056,36 @@ async function getDuplicateCompanyReport({ search = '', page = 1, limit = 50 } =
   const params = [];
   if (search && search.trim()) {
     params.push(`%${search.trim().toLowerCase()}%`);
+    const pIdx = params.length;
     baseSql += `
       AND (
-        d.id::text ILIKE $1
-        OR d.comp_name ILIKE $1
-        OR COALESCE(d.website, '') ILIKE $1
-        OR COALESCE(d.country, '') ILIKE $1
-        OR COALESCE(d.city, '') ILIKE $1
-        OR COALESCE(d.industry, '') ILIKE $1
-        OR COALESCE(d.technology, '') ILIKE $1
-        OR d.duplicate_type ILIKE $1
+        d.id::text ILIKE $${pIdx}
+        OR d.comp_name ILIKE $${pIdx}
+        OR COALESCE(d.website, '') ILIKE $${pIdx}
+        OR COALESCE(d.country, '') ILIKE $${pIdx}
+        OR COALESCE(d.city, '') ILIKE $${pIdx}
+        OR COALESCE(d.industry, '') ILIKE $${pIdx}
+        OR COALESCE(d.technology, '') ILIKE $${pIdx}
+        OR d.duplicate_type ILIKE $${pIdx}
       )
     `;
+  }
+
+  if (company_name && company_name.trim()) {
+    params.push(`%${company_name.trim().toLowerCase()}%`);
+    baseSql += ` AND d.comp_name ILIKE $${params.length}`;
+  }
+  if (website && website.trim()) {
+    params.push(`%${website.trim().toLowerCase()}%`);
+    baseSql += ` AND COALESCE(d.website, '') ILIKE $${params.length}`;
+  }
+  if (country && country.trim()) {
+    params.push(`%${country.trim().toLowerCase()}%`);
+    baseSql += ` AND COALESCE(d.country, '') ILIKE $${params.length}`;
+  }
+  if (duplicate_type && duplicate_type.trim()) {
+    params.push(duplicate_type.trim().toUpperCase());
+    baseSql += ` AND UPPER(d.duplicate_type) = $${params.length}`;
   }
 
   const countRes = await db.query(`SELECT COUNT(*)::int AS total FROM (${baseSql}) count_sub`, params);
@@ -1080,7 +1106,15 @@ async function getDuplicateCompanyReport({ search = '', page = 1, limit = 50 } =
 /**
  * Get flattened duplicate contact report records (matching APEX CRM.DUPLICATE_CONTACT_REPORT)
  */
-async function getDuplicateContactReport({ search = '', page = 1, limit = 50 } = {}) {
+async function getDuplicateContactReport({
+  search = '',
+  contact_name = '',
+  linkedin_url = '',
+  email = '',
+  duplicate_type = '',
+  page = 1,
+  limit = 50,
+} = {}) {
   const parsedPage = Math.max(1, parseInt(page, 10) || 1);
   const parsedLimit = Math.max(1, parseInt(limit, 10) || 50);
   const offset = (parsedPage - 1) * parsedLimit;
@@ -1158,18 +1192,36 @@ async function getDuplicateContactReport({ search = '', page = 1, limit = 50 } =
   const params = [];
   if (search && search.trim()) {
     params.push(`%${search.trim().toLowerCase()}%`);
+    const pIdx = params.length;
     baseSql += `
       AND (
-        cd.id::text ILIKE $1
-        OR cd.contact_name ILIKE $1
-        OR COALESCE(cd.comp_name, '') ILIKE $1
-        OR COALESCE(cd.comp_email, cd.email, '') ILIKE $1
-        OR COALESCE(cd.designation, '') ILIKE $1
-        OR COALESCE(cd.pos_type, '') ILIKE $1
-        OR COALESCE(cd.country, '') ILIKE $1
-        OR cd.duplicate_type ILIKE $1
+        cd.id::text ILIKE $${pIdx}
+        OR cd.contact_name ILIKE $${pIdx}
+        OR COALESCE(cd.comp_name, '') ILIKE $${pIdx}
+        OR COALESCE(cd.comp_email, cd.email, '') ILIKE $${pIdx}
+        OR COALESCE(cd.designation, '') ILIKE $${pIdx}
+        OR COALESCE(cd.pos_type, '') ILIKE $${pIdx}
+        OR COALESCE(cd.country, '') ILIKE $${pIdx}
+        OR cd.duplicate_type ILIKE $${pIdx}
       )
     `;
+  }
+
+  if (contact_name && contact_name.trim()) {
+    params.push(`%${contact_name.trim().toLowerCase()}%`);
+    baseSql += ` AND cd.contact_name ILIKE $${params.length}`;
+  }
+  if (linkedin_url && linkedin_url.trim()) {
+    params.push(`%${linkedin_url.trim().toLowerCase()}%`);
+    baseSql += ` AND COALESCE(cd.linkedin_url, '') ILIKE $${params.length}`;
+  }
+  if (email && email.trim()) {
+    params.push(`%${email.trim().toLowerCase()}%`);
+    baseSql += ` AND COALESCE(cd.comp_email, cd.email, '') ILIKE $${params.length}`;
+  }
+  if (duplicate_type && duplicate_type.trim()) {
+    params.push(duplicate_type.trim().toUpperCase());
+    baseSql += ` AND UPPER(cd.duplicate_type) = $${params.length}`;
   }
 
   const countRes = await db.query(`SELECT COUNT(*)::int AS total FROM (${baseSql}) count_sub`, params);
@@ -1585,11 +1637,65 @@ async function mergePairContacts({ originalId, duplicateId, mergedBy = 'admin', 
   }
 }
 
+/**
+ * Retrieve filter options for Duplicate Contact Report
+ */
+async function getDuplicateContactFilterOptions() {
+  try {
+    const namesRes = await db.query(`
+      SELECT DISTINCT TRIM(contact_name) AS contact_name
+      FROM contacts
+      WHERE contact_name IS NOT NULL AND TRIM(contact_name) != ''
+      ORDER BY contact_name ASC
+      LIMIT 1000
+    `);
+    const contactNames = namesRes.rows.map((r) => r.contact_name).filter(Boolean);
+    return {
+      contactNames,
+      duplicateTypes: ['CONTACT NAME + COMPANY', 'EMAIL', 'LINKEDIN URL'],
+    };
+  } catch (err) {
+    console.error('getDuplicateContactFilterOptions error:', err);
+    return {
+      contactNames: [],
+      duplicateTypes: ['CONTACT NAME + COMPANY', 'EMAIL', 'LINKEDIN URL'],
+    };
+  }
+}
+
+/**
+ * Retrieve filter options for Duplicate Company Report
+ */
+async function getDuplicateCompanyFilterOptions() {
+  try {
+    const namesRes = await db.query(`
+      SELECT DISTINCT TRIM(comp_name) AS company_name
+      FROM companies
+      WHERE comp_name IS NOT NULL AND TRIM(comp_name) != ''
+      ORDER BY company_name ASC
+      LIMIT 1000
+    `);
+    const companyNames = namesRes.rows.map((r) => r.company_name).filter(Boolean);
+    return {
+      companyNames,
+      duplicateTypes: ['WEBSITE', 'COMPANY NAME'],
+    };
+  } catch (err) {
+    console.error('getDuplicateCompanyFilterOptions error:', err);
+    return {
+      companyNames: [],
+      duplicateTypes: ['WEBSITE', 'COMPANY NAME'],
+    };
+  }
+}
+
 module.exports = {
   findCompanyDuplicates,
   findContactDuplicates,
   getDuplicateCompanyReport,
   getDuplicateContactReport,
+  getDuplicateContactFilterOptions,
+  getDuplicateCompanyFilterOptions,
   getCompanyById,
   getContactById,
   mergePairCompanies,

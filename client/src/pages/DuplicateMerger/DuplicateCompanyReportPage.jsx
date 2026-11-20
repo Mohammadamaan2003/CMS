@@ -1,25 +1,66 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '../../api/client';
 import ApexInteractiveReport from '../../components/ApexInteractiveReport';
+import ValidationRulesModal from '../../components/ValidationRulesModal';
 import { IconGitMerge, IconBuilding, IconX } from '../../components/Icons';
 
 export default function DuplicateCompanyReportPage({ onNavigate, onShowToast }) {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(100);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [viewingCompany, setViewingCompany] = useState(null);
+  const [showValidationRules, setShowValidationRules] = useState(false);
 
-  const loadReport = useCallback(async (curPage, curLimit, curSearch) => {
+  // Filter state matching Oracle APEX aligned report design
+  const initialFilterState = {
+    company_name: '',
+    website: '',
+    country: '',
+    duplicate_type: '',
+  };
+  const [filters, setFilters] = useState(initialFilterState);
+  const [appliedFilters, setAppliedFilters] = useState(initialFilterState);
+  const [filterOptions, setFilterOptions] = useState({
+    companyNames: [],
+    duplicateTypes: ['WEBSITE', 'COMPANY NAME'],
+  });
+
+  // Load distinct filter options on mount
+  useEffect(() => {
+    let isMounted = true;
+    api.getDuplicateCompanyFilters?.()
+      .then((res) => {
+        if (isMounted && res && res.success && res.data) {
+          setFilterOptions({
+            companyNames: res.data.companyNames || [],
+            duplicateTypes: res.data.duplicateTypes || ['WEBSITE', 'COMPANY NAME'],
+          });
+        }
+      })
+      .catch((err) => {
+        console.warn('Failed to load duplicate company filter options:', err);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const loadReport = useCallback(async (curPage, curLimit, curSearch, curFilters) => {
     setIsLoading(true);
+    const activeFilters = curFilters !== undefined ? curFilters : appliedFilters;
     try {
       const res = await api.getDuplicateCompanyReport({
         page: curPage,
         limit: curLimit,
         search: curSearch || '',
+        company_name: activeFilters.company_name || '',
+        website: activeFilters.website || '',
+        country: activeFilters.country || '',
+        duplicate_type: activeFilters.duplicate_type || '',
       });
       if (res && res.success) {
         setData(res.data || []);
@@ -36,13 +77,27 @@ export default function DuplicateCompanyReportPage({ onNavigate, onShowToast }) 
     } finally {
       setIsLoading(false);
     }
-  }, [onShowToast]);
+  }, [appliedFilters, onShowToast]);
 
   useEffect(() => {
-    loadReport(page, pageSize, search);
-  }, [page, pageSize, loadReport]);
+    loadReport(page, pageSize, search, appliedFilters);
+  }, [page, pageSize, loadReport, appliedFilters]);
 
-<<<<<<< HEAD
+  const handleApplyFilter = () => {
+    setAppliedFilters(filters);
+    setPage(1);
+    loadReport(1, pageSize, search, filters);
+    onShowToast?.('Filters applied', 'info');
+  };
+
+  const handleClearFilter = () => {
+    setFilters(initialFilterState);
+    setAppliedFilters(initialFilterState);
+    setPage(1);
+    loadReport(1, pageSize, search, initialFilterState);
+    onShowToast?.('Filters cleared', 'info');
+  };
+
   const handleSelectAll = async () => {
     try {
       setIsLoading(true);
@@ -50,6 +105,10 @@ export default function DuplicateCompanyReportPage({ onNavigate, onShowToast }) 
         page: 1,
         limit: 100000,
         search: search || '',
+        company_name: appliedFilters.company_name || '',
+        website: appliedFilters.website || '',
+        country: appliedFilters.country || '',
+        duplicate_type: appliedFilters.duplicate_type || '',
       });
       if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
         const allKeys = res.data.map((r, idx) => String(r.id || r.company_id || idx));
@@ -70,8 +129,54 @@ export default function DuplicateCompanyReportPage({ onNavigate, onShowToast }) 
     onShowToast?.('Deselected all records.', 'info');
   };
 
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+  const handleDownloadCsv = async () => {
+    try {
+      setIsLoading(true);
+      const res = await api.getDuplicateCompanyReport({
+        page: 1,
+        limit: 100000,
+        search: search || '',
+        company_name: appliedFilters.company_name || '',
+        website: appliedFilters.website || '',
+        country: appliedFilters.country || '',
+        duplicate_type: appliedFilters.duplicate_type || '',
+      });
+      const rowsToExport = res && res.success && Array.isArray(res.data) && res.data.length > 0 ? res.data : data;
+      if (!rowsToExport || rowsToExport.length === 0) {
+        onShowToast?.('No records to download.', 'warning');
+        return;
+      }
+      const exportCols = [
+        { label: 'Company Name', key: 'company_name' },
+        { label: 'Website', key: 'website' },
+        { label: 'Country', key: 'country' },
+        { label: 'City', key: 'city' },
+        { label: 'Industry', key: 'industry' },
+        { label: 'Duplicate Type', key: 'duplicate_type' },
+      ];
+      const headers = exportCols.map((c) => `"${c.label}"`).join(',');
+      const csvRows = rowsToExport.map((row) =>
+        exportCols.map((c) => `"${String(row[c.key] || row[c.key === 'company_name' ? 'comp_name' : c.key] || '').replace(/"/g, '""')}"`).join(',')
+      );
+      const csvContent = [headers, ...csvRows].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `duplicate_company_report_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      onShowToast?.(`Exported ${rowsToExport.length} records to CSV.`, 'success');
+    } catch (err) {
+      console.error('Download failed:', err);
+      onShowToast?.(`Download failed: ${err.message}`, 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const columns = useMemo(() => [
     {
       key: 'company_id',
@@ -241,6 +346,107 @@ export default function DuplicateCompanyReportPage({ onNavigate, onShowToast }) 
         </div>
       </div>
 
+      {/* Aligned Filter Bar matching Oracle APEX Design */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleApplyFilter();
+        }}
+        className="duplicate-report-filters-card"
+      >
+        <div className="duplicate-report-filters-row">
+          {/* Company Name */}
+          <div className="duplicate-report-filter-item">
+            <label className="duplicate-report-filter-label" htmlFor="filter-company-name">
+              Company Name
+            </label>
+            <select
+              id="filter-company-name"
+              className="duplicate-report-filter-control"
+              value={filters.company_name}
+              onChange={(e) => setFilters((prev) => ({ ...prev, company_name: e.target.value }))}
+            >
+              <option value="">All Company Names</option>
+              {filters.company_name && !filterOptions.companyNames.includes(filters.company_name) && (
+                <option value={filters.company_name}>{filters.company_name}</option>
+              )}
+              {filterOptions.companyNames.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Website */}
+          <div className="duplicate-report-filter-item">
+            <label className="duplicate-report-filter-label" htmlFor="filter-company-website">
+              Website
+            </label>
+            <input
+              id="filter-company-website"
+              type="text"
+              className="duplicate-report-filter-control"
+              value={filters.website}
+              onChange={(e) => setFilters((prev) => ({ ...prev, website: e.target.value }))}
+              placeholder="Website"
+            />
+          </div>
+
+          {/* Country */}
+          <div className="duplicate-report-filter-item">
+            <label className="duplicate-report-filter-label" htmlFor="filter-company-country">
+              Country
+            </label>
+            <input
+              id="filter-company-country"
+              type="text"
+              className="duplicate-report-filter-control"
+              value={filters.country}
+              onChange={(e) => setFilters((prev) => ({ ...prev, country: e.target.value }))}
+              placeholder="Country"
+            />
+          </div>
+
+          {/* Duplicate Type */}
+          <div className="duplicate-report-filter-item">
+            <label className="duplicate-report-filter-label" htmlFor="filter-company-dup-type">
+              Duplicate Type
+            </label>
+            <select
+              id="filter-company-dup-type"
+              className="duplicate-report-filter-control"
+              value={filters.duplicate_type}
+              onChange={(e) => setFilters((prev) => ({ ...prev, duplicate_type: e.target.value }))}
+            >
+              <option value="">All Duplicate Types</option>
+              {filterOptions.duplicateTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Buttons: Apply Filter & Clear Filter */}
+          <div className="duplicate-report-btn-group">
+            <button
+              type="submit"
+              className="btn-duplicate-filter-navy"
+            >
+              Apply Filter
+            </button>
+            <button
+              type="button"
+              onClick={handleClearFilter}
+              className="btn-duplicate-filter-navy"
+            >
+              Clear Filter
+            </button>
+          </div>
+        </div>
+      </form>
+
       {/* Interactive Report */}
       <ApexInteractiveReport
         columns={columns}
@@ -258,19 +464,41 @@ export default function DuplicateCompanyReportPage({ onNavigate, onShowToast }) 
         onSearchChange={(v) => setSearch(v)}
         onSearchSubmit={() => {
           setPage(1);
-          loadReport(1, pageSize, search);
+          loadReport(1, pageSize, search, appliedFilters);
         }}
         isServerSide={true}
         isLoading={isLoading}
         selectable={true}
         selectedKeys={selectedRowKeys}
         onSelectionChange={setSelectedRowKeys}
-<<<<<<< HEAD
         onSelectAll={handleSelectAll}
         onDeselectAll={handleDeselectAll}
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-        onRefresh={() => loadReport(page, pageSize, search)}
+        onRefresh={() => loadReport(page, pageSize, search, appliedFilters)}
+        toolbarRight={
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button
+              type="button"
+              onClick={() => setShowValidationRules(true)}
+              className="btn-duplicate-toolbar-navy"
+            >
+              Validation Rules
+            </button>
+            <button
+              type="button"
+              onClick={handleDownloadCsv}
+              className="btn-duplicate-toolbar-navy"
+            >
+              Download
+            </button>
+          </div>
+        }
+      />
+
+      {/* Validation Rules Modal */}
+      <ValidationRulesModal
+        isOpen={showValidationRules}
+        onClose={() => setShowValidationRules(false)}
+        type="company"
       />
 
       {/* View Form Modal (matching Apex DUPLICATE_COMPANY_REPORT View Form) */}

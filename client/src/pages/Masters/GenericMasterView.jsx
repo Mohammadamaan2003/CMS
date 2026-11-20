@@ -151,29 +151,18 @@ export default function GenericMasterView({ masterKey, title, onShowToast }) {
       setSelectedIds(new Set());
       if (onShowToast) onShowToast('info', 'Deselected all records.');
     } else {
-<<<<<<< HEAD
       const allIds = new Set(filteredData.map((m, idx) => String(m.id !== undefined ? m.id : m.master_id !== undefined ? m.master_id : m.master_val || idx)));
-=======
-      const allIds = new Set(filteredData.map((m) => m.id));
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
       setSelectedIds(allIds);
       if (onShowToast) onShowToast('info', `Selected all ${allIds.size} records throughout master list.`);
     }
   };
 
   const handleToggleRow = (id) => {
-<<<<<<< HEAD
     const strId = String(id);
     setSelectedIds((prev) => {
       const next = new Set(prev);
       if (next.has(strId)) next.delete(strId);
       else next.add(strId);
-=======
-    setSelectedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
       return next;
     });
   };
@@ -640,15 +629,10 @@ export default function GenericMasterView({ masterKey, title, onShowToast }) {
                   </td>
                 </tr>
               ) : (
-<<<<<<< HEAD
                 pagedData.map((row, rowIdx) => {
                   const rowKey = String(row.id !== undefined ? row.id : row.master_id !== undefined ? row.master_id : row.master_val || rowIdx);
                   return (
                   <tr key={rowKey}>
-=======
-                pagedData.map((row) => (
-                  <tr key={row.id}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                     <td className="col-center">
                       <button type="button" className="apex-edit-icon-btn" title={`View ${row.master_val}`}>
                         <IconFilePenLine size={15} />
@@ -657,7 +641,6 @@ export default function GenericMasterView({ masterKey, title, onShowToast }) {
                     <td className="col-center">
                       <input
                         type="checkbox"
-<<<<<<< HEAD
                         checked={selectedIds.has(rowKey)}
                         onChange={() => handleToggleRow(rowKey)}
                         style={{ cursor: 'pointer' }}
@@ -669,19 +652,6 @@ export default function GenericMasterView({ masterKey, title, onShowToast }) {
                     </td>
                     <td style={{ color: 'var(--text-main, #475569)' }}>{row.data_val || row.master_val || '—'}</td>
                     <td className="col-number" style={{ color: 'var(--text-muted, #475569)' }}>
-=======
-                        checked={selectedIds.has(row.id)}
-                        onChange={() => handleToggleRow(row.id)}
-                        style={{ cursor: 'pointer' }}
-                      />
-                    </td>
-                    <td style={{ fontWeight: 600, color: '#1e293b' }}>{row.master_val || '—'}</td>
-                    <td className="col-number" style={{ color: '#475569' }}>
-                      {row.master_count !== undefined ? Number(row.master_count).toLocaleString() : '—'}
-                    </td>
-                    <td style={{ color: '#475569' }}>{row.data_val || row.master_val || '—'}</td>
-                    <td className="col-number" style={{ color: '#475569' }}>
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
                       {row.data_count !== undefined ? Number(row.data_count).toLocaleString() : '—'}
                     </td>
                     <td className="col-center">
@@ -701,11 +671,7 @@ export default function GenericMasterView({ masterKey, title, onShowToast }) {
                     <td className="col-center" style={{ color: '#64748b' }}>{formatAppDate(row.created_date)}</td>
                     <td className="col-center" style={{ color: '#64748b' }}>{formatAppDate(row.modified_date)}</td>
                   </tr>
-<<<<<<< HEAD
                 ); })
-=======
-                ))
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
               )}
             </tbody>
           </table>

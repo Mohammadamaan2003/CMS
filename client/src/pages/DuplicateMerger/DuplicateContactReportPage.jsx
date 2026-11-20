@@ -1,25 +1,66 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '../../api/client';
 import ApexInteractiveReport from '../../components/ApexInteractiveReport';
+import ValidationRulesModal from '../../components/ValidationRulesModal';
 import { IconGitMerge, IconUsers, IconX } from '../../components/Icons';
 
 export default function DuplicateContactReportPage({ onNavigate, onShowToast }) {
   const [data, setData] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(100);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [viewingContact, setViewingContact] = useState(null);
+  const [showValidationRules, setShowValidationRules] = useState(false);
 
-  const loadReport = useCallback(async (curPage, curLimit, curSearch) => {
+  // Filter state matching screenshot
+  const initialFilterState = {
+    contact_name: '',
+    linkedin_url: '',
+    email: '',
+    duplicate_type: '',
+  };
+  const [filters, setFilters] = useState(initialFilterState);
+  const [appliedFilters, setAppliedFilters] = useState(initialFilterState);
+  const [filterOptions, setFilterOptions] = useState({
+    contactNames: [],
+    duplicateTypes: ['CONTACT NAME + COMPANY', 'EMAIL', 'LINKEDIN URL'],
+  });
+
+  // Load distinct filter options on mount
+  useEffect(() => {
+    let isMounted = true;
+    api.getDuplicateContactFilters?.()
+      .then((res) => {
+        if (isMounted && res && res.success && res.data) {
+          setFilterOptions({
+            contactNames: res.data.contactNames || [],
+            duplicateTypes: res.data.duplicateTypes || ['CONTACT NAME + COMPANY', 'EMAIL', 'LINKEDIN URL'],
+          });
+        }
+      })
+      .catch((err) => {
+        console.warn('Failed to load duplicate contact filter options:', err);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const loadReport = useCallback(async (curPage, curLimit, curSearch, curFilters) => {
     setIsLoading(true);
+    const activeFilters = curFilters !== undefined ? curFilters : appliedFilters;
     try {
       const res = await api.getDuplicateContactReport({
         page: curPage,
         limit: curLimit,
         search: curSearch || '',
+        contact_name: activeFilters.contact_name || '',
+        linkedin_url: activeFilters.linkedin_url || '',
+        email: activeFilters.email || '',
+        duplicate_type: activeFilters.duplicate_type || '',
       });
       if (res && res.success) {
         setData(res.data || []);
@@ -36,13 +77,27 @@ export default function DuplicateContactReportPage({ onNavigate, onShowToast }) 
     } finally {
       setIsLoading(false);
     }
-  }, [onShowToast]);
+  }, [appliedFilters, onShowToast]);
 
   useEffect(() => {
-    loadReport(page, pageSize, search);
-  }, [page, pageSize, loadReport]);
+    loadReport(page, pageSize, search, appliedFilters);
+  }, [page, pageSize, loadReport, appliedFilters]);
 
-<<<<<<< HEAD
+  const handleApplyFilter = () => {
+    setAppliedFilters(filters);
+    setPage(1);
+    loadReport(1, pageSize, search, filters);
+    onShowToast?.('Filters applied', 'info');
+  };
+
+  const handleClearFilter = () => {
+    setFilters(initialFilterState);
+    setAppliedFilters(initialFilterState);
+    setPage(1);
+    loadReport(1, pageSize, search, initialFilterState);
+    onShowToast?.('Filters cleared', 'info');
+  };
+
   const handleSelectAll = async () => {
     try {
       setIsLoading(true);
@@ -50,6 +105,10 @@ export default function DuplicateContactReportPage({ onNavigate, onShowToast }) 
         page: 1,
         limit: 100000,
         search: search || '',
+        contact_name: appliedFilters.contact_name || '',
+        linkedin_url: appliedFilters.linkedin_url || '',
+        email: appliedFilters.email || '',
+        duplicate_type: appliedFilters.duplicate_type || '',
       });
       if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
         const allKeys = res.data.map((r, idx) => String(r.id || r.contact_id || idx));
@@ -70,21 +129,54 @@ export default function DuplicateContactReportPage({ onNavigate, onShowToast }) 
     onShowToast?.('Deselected all records.', 'info');
   };
 
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+  const handleDownloadCsv = async () => {
+    try {
+      setIsLoading(true);
+      const res = await api.getDuplicateContactReport({
+        page: 1,
+        limit: 100000,
+        search: search || '',
+        contact_name: appliedFilters.contact_name || '',
+        linkedin_url: appliedFilters.linkedin_url || '',
+        email: appliedFilters.email || '',
+        duplicate_type: appliedFilters.duplicate_type || '',
+      });
+      const rowsToExport = res && res.success && Array.isArray(res.data) && res.data.length > 0 ? res.data : data;
+      if (!rowsToExport || rowsToExport.length === 0) {
+        onShowToast?.('No records to download.', 'warning');
+        return;
+      }
+      const exportCols = [
+        { label: 'Contact Name', key: 'contact_name' },
+        { label: 'Comp Name', key: 'company_name' },
+        { label: 'Linkedin Url', key: 'linkedin_url' },
+        { label: 'Comp Email', key: 'email' },
+        { label: 'Duplicate Type', key: 'duplicate_type' },
+      ];
+      const headers = exportCols.map((c) => `"${c.label}"`).join(',');
+      const csvRows = rowsToExport.map((row) =>
+        exportCols.map((c) => `"${String(row[c.key] || row[c.key === 'company_name' ? 'comp_name' : c.key] || '').replace(/"/g, '""')}"`).join(',')
+      );
+      const csvContent = [headers, ...csvRows].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `duplicate_contact_report_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      onShowToast?.(`Exported ${rowsToExport.length} records to CSV.`, 'success');
+    } catch (err) {
+      console.error('Download failed:', err);
+      onShowToast?.(`Download failed: ${err.message}`, 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const columns = useMemo(() => [
-    {
-      key: 'contact_id',
-      label: 'Contact ID',
-      width: '120px',
-      sortable: true,
-      getValue: (r) => r.contact_id,
-      render: (r) => (
-        <span className="apex-table-id-cell" style={{ fontWeight: 700 }}>
-          {r.contact_id}
-        </span>
-      ),
-    },
     {
       key: 'contact_name',
       label: 'Contact Name',
@@ -99,26 +191,71 @@ export default function DuplicateContactReportPage({ onNavigate, onShowToast }) 
     },
     {
       key: 'company_name',
-      label: 'Company Name',
+      label: 'Comp Name',
       minWidth: '180px',
       sortable: true,
-      getValue: (r) => r.company_name || '—',
+      getValue: (r) => r.comp_name || r.company_name || '—',
+      render: (r) => <span>{r.comp_name || r.company_name || '—'}</span>,
+    },
+    {
+      key: 'linkedin_url',
+      label: 'Linkedin Url',
+      minWidth: '160px',
+      sortable: true,
+      getValue: (r) => r.linkedin_url || '',
+      render: (r) => (
+        r.linkedin_url && r.linkedin_url !== '—' ? (
+          <a
+            href={r.linkedin_url.startsWith('http') ? r.linkedin_url : `https://${r.linkedin_url}`}
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: '#0284c7', textDecoration: 'none' }}
+          >
+            {r.linkedin_url}
+          </a>
+        ) : ''
+      ),
     },
     {
       key: 'email',
-      label: 'Email',
+      label: 'Comp Email',
       minWidth: '180px',
       sortable: true,
-      getValue: (r) => r.email || '—',
-      render: (r) => (
-        r.email && r.email !== '—' ? (
+      getValue: (r) => r.comp_email || r.email || '',
+      render: (r) => {
+        const mail = r.comp_email || r.email;
+        return mail && mail !== '—' ? (
           <a
-            href={`mailto:${r.email}`}
+            href={`mailto:${mail}`}
             style={{ color: '#0284c7', textDecoration: 'none' }}
           >
-            {r.email}
+            {mail}
           </a>
-        ) : '—'
+        ) : '';
+      },
+    },
+    {
+      key: 'duplicate_type',
+      label: 'Duplicate Type',
+      minWidth: '220px',
+      sortable: true,
+      getValue: (r) => r.duplicate_type || r.duplicate_reason || '',
+      render: (r) => (
+        <span style={{ fontWeight: 600 }}>
+          {r.duplicate_type || r.duplicate_reason || ''}
+        </span>
+      ),
+    },
+    {
+      key: 'contact_id',
+      label: 'Contact ID',
+      width: '110px',
+      sortable: true,
+      getValue: (r) => r.contact_id || r.id,
+      render: (r) => (
+        <span className="apex-table-id-cell" style={{ fontWeight: 700 }}>
+          {r.contact_id || r.id}
+        </span>
       ),
     },
     {
@@ -148,37 +285,6 @@ export default function DuplicateContactReportPage({ onNavigate, onShowToast }) 
       width: '120px',
       sortable: true,
       getValue: (r) => r.country || '—',
-    },
-    {
-      key: 'linkedin_url',
-      label: 'LinkedIn URL',
-      minWidth: '160px',
-      sortable: true,
-      getValue: (r) => r.linkedin_url || '—',
-      render: (r) => (
-        r.linkedin_url && r.linkedin_url !== '—' ? (
-          <a
-            href={r.linkedin_url.startsWith('http') ? r.linkedin_url : `https://${r.linkedin_url}`}
-            target="_blank"
-            rel="noreferrer"
-            style={{ color: '#0284c7', textDecoration: 'none' }}
-          >
-            LinkedIn ↗
-          </a>
-        ) : '—'
-      ),
-    },
-    {
-      key: 'duplicate_type',
-      label: 'Duplicate Reason',
-      minWidth: '220px',
-      sortable: true,
-      getValue: (r) => r.duplicate_reason || `${r.duplicate_type || ''} (${r.match_key || ''})`,
-      render: (r) => (
-        <span className="duplicate-reason-badge">
-          {r.duplicate_type || r.duplicate_reason} {r.match_confidence ? `• ${r.match_confidence}` : ''}
-        </span>
-      ),
     },
     {
       key: 'view_form',
@@ -253,6 +359,108 @@ export default function DuplicateContactReportPage({ onNavigate, onShowToast }) 
       </div>
 
       {/* Interactive Report */}
+      {/* Aligned Filters Bar Matching Screenshot */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleApplyFilter();
+        }}
+        className="duplicate-report-filters-card"
+      >
+        <div className="duplicate-report-filters-row">
+          {/* Contact Name */}
+          <div className="duplicate-report-filter-item">
+            <label className="duplicate-report-filter-label" htmlFor="filter-contact-name">
+              Contact Name
+            </label>
+            <select
+              id="filter-contact-name"
+              className="duplicate-report-filter-control"
+              value={filters.contact_name}
+              onChange={(e) => setFilters((prev) => ({ ...prev, contact_name: e.target.value }))}
+            >
+              <option value="">All Contact Names</option>
+              {filters.contact_name && !filterOptions.contactNames.includes(filters.contact_name) && (
+                <option value={filters.contact_name}>{filters.contact_name}</option>
+              )}
+              {filterOptions.contactNames.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Linkedin Url */}
+          <div className="duplicate-report-filter-item">
+            <label className="duplicate-report-filter-label" htmlFor="filter-linkedin-url">
+              Linkedin Url
+            </label>
+            <input
+              id="filter-linkedin-url"
+              type="text"
+              className="duplicate-report-filter-control"
+              value={filters.linkedin_url}
+              onChange={(e) => setFilters((prev) => ({ ...prev, linkedin_url: e.target.value }))}
+              placeholder="LinkedIn URL"
+            />
+          </div>
+
+          {/* Email */}
+          <div className="duplicate-report-filter-item">
+            <label className="duplicate-report-filter-label" htmlFor="filter-email">
+              Email
+            </label>
+            <input
+              id="filter-email"
+              type="text"
+              className="duplicate-report-filter-control"
+              value={filters.email}
+              onChange={(e) => setFilters((prev) => ({ ...prev, email: e.target.value }))}
+              placeholder="Email"
+            />
+          </div>
+
+          {/* Duplicate Type */}
+          <div className="duplicate-report-filter-item">
+            <label className="duplicate-report-filter-label" htmlFor="filter-duplicate-type">
+              Duplicate Type
+            </label>
+            <select
+              id="filter-duplicate-type"
+              className="duplicate-report-filter-control"
+              value={filters.duplicate_type}
+              onChange={(e) => setFilters((prev) => ({ ...prev, duplicate_type: e.target.value }))}
+            >
+              <option value="">All Duplicate Types</option>
+              {filterOptions.duplicateTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Action Buttons: Apply Filter & Clear Filter */}
+          <div className="duplicate-report-btn-group">
+            <button
+              type="submit"
+              className="btn-duplicate-filter-navy"
+            >
+              Apply Filter
+            </button>
+            <button
+              type="button"
+              onClick={handleClearFilter}
+              className="btn-duplicate-filter-navy"
+            >
+              Clear Filter
+            </button>
+          </div>
+        </div>
+      </form>
+
+      {/* Interactive Report */}
       <ApexInteractiveReport
         columns={columns}
         data={data}
@@ -269,19 +477,41 @@ export default function DuplicateContactReportPage({ onNavigate, onShowToast }) 
         onSearchChange={(v) => setSearch(v)}
         onSearchSubmit={() => {
           setPage(1);
-          loadReport(1, pageSize, search);
+          loadReport(1, pageSize, search, appliedFilters);
         }}
         isServerSide={true}
         isLoading={isLoading}
         selectable={true}
         selectedKeys={selectedRowKeys}
         onSelectionChange={setSelectedRowKeys}
-<<<<<<< HEAD
         onSelectAll={handleSelectAll}
         onDeselectAll={handleDeselectAll}
-=======
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
-        onRefresh={() => loadReport(page, pageSize, search)}
+        onRefresh={() => loadReport(page, pageSize, search, appliedFilters)}
+        toolbarRight={
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button
+              type="button"
+              onClick={() => setShowValidationRules(true)}
+              className="btn-duplicate-toolbar-navy"
+            >
+              Validation Rules
+            </button>
+            <button
+              type="button"
+              onClick={handleDownloadCsv}
+              className="btn-duplicate-toolbar-navy"
+            >
+              Download
+            </button>
+          </div>
+        }
+      />
+
+      {/* Validation Rules Modal */}
+      <ValidationRulesModal
+        isOpen={showValidationRules}
+        onClose={() => setShowValidationRules(false)}
+        type="contact"
       />
 
       {/* View Contact Form Modal */}

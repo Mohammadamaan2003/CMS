@@ -322,6 +322,7 @@ export default function ApexChartModal({
                         </span>
                         <div style={{ flex: 1, backgroundColor: '#f1f5f9', height: '18px', borderRadius: '4px', overflow: 'hidden' }}>
                           <div
+                            className="apex-modal-chart-bar"
                             style={{
                               width: `${item.percent}%`,
                               height: '100%',

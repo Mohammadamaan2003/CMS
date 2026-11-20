@@ -430,11 +430,7 @@ async function getCompanyDashboardKpis(filters = {}) {
  */
 async function getCompanyDashboardReport(tabId = 'company_contact_details', filters = {}, pagination = {}) {
   const page = Math.max(1, parseInt(pagination.page, 10) || 1);
-<<<<<<< HEAD
   const pageSize = pagination.pageSize === 'all' ? 1000 : Math.max(1, parseInt(pagination.pageSize, 10) || 50);
-=======
-  const pageSize = pagination.pageSize === 'all' ? 10000 : Math.max(1, parseInt(pagination.pageSize, 10) || 50);
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
   const offset = (page - 1) * pageSize;
 
   const { whereSql, params } = buildFilterClauses(filters);

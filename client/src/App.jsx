@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
-class ErrorBoundary extends React.Component {
+export class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { hasError: false, error: null };
@@ -98,7 +98,13 @@ import DuplicateContactReportPage from './pages/DuplicateMerger/DuplicateContact
 import CompanyDashboard from './pages/Dashboards/CompanyDashboard';
 import LeadDashboard from './pages/Dashboards/LeadDashboard';
 import LuminaGlassDashboard from './pages/Dashboards/LuminaGlassDashboard';
+import OrbitDashboard from './pages/Dashboards/OrbitDashboard';
+import GlassDashboard from './pages/Dashboards/GlassDashboard';
 import UserManagementPage from './pages/Users/UserManagementPage';
+import CampaignsPage from './pages/Campaigns/CampaignsPage';
+import ProjectsPage from './pages/Workspace/ProjectsPage';
+import CalendarPage from './pages/Workspace/CalendarPage';
+import MessagesPage from './pages/Workspace/MessagesPage';
 import { api } from './api/client';
 
 const MASTER_LABELS = {
@@ -127,6 +133,12 @@ const TAB_TO_HASH = {
   companies: '#/companies',
   contacts: '#/contacts',
   leads: '#/leads',
+  campaigns: '#/campaigns',
+  email_campaigns: '#/campaigns/email',
+  outreach_lists: '#/campaigns/outreach',
+  projects: '#/projects',
+  calendar: '#/calendar',
+  messages: '#/messages',
   upload_companies: '#/upload/companies',
   company_invalid_data: '#/crm-upload/company-invalid-data',
   upload_contacts: '#/upload/contacts',
@@ -143,7 +155,12 @@ const TAB_TO_HASH = {
   lead_dashboard: '#/dashboards/lead',
   company_dashboard: '#/dashboards/company',
   glass_dashboard: '#/dashboards/glass',
-  lumina: '#/dashboards/glass',
+  glass: '#/dashboards/glass',
+  glassmorphism: '#/dashboards/glassmorphism',
+  lumina: '#/dashboards/lumina',
+  lumina_dashboard: '#/dashboards/lumina',
+  orbit_dashboard: '#/dashboards/orbit',
+  orbit: '#/dashboards/orbit',
   user_management: '#/users',
   master_company_size: '#/masters/company-size',
   master_company_type: '#/masters/company-type',
@@ -215,19 +232,11 @@ export default function App() {
   const [dashboardStats, setDashboardStats] = useState(null);
   const [isLoadingStats, setIsLoadingStats] = useState(false);
 
-<<<<<<< HEAD
-  // Application Theme (Default 'dark', with 'blue', 'lumina' and 'light' available; user preference remembered in localStorage)
+  // Application Theme (Default 'dark', with 'blue', 'lumina', 'orbit', 'glass' and 'light' available; user preference remembered in localStorage)
   const [theme, setTheme] = useState(() => {
     try {
       const saved = localStorage.getItem('apex_theme');
-      if (saved === 'dark' || saved === 'blue' || saved === 'lumina' || saved === 'light') return saved;
-=======
-  // Application Theme (Default 'dark', with 'blue' and 'light' available; user preference remembered in localStorage)
-  const [theme, setTheme] = useState(() => {
-    try {
-      const saved = localStorage.getItem('apex_theme');
-      if (saved === 'dark' || saved === 'blue' || saved === 'light') return saved;
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+      if (saved === 'dark' || saved === 'blue' || saved === 'lumina' || saved === 'orbit' || saved === 'glass' || saved === 'light') return saved;
     } catch (e) {}
     return 'dark'; // Default is new dark theme (#171717)
   });
@@ -235,33 +244,22 @@ export default function App() {
   const handleToggleTheme = useCallback((newTheme) => {
     setTheme((prev) => {
       let next;
-<<<<<<< HEAD
-      if (newTheme === 'dark' || newTheme === 'blue' || newTheme === 'lumina' || newTheme === 'light') {
+      if (newTheme === 'dark' || newTheme === 'blue' || newTheme === 'lumina' || newTheme === 'orbit' || newTheme === 'glass' || newTheme === 'light') {
         next = newTheme;
       } else {
-        // Cycle: dark -> blue -> lumina -> light -> dark
-        if (prev === 'dark') next = 'blue';
+        // Cycle: dark (Default) -> lumina -> orbit -> glass -> dark
+        if (prev === 'dark') next = 'lumina';
+        else if (prev === 'lumina') next = 'orbit';
+        else if (prev === 'orbit') next = 'glass';
+        else if (prev === 'glass') next = 'dark';
         else if (prev === 'blue') next = 'lumina';
-        else if (prev === 'lumina') next = 'light';
-=======
-      if (newTheme === 'dark' || newTheme === 'blue' || newTheme === 'light') {
-        next = newTheme;
-      } else {
-        // Cycle: dark -> blue -> light -> dark
-        if (prev === 'dark') next = 'blue';
-        else if (prev === 'blue') next = 'light';
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
         else next = 'dark';
       }
       try {
         localStorage.setItem('apex_theme', next);
       } catch (e) {}
       document.documentElement.setAttribute('data-theme', next);
-<<<<<<< HEAD
-      document.body.classList.remove('apex-theme-dark', 'apex-theme-blue', 'apex-theme-lumina', 'apex-theme-light');
-=======
-      document.body.classList.remove('apex-theme-dark', 'apex-theme-blue', 'apex-theme-light');
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+      document.body.classList.remove('apex-theme-dark', 'apex-theme-blue', 'apex-theme-lumina', 'apex-theme-orbit', 'apex-theme-glass', 'apex-theme-light');
       document.body.classList.add(`apex-theme-${next}`);
       return next;
     });
@@ -269,11 +267,7 @@ export default function App() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-<<<<<<< HEAD
-    document.body.classList.remove('apex-theme-dark', 'apex-theme-blue', 'apex-theme-lumina', 'apex-theme-light');
-=======
-    document.body.classList.remove('apex-theme-dark', 'apex-theme-blue', 'apex-theme-light');
->>>>>>> eb5e33d5c7d4057832db0f1a87da7c2d9bbbed83
+    document.body.classList.remove('apex-theme-dark', 'apex-theme-blue', 'apex-theme-lumina', 'apex-theme-orbit', 'apex-theme-glass', 'apex-theme-light');
     document.body.classList.add(`apex-theme-${theme}`);
   }, [theme]);
 
@@ -347,7 +341,39 @@ export default function App() {
     }
   });
 
+  // Tab switching exit animation state
+  const [isExitingTab, setIsExitingTab] = useState(false);
+  const exitTimerRef = useRef(null);
+
   const setActiveTab = useCallback((tab) => {
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Fast and smooth tab exit/enter fade transition ONLY for the black Default dark theme!
+    if (theme === 'dark' && !prefersReducedMotion) {
+      if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+      setIsExitingTab(true);
+
+      exitTimerRef.current = setTimeout(() => {
+        setActiveTabState(tab);
+        setIsExitingTab(false);
+        if (typeof window !== 'undefined' && window.innerWidth <= 768) {
+          setSidebarCollapsed(true);
+        }
+        const targetHash = TAB_TO_HASH[tab] || `#/masters/${tab.replace('master_', '').replace(/_/g, '-')}`;
+        if (window.location.hash.split('?')[0] !== targetHash) {
+          window.location.hash = targetHash;
+        }
+        try {
+          localStorage.setItem('apex_active_tab', tab);
+        } catch (e) {}
+      }, 100);
+      return;
+    }
+
+    // Default immediate tab switch for Lumina, Orbit/Blue, and reduced-motion
     setActiveTabState(tab);
     if (typeof window !== 'undefined' && window.innerWidth <= 768) {
       setSidebarCollapsed(true);
@@ -359,7 +385,7 @@ export default function App() {
     try {
       localStorage.setItem('apex_active_tab', tab);
     } catch (e) {}
-  }, []);
+  }, [theme]);
 
   const navigateToContactForm = useCallback((contactId, returnTab, returnHash) => {
     const fromTab = returnTab || activeTab;
@@ -529,7 +555,18 @@ export default function App() {
         'lead_dashboard',
         'company_dashboard',
         'glass_dashboard',
+        'glass',
+        'glassmorphism',
         'lumina',
+        'lumina_dashboard',
+        'orbit_dashboard',
+        'orbit',
+        'campaigns',
+        'email_campaigns',
+        'outreach_lists',
+        'projects',
+        'calendar',
+        'messages',
       ];
       if (!allowedMarketingTabs.includes(activeTab)) {
         setActiveTab('dashboard');
@@ -564,6 +601,9 @@ export default function App() {
           onTabChange={setActiveTab}
           isCollapsed={sidebarCollapsed}
           currentUser={currentUser}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
+          dashboardStats={dashboardStats}
         />
 
         {/* Mobile Sidebar Backdrop Overlay */}
@@ -582,8 +622,19 @@ export default function App() {
 
           <main
             className="apex-main-inner"
-            style={activeTab === 'glass_dashboard' || activeTab === 'lumina' ? { padding: 0 } : undefined}
+            style={
+              activeTab === 'glass_dashboard' ||
+              activeTab === 'glass' ||
+              activeTab === 'glassmorphism' ||
+              activeTab === 'lumina' ||
+              activeTab === 'lumina_dashboard' ||
+              activeTab === 'orbit_dashboard' ||
+              activeTab === 'orbit'
+                ? { padding: 0 }
+                : undefined
+            }
           >
+            <div className={`apex-tab-pane-transition ${isExitingTab ? 'is-exiting' : ''}`} key={activeTab}>
             <ErrorBoundary key={activeTab}>
             {(activeTab === 'dashboard' || activeTab === 'home') && (
               <Dashboard
@@ -673,6 +724,7 @@ export default function App() {
               <LeadDashboard
                 onNavigate={setActiveTab}
                 onShowToast={showToast}
+                theme={theme}
               />
             )}
 
@@ -685,11 +737,48 @@ export default function App() {
               />
             )}
 
-            {(activeTab === 'glass_dashboard' || activeTab === 'lumina') && (
+            {(activeTab === 'lumina' || activeTab === 'lumina_dashboard') && (
               <LuminaGlassDashboard
                 currentUser={currentUser}
                 onNavigate={setActiveTab}
               />
+            )}
+
+            {(activeTab === 'glass_dashboard' || activeTab === 'glass' || activeTab === 'glassmorphism') && (
+              <GlassDashboard
+                currentUser={currentUser}
+                onNavigate={setActiveTab}
+                onToggleTheme={handleToggleTheme}
+                activeTheme={theme}
+              />
+            )}
+
+            {(activeTab === 'orbit_dashboard' || activeTab === 'orbit') && (
+              <OrbitDashboard
+                currentUser={currentUser}
+                onNavigate={setActiveTab}
+              />
+            )}
+
+            {(activeTab === 'email_campaigns' ||
+              activeTab === 'outreach_lists' ||
+              activeTab === 'campaigns') && (
+              <CampaignsPage
+                onShowToast={showToast}
+                initialTab={activeTab === 'outreach_lists' ? 'outreach' : 'email'}
+              />
+            )}
+
+            {activeTab === 'projects' && (
+              <ProjectsPage onShowToast={showToast} />
+            )}
+
+            {activeTab === 'calendar' && (
+              <CalendarPage onShowToast={showToast} />
+            )}
+
+            {activeTab === 'messages' && (
+              <MessagesPage onShowToast={showToast} />
             )}
 
             {activeTab === 'user_management' && (
@@ -862,6 +951,7 @@ export default function App() {
                 />
               )}
             </ErrorBoundary>
+            </div>
           </main>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import Stats21 from '../components/Stats21';
 import HomeKpiBanner from '../components/HomeKpiBanner';
 
 export default function Dashboard({
@@ -14,8 +15,8 @@ export default function Dashboard({
         <h1 className="apex-page-heading">Home</h1>
       </div>
 
-      {/* KPI Section: Total Companies, Total Contacts & Total Leads */}
-      <HomeKpiBanner
+      {/* Stats 21 Section (React Bits Pro - Three big growth numbers scrubbed with draggable year ruler & monthly bars) */}
+      <Stats21
         stats={stats}
         isLoading={isLoading}
         onRefresh={onRefreshStats}
